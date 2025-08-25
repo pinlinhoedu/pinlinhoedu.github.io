@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>史前臺灣與原住民文化：沒有文字的時光偵探之旅</title>
+    <style>
+        :root {
+            --color-bg: #f4f1ea;
+            --color-text: #3d3b38;
+            --color-primary: #8A9A87; /* Neolithic Green */
+            --color-secondary: #B58A76; /* Metal Age Red */
+            --color-tertiary: #A89F91; /* Paleolithic Brown */
+            --color-card-bg: #ffffff;
+            --color-accent: #6a7b68;
+            --color-correct: #5a8a5e;
+            --color-incorrect: #c76d6d;
+            --font-family: Arial, Helvetica, sans-serif;
+            --border-radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            margin: 0;
+            padding: 2rem 1rem;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .content-card {
+            background-color: var(--color-card-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--color-primary);
+        }
+
+        h1, h2, h3 {
+            line-height: 1.3;
+            color: var(--color-accent);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            border-bottom: 2px solid var(--color-primary);
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+        
+        .intro-text {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #5c5a57;
+            margin-bottom: 2rem;
+        }
+
+        strong {
+            color: var(--color-secondary);
+            font-weight: 600;
+        }
+
+        /* --- 開場動動腦: Interactive Cards --- */
+        .brain-teaser-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .tool-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: var(--color-card-bg);
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-card .icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 1rem;
+            stroke: var(--color-accent);
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .tool-card h3 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+        }
+
+        .tool-card .description {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, margin-top 0.5s ease-in-out;
+            font-size: 0.95rem;
+            text-align: left;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.5s ease, margin-top 0.5s ease;
+        }
+
+        .tool-card.active .description {
+            max-height: 200px; /* Adjust as needed */
+            margin-top: 1rem;
+            opacity: 1;
+        }
+        
+        .core-spirit {
+            background-color: #e8e4db;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-left: 5px solid var(--color-secondary);
+        }
+
+        /* --- 主題一: Interactive Timeline --- */
+        .timeline-container {
+            position: relative;
+            width: 100%;
+            padding: 2rem 0;
+        }
+
+        .timeline-bar {
+            width: 100%;
+            height: 4px;
+            background-color: #ccc;
+            position: absolute;
+            top: 48px;
+            left: 0;
+            z-index: 1;
+        }
+
+        .timeline-nodes {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .timeline-node .node-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 4px solid var(--color-bg);
+            background-color: #ccc;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-node:hover .node-dot {
+            transform: scale(1.3);
+        }
+        
+        .timeline-node[data-era="paleolithic"] .node-dot { background-color: var(--color-tertiary); }
+        .timeline-node[data-era="neolithic"] .node-dot { background-color: var(--color-primary); }
+        .timeline-node[data-era="metal"] .node-dot { background-color: var(--color-secondary); }
+
+        .timeline-node .node-label {
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background-color: var(--color-card-bg);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .timeline-node.active .node-dot {
+            transform: scale(1.5);
+        }
+
+        .timeline-node.active .node-label {
+            color: white;
+        }
+        .timeline-node[data-era="paleolithic"].active .node-label { background-color: var(--color-tertiary); }
+        .timeline-node[data-era="neolithic"].active .node-label { background-color: var(--color-primary); }
+        .timeline-node[data-era="metal"].active .node-label { background-color: var(--color-secondary); }
+
+
+        #timeline-content {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            background-color: #f9f7f2;
+            min-height: 200px;
+            transition: background-color 0.5s ease;
+        }
+
+        .era-card { display: none; }
+        .era-card.active { display: block; }
+        
+        .era-card h3 { margin-top: 0; font-size: 1.5rem; }
+        .era-card[data-era="paleolithic"] h3 { color: var(--color-tertiary); }
+        .era-card[data-era="neolithic"] h3 { color: var(--color-primary); }
+        .era-card[data-era="metal"] h3 { color: var(--color-secondary); }
+
+        .era-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .era-card li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .era-card .icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            margin-top: 4px;
+            stroke: var(--color-text);
+        }
+        
+        .os-box {
+            background-color: var(--color-bg);
+            border-left: 4px solid;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            font-style: italic;
+        }
+        .os-box[data-era="paleolithic"] { border-color: var(--color-tertiary); }
+        .os-box[data-era="neolithic"] { border-color: var(--color-primary); }
+        .os-box[data-era="metal"] { border-color: var(--color-secondary); }
+
+        /* --- 主題二: Interactive Map --- */
+        .map-explorer {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        #taiwan-map-container {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+
+        #taiwan-map-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        #taiwan-map-svg .land {
+            fill: #dbe0d9;
+            stroke: #fff;
+            stroke-width: 2;
+        }
+
+        #taiwan-map-svg .hotspot {
+            fill: var(--color-accent);
+            cursor: pointer;
+            transition: r 0.3s ease, fill 0.3s ease;
+            stroke: rgba(255,255,255,0.7);
+            stroke-width: 3px;
+        }
+        #taiwan-map-svg .hotspot:hover {
+            r: 12;
+        }
+        #taiwan-map-svg .hotspot.active {
+            fill: var(--color-secondary);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { r: 10; }
+            50% { r: 13; }
+            100% { r: 10; }
+        }
+
+        #map-info-card {
+            flex: 2;
+            background-color: var(--color-card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            min-height: 300px;
+        }
+        
+        .culture-card { display: none; }
+        .culture-card.active { display: block; animation: fadeIn 0.5s ease; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .culture-card h3 {
+            font-size: 1.4rem;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        .culture-card .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 1rem;
+            stroke: var(--color-text);
+        }
+
+        .culture-card p {
+            margin: 0.5rem 0;
+        }
+
+        /* --- 驗收成果: Quiz --- */
+        .quiz-item {
+            margin-bottom: 2rem;
+            border-top: 1px dashed #ccc;
+            padding-top: 2rem;
+        }
+        .quiz-item h3 {
+            font-size: 1.2rem;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+        }
+        
+        /* Q1: Matching Game */
+        #matching-game {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        #matching-sources, #matching-targets {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .match-item {
+            padding: 1rem;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            border: 2px dashed #ccc;
+            cursor: grab;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+        .match-item:active {
+            cursor: grabbing;
+            box-shadow: var(--shadow);
+        }
+        .match-target {
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        .match-target[data-era="paleolithic"] { border-color: var(--color-tertiary); }
+        .match-target[data-era="neolithic"] { border-color: var(--color-primary); }
+        .match-target[data-era="metal"] { border-color: var(--color-secondary); }
+        .match-target.over { background-color: #e0e0e0; }
+        .match-target.correct {
+            background-color: var(--color-correct);
+            color: white;
+            border-color: var(--color-correct);
+            cursor: not-allowed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .match-target.correct .original-text {
+            font-weight: bold;
+        }
+        .match-target .icon { display: none; }
+        .match-target.correct .icon {
+            display: block;
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            stroke-width: 3;
+        }
+        
+        /* Q2: Short Answer */
+        #short-answer-q textarea {
+            width: 100%;
+            height: 120px;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        .quiz-buttons {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+        .quiz-btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .quiz-btn:hover {
+            transform: translateY(-2px);
+        }
+        #show-hint-btn {
+            background-color: var(--color-tertiary);
+            color: white;
+        }
+        #check-answer-btn {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        #hint-box, #model-answer-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #fffbe6;
+            border-left: 4px solid #f0ad4e;
+        }
+
+        /* Q3-5: Reading Comprehension */
+        #reading-passage {
+            background-color: #f9f7f2;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--color-accent);
+        }
+        #start-reading-quiz-btn {
+            display: block;
+            margin: 0 auto;
+            background-color: var(--color-secondary);
+            color: white;
+        }
+        #reading-quiz-questions { display: none; }
+        .mcq-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .mcq-option {
+            display: block;
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: var(--color-card-bg);
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .mcq-option:hover:not(:disabled) {
+            background-color: #f0f0f0;
+            border-color: var(--color-accent);
+        }
+        .mcq-option.correct {
+            background-color: #e6f4e7;
+            border-color: var(--color-correct);
+            color: var(--color-correct);
+            font-weight: bold;
+        }
+        .mcq-option.incorrect {
+            background-color: #f9e8e8;
+            border-color: var(--color-incorrect);
+            color: var(--color-incorrect);
+        }
+        .mcq-option:disabled {
+            cursor: not-allowed;
+        }
+        .explanation {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #eef3ed;
+            border-left: 4px solid var(--color-primary);
+            border-radius: 8px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body { padding: 1rem 0.5rem; }
+            .container { gap: 2rem; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
+            .content-card { padding: 1.5rem; }
+            
+            .brain-teaser-container { flex-direction: column; }
+            
+            .timeline-nodes {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2rem;
+            }
+            .timeline-bar {
+                width: 4px;
+                height: 100%;
+                top: 0;
+                left: 14px; /* (24px dot width + 4px border * 2) / 2 */
+            }
+            .timeline-node {
+                flex-direction: row;
+                width: 100%;
+            }
+            .timeline-node .node-dot {
+                margin-right: 1rem;
+            }
+            #timeline-content {
+                margin-top: 1rem;
+                margin-left: calc(14px + 1rem + 12px); /* Bar pos + margin + dot radius */
+            }
+
+            .map-explorer { flex-direction: column; }
+            #taiwan-map-container { max-width: 100%; }
+
+            #matching-game { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>史前臺灣與原住民文化</h1>
+        <p class="intro-text">一趟沒有文字、卻精彩萬分的時光偵探之旅！</p>
+    </header>
+
+    <main>
+        <section class="content-card">
+            <h2>開場動動腦</h2>
+            <p>大家想想，如果有一天，你所有的手機、電腦、課本全部消失，不能寫字、不能拍照，你要怎麼把今天發生的超糗或超酷的事情，告訴你的孫子的孫子？是不是很難？</p>
+            <p>這就是「史前時代」！一個<strong>沒有文字紀錄</strong>的時代。所以，我們要怎麼知道當時發生了什麼事？我們這些「時光偵探」有兩個超強的辦案工具：</p>
+            
+            <div class="brain-teaser-container">
+                <div class="tool-card" id="tool-excavation">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
+                        <path d="M18.37 3.63L14.73 7.27m5.66 5.66L16.76 16.76m-11.1-5.66L9.29 9.29m-5.66 5.66L7.27 14.73m6.36-11.1L16.76 7.27m-5.66 11.1L9.29 16.76m-3.63-5.66L7.27 9.29m11.1 5.66L16.76 16.76"></path><path d="M21 15l-6-6"></path><path d="M3.27 20.73L8.81 15.19"></path>
+                    </svg>
+                    <h3>考古挖掘</h3>
+                    <div class="description">
+                        <p>這就像是案發現場的「物證」。古人用的工具、吃的貝殼、住的房子遺跡，甚至他們的骨骸，通通埋在地下。考古學家就像是拿著小刷子的福爾摩斯，把這些線索一層一層地挖出來。</p>
+                    </div>
+                </div>
+                <div class="tool-card" id="tool-oral">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <h3>口語傳說</h3>
+                    <div class="description">
+                        <p>這就像是「證人訪談」。雖然沒有文字，但故事可以一代一代地傳下來。原住民的部落神話、祖先遷徙的傳說，裡面就藏著許多寶貴的歷史記憶。</p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="core-spirit">
+                所以，記住我們辦案的核心精神：<strong>「地上挖的」加上「嘴裡說的」，拼湊出史前臺灣的完整故事！</strong>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <h2>主題一：臺灣史前「三部曲」</h2>
+            <p>史前時代那麼長，聰明的考古學家，依照當時人類最重要的<strong>工具的材質和製作方式</strong>，把臺灣的史前時代分成了三個主要的階段。這就像是手機的演進史！</p>
+
+            <div class="timeline-container">
+                <div class="timeline-bar"></div>
+                <div class="timeline-nodes">
+                    <div class="timeline-node" data-era="paleolithic">
+                        <div class="node-dot"></div>
+                        <div class="node-label">舊石器時代</div>
+                    </div>
+                    <div class="timeline-node" data-era="neolithic">
+                        <div class="node-dot"></div>
+                        <div class="node-label">新石器時代</div>
+                    </div>
+                    <div class="timeline-node" data-era="metal">
+                        <div class="node-dot"></div>
+                        <div class="node-label">金屬器時代</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="timeline-content">
+                <p style="text-align:center; color: #888;">請點擊時間軸上的節點，探索各時代的黑科技！</p>
+                <!-- Paleolithic Content -->
+                <div class="era-card" data-era="paleolithic">
+                    <h3>舊石器時代 <small>(距今約 50,000 ~ 5,000 年前)</small></h3>
+                    <h4>生活黑科技</h4>
+                    <ul>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.78 15.38l-4.1-4.1a.5.5 0 0 0-.78.36v2.21l-4.5-4.5a.5.5 0 0 0-.78.36v2.21l-4.5-4.5a.5.5 0 0 0-.78.36v9.85a.5.5 0 0 0 .78.36l4.5-4.5v2.21a.5.5 0 0 0 .78.36l4.5-4.5v2.21a.5.5 0 0 0 .78.36l4.1-4.1a.5.5 0 0 0 0-.72z"></path></svg>
+                            <div><strong>敲敲打打</strong>：用石頭敲石頭，做出粗糙的 <strong>「打製石器」</strong>。</div>
+                        </li>
+                        <li>
+                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2c2.4 0 4.69 1.44 5.75 3.69S17.27 9.6 16 11.24a5.02 5.02 0 0 1-3 1.26c-1.39.06-2.68-.38-3.5-1.29-1-1.12-1.33-2.67-.93-4.12C9.31 3.44 10.6 2 12 2z"></path><path d="M12 12c-2.4 0-4.69 1.44-5.75 3.69S6.73 19.6 8 21.24a5.02 5.02 0 0 0 3 1.26c1.39.06 2.68-.38 3.5-1.29 1-1.12 1.33-2.67.93-4.12C14.69 15.44 13.4 14 12 14z"></path></svg>
+                             <div><strong>生火大師</strong>：學會用火，可以取暖、嚇跑野獸、吃熟食。</div>
+                        </li>
+                        <li>
+                             <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 0-10 10c0 3.14 1.45 5.94 3.72 7.82m12.56 0A10 10 0 0 0 22 12c0-3.14-1.45-5.94-3.72-7.82"></path><path d="M7 11h10v2H7z"></path></svg>
+                             <div><strong>天生獵人</strong>：過著 <strong>「採集、漁獵」</strong> 的生活，食物來源不穩定，常常要搬家。</div>
+                        </li>
+                    </ul>
+                    <h4>代表選手：臺東 <strong>長濱文化</strong></h4>
+                    <div class="os-box" data-era="paleolithic"><strong>老師的OS</strong>: 這時候的人類是 <strong>「食物的發現者」</strong>，每天都在玩真實版的野外求生，超刺激！</div>
+                </div>
+                <!-- Neolithic Content -->
+                <div class="era-card" data-era="neolithic">
+                    <h3>新石器時代 <small>(距今約 7,000 ~ 2,000 年前)</small></h3>
+                    <h4>生活黑科技</h4>
+                    <ul>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2L3 13.5l7.5 7.5L22 9.5Z"></path><path d="m11.5 5.5 7 7"></path></svg>
+                            <div><strong>精雕細琢</strong>：把石頭磨得光滑鋒利，做出 <strong>「磨製石器」</strong>。</div>
+                        </li>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 22c1.25-1.25 1.25-3 2.5-4 1.25-1 2.5-1 4-2s2.5-2 4-2c2.5 0 5 2.5 5 5v1h-15.5Z"></path><path d="M12.5 6.26A4.5 4.5 0 1 0 17 10.5"></path><path d="M17 10.5c0-5.5-4.5-10-10-10"></path></svg>
+                            <div><strong>超級大革命</strong>：學會 <strong>「農業」</strong> 和 <strong>「畜牧」</strong>，開始種小米、稻米。</div>
+                        </li>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 17.5c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4v0c2.2 0 4 1.8 4 4Z"></path><path d="M6 13.5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10.5"></path><path d="M14 13.5c1 .5 2 1.5 2 3.5"></path><path d="M4 13.5c-1-.5-2-1.5-2-3.5"></path></svg>
+                            <div><strong>生活藝術家</strong>：會製作 <strong>「陶器」</strong> 來煮飯、裝東西。</div>
+                        </li>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            <div><strong>定居生活</strong>：食物來源穩定，開始形成部落、<strong>定居</strong>下來。</div>
+                        </li>
+                    </ul>
+                    <h4>代表選手：<strong>大坌坑文化</strong>、<strong>圓山文化</strong>、<strong>卑南文化</strong></h4>
+                    <div class="os-box" data-era="neolithic"><strong>老師的OS</strong>: 這是人類史上最重要的 <strong>「農業革命」</strong>！從此變成 <strong>「食物的生產者」</strong>，終於可以不用一直搬家，有時間搞藝術、想哲學了！</div>
+                </div>
+                <!-- Metal Age Content -->
+                <div class="era-card" data-era="metal">
+                    <h3>金屬器時代 <small>(距今約 2,000 ~ 400 年前)</small></h3>
+                    <h4>生活黑科技</h4>
+                    <ul>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"></path><path d="m18 18-2-2"></path><path d="m16 20 2-2"></path><path d="M12 8h4"></path><path d="m22 18-2-2"></path><path d="m20 20 2-2"></path><path d="M12 12h2"></path></svg>
+                            <div><strong>鋼鐵人崛起</strong>：學會 <strong>「煉鐵」</strong> 技術，做出更堅固、更方便的鐵器。</div>
+                        </li>
+                        <li>
+                           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 16.5c.9-.9 2.1-1.4 3.5-1.5 2.8-.2 5.1.8 7.5 3 2.4-2.2 4.7-3.2 7.5-3 1.4.1 2.6.6 3.5 1.5"></path><path d="M2.5 8.5c.9-.9 2.1-1.4 3.5-1.5 2.8-.2 5.1.8 7.5 3 2.4-2.2 4.7-3.2 7.5-3 1.4.1 2.6.6 3.5 1.5"></path></svg>
+                           <div><strong>海上貿易王</strong>：開始頻繁的對外貿易，臺灣不再是孤島！</div>
+                        </li>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                            <div><strong>時尚達人</strong>：玉器慢慢退燒，<strong>玻璃、瑪瑙</strong> 等外來品成為新的時尚單品。</div>
+                        </li>
+                    </ul>
+                    <h4>代表選手：新北 <strong>十三行文化</strong></h4>
+                    <div class="os-box" data-era="metal"><strong>老師的OS</strong>: 臺灣正式進入 <strong>「全球化1.0」</strong> 時代！這時候的人已經會跟東南亞、中國大陸做生意，是個小小貿易商了！</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <h2>主題二：史前明星巡禮</h2>
+            <p>光看時間軸不過癮，我們來認識一下這幾位史前時代的「超級巨星」！點擊地圖上的熱點，看看他們在哪裡發跡！</p>
+            <div class="map-explorer">
+                <div id="taiwan-map-container">
+                     <svg id="taiwan-map-svg" viewBox="0 0 200 400">
+                        <path class="land" d="M116.5,399.5 C108.5,392.5 101.5,387.5 96.5,378.5 C91.5,369.5 87.5,361.5 88.5,352.5 C89.5,343.5 95.5,335.5 93.5,326.5 C91.5,317.5 83.5,312.5 80.5,302.5 C77.5,292.5 80.5,283.5 82.5,274.5 C84.5,265.5 85.5,257.5 82.5,248.5 C79.5,239.5 73.5,232.5 70.5,223.5 C67.5,214.5 66.5,205.5 69.5,196.5 C72.5,187.5 79.5,181.5 82.5,172.5 C85.5,163.5 84.5,154.5 85.5,145.5 C86.5,136.5 91.5,129.5 95.5,121.5 C99.5,113.5 102.5,104.5 102.5,95.5 C102.5,86.5 99.5,78.5 100.5,69.5 C101.5,60.5 107.5,53.5 111.5,45.5 C115.5,37.5 117.5,28.5 124.5,22.5 C131.5,16.5 142.5,14.5 152.5,11.5 C162.5,8.5 171.5,4.5 180.5,2.5 C189.5,0.5 197.5,0.5 199.5,7.5 C201.5,14.5 197.5,24.5 195.5,33.5 C193.5,42.5 193.5,50.5 193.5,59.5 C193.5,68.5 193.5,77.5 190.5,86.5 C187.5,95.5 181.5,103.5 178.5,112.5 C175.5,121.5 175.5,130.5 176.5,139.5 C177.5,148.5 180.5,156.5 178.5,165.5 C176.5,174.5 169.5,181.5 166.5,190.5 C163.5,199.5 164.5,208.5 163.5,217.5 C162.5,226.5 159.5,234.5 157.5,243.5 C155.5,252.5 154.5,261.5 154.5,270.5 C154.5,279.5 155.5,288.5 154.5,297.5 C153.5,306.5 150.5,314.5 148.5,323.5 C146.5,332.5 145.5,341.5 144.5,350.5 C143.5,359.5 142.5,368.5 137.5,375.5 C132.5,382.5 124.5,387.5 116.5,392.5 C112.5,395.0 112.5,396.0 116.5,399.5 Z" />
+                        <!-- Hotspots -->
+                        <circle class="hotspot" id="spot-changbin" cx="160" cy="225" r="10" data-culture="changbin"></circle>
+                        <circle class="hotspot" id="spot-dapenkeng" cx="108" cy="80" r="10" data-culture="dapenkeng"></circle>
+                        <circle class="hotspot" id="spot-yuanshan" cx="178" cy="65" r="10" data-culture="yuanshan"></circle>
+                        <circle class="hotspot" id="spot-beinan" cx="165" cy="255" r="10" data-culture="beinan"></circle>
+                        <circle class="hotspot" id="spot-shisanhang" cx="170" cy="50" r="10" data-culture="shisanhang"></circle>
+                    </svg>
+                </div>
+                <div id="map-info-card">
+                    <p style="text-align:center; color: #888;">點擊地圖上的閃爍點，認識史前巨星！</p>
+                    <div id="culture-changbin" class="culture-card">
+                        <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.78 15.38l-4.1-4.1a.5.5 0 0 0-.78.36v2.21l-4.5-4.5a.5.5 0 0 0-.78.36v2.21l-4.5-4.5a.5.5 0 0 0-.78.36v9.85a.5.5 0 0 0 .78.36l4.5-4.5v2.21a.5.5 0 0 0 .78.36l4.5-4.5v2.21a.5.5 0 0 0 .78.36l4.1-4.1a.5.5 0 0 0 0-.72z"></path></svg>長濱文化</h3>
+                        <p><strong>時代</strong>: 舊石器時代</p>
+                        <p><strong>居住地</strong>: 臺東長濱的「八仙洞」，他們是住在海景第一排的洞穴人喔！</p>
+                        <p><strong>成名絕技</strong>: 使用<strong>打製石器</strong>。想像一下，就是把石頭敲出一個尖銳的邊緣，拿來切肉、刮皮，雖然粗糙但非常實用。他們的生活就是每天找東西吃，是真正的極簡生活大師。</p>
+                        <p><strong>歷史定位</strong>: 目前臺灣發現<strong>最早</strong>的史前文化。</p>
+                    </div>
+                    <div id="culture-dapenkeng" class="culture-card">
+                        <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 17.5c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4v0c2.2 0 4 1.8 4 4Z"></path><path d="M6 13.5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v10.5"></path><path d="M14 13.5c1 .5 2 1.5 2 3.5"></path><path d="M4 13.5c-1-.5-2-1.5-2-3.5"></path><line x1="2" y1="8" x2="20" y2="8"></line><line x1="2" y1="11" x2="20" y2="11"></line></svg>大坌坑文化</h3>
+                        <p><strong>時代</strong>: 新石器時代早期</p>
+                        <p><strong>成名絕技</strong>: 他們是臺灣新石器時代的「學長」，特色是製作了 <strong>「粗繩紋陶」</strong>。陶器上有像繩子壓過的紋路，是他們最早的品牌Logo！</p>
+                        <p><strong>歷史定位</strong>: 他們是臺灣農業的先驅，影響範圍遍及全臺，很多後來的文化都可能跟他們有血緣關係。</p>
+                    </div>
+                    <div id="culture-yuanshan" class="culture-card">
+                         <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>圓山文化</h3>
+                         <p><strong>時代</strong>: 新石器時代</p>
+                         <p><strong>居住地</strong>: 就在今天的臺北圓山附近，所以臺北人搞不好都是美食家的後代喔！</p>
+                         <p><strong>成名絕技</strong>: 他們超愛吃貝類！吃完的貝殼就隨手一丟，幾千年下來，竟然堆成了一座小山丘，我們稱為 <strong>「貝塚」</strong>。這就是史前時代的「廚餘堆」，讓考古學家知道他們當年吃了多少海鮮大餐！</p>
+                    </div>
+                    <div id="culture-beinan" class="culture-card">
+                        <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>卑南文化</h3>
+                         <p><strong>時代</strong>: 新石器時代晚期</p>
+                        <p><strong>成名絕技</strong>: 工藝技術點到滿！他們製作的 <strong>「玉器」</strong>（像是耳環、管珠）精美到不行，堪稱史前時代的愛馬仕。此外，他們還有非常壯觀的 <strong>「石板棺」</strong> 墓葬區，顯示他們有嚴謹的社會組織和信仰儀式。</p>
+                        <p><strong>歷史定位</strong>: 代表臺灣史前玉器工藝的最高峰，可能是個組織嚴密、有階級之分的社會。</p>
+                    </div>
+                     <div id="culture-shisanhang" class="culture-card">
+                        <h3><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h4"></path><path d="m18 18-2-2"></path><path d="m16 20 2-2"></path><path d="M12 8h4"></path><path d="m22 18-2-2"></path><path d="m20 20 2-2"></path><path d="M12 12h2"></path></svg>十三行文化</h3>
+                        <p><strong>時代</strong>: 金屬器時代</p>
+                        <p><strong>成名絕技</strong>: 擁有自己的「煉鐵廠」，考古學家在遺址挖到了煉鐵爐和鐵渣，證明他們已經是鋼鐵人了！同時，他們也是航海王，遺址中發現了來自東南亞的<strong>玻璃手環</strong>、<strong>瑪瑙珠子</strong>，甚至還有<strong>中國的銅錢</strong>！</p>
+                        <p><strong>歷史定位</strong>: 臺灣史前時代的「壓軸巨星」，也是最接近歷史時代的文化，是個國際貿易高手。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="content-card">
+            <h2>驗收成果：時光偵探能力測驗</h2>
+            
+            <div class="quiz-item">
+                <h3>基礎題 1. 連連看</h3>
+                <p>請將右邊的「關鍵特徵」拖曳到左邊對應的「史前時代」方框中。</p>
+                <div id="matching-game">
+                    <div id="matching-targets">
+                        <div class="match-target" data-era="paleolithic" data-answer="丙">
+                            <span class="original-text">(A) 舊石器時代</span>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="match-target" data-era="neolithic" data-answer="甲">
+                            <span class="original-text">(B) 新石器時代</span>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <div class="match-target" data-era="metal" data-answer="乙">
+                            <span class="original-text">(C) 金屬器時代</span>
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="matching-sources">
+                        <div class="match-item" draggable="true" id="甲">(甲) 開始種植作物、燒製陶器，生活趨於穩定。</div>
+                        <div class="match-item" draggable="true" id="乙">(乙) 知道如何煉鐵，並與海外地區進行貿易。</div>
+                        <div class="match-item" draggable="true" id="丙">(丙) 以敲打的方式製作石器，主要靠採集和打獵維生。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-item" id="short-answer-q">
+                <h3>進階應用題 2. 為什麼「農業革命」是史前人類生活最重要的轉捩點？</h3>
+                <p>「新石器時代的發明，像是農業和陶器，根本沒什麼了不起！」請你反駁小華的觀點，並說明原因（請舉出至少兩點影響）。</p>
+                <textarea placeholder="請在此輸入你的答案..."></textarea>
+                <div class="quiz-buttons">
+                    <button class="quiz-btn" id="show-hint-btn">需要提示？</button>
+                    <button class="quiz-btn" id="check-answer-btn">核對答案</button>
+                </div>
+                <div id="hint-box">
+                    <strong>提示</strong>：如果你答不出來，可以思考一下：一個每天都在煩惱下一餐在哪裡的人，跟一個家裡有米倉存糧的人，他們的生活會有什麼不同？從「吃、住、工作」這幾個方面去想，答案就出來了！
+                </div>
+                <div id="model-answer-box">
+                    <h4>參考答案</h4>
+                    <p>農業革命是史前最重要的轉捩點，原因如下：</p>
+                    <ol>
+                        <li><strong>食物來源穩定化</strong>：人類從「尋找食物」變成「生產食物」，不用再為了追逐獵物或採集果實而到處遷徙，糧食供應變得更穩定，大幅降低了餓死的風險。</li>
+                        <li><strong>促成定居與部落形成</strong>：因為需要照顧農作物，人類開始「定居」生活，進而形成村落和部落。人口得以穩定增長，也為複雜社會組織的出現奠定了基礎。</li>
+                        <li><strong>社會分工與文化發展</strong>：當糧食生產有剩餘，不是所有人都需要去種田。一部分人可以專心從事其他工作，例如製作更精美的陶器、玉器，或是擔任祭司、領袖，促進了文化和工藝的快速發展。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="quiz-item">
+                <h3>閱讀理解素養題 (3-5)</h3>
+                <div id="reading-passage">
+                    <p><strong>情境閱讀</strong>：以下是一段考古學家「陳老師」的田野筆記，請閱讀後回答問題。</p>
+                    <blockquote>
+                        <em>今天我們在十三行遺址又有驚人的發現！在一個探坑的深處，我們挖到了一座煉鐵爐的殘跡，旁邊散落著黑色的鐵渣。更令人興奮的是，在不遠處的一個墓葬中，墓主人的手腕上，套著一個湖水綠的玻璃手環，樣式和東南亞出土的非常相似。我幾乎可以想像，幾千年前，這個人站在淡水河口，看著外來的船隻，用自己生產的物品，換來這些閃閃發亮的寶貝。這裡，曾經是個多麼熱鬧的國際港口啊！</em>
+                    </blockquote>
+                </div>
+                <button class="quiz-btn" id="start-reading-quiz-btn">我讀完了，開始測驗</button>
+                <div id="reading-quiz-questions">
+                    <div class="quiz-sub-item">
+                        <p><strong>3. 根據陳老師的筆記，當時的十三行人，已經具備了哪兩項重要的能力或活動？</strong></p>
+                        <!-- For simplicity, this is presented as text. An interactive version could be a checklist. -->
+                        <p>答案： (1) <strong>煉鐵技術</strong>（證據：煉鐵爐、鐵渣）和 (2) <strong>對外貿易活動</strong>（證據：來自東南亞的玻璃手環）。</p>
+                    </div>
+                    <div class="quiz-sub-item">
+                        <p><strong>4. 筆記中提到的「湖水綠的玻璃手環」，在歷史研究上具有什麼重大的意義？</strong></p>
+                        <p>答案： 它是<strong>「對外貿易的具體證據」</strong>。它證明了史前時代的臺灣並非孤立於世界之外，而是已經透過海洋，與東南亞甚至更遠的地區，有著密切的物產和文化交流。</p>
+                    </div>
+                    <div class="quiz-sub-item" id="mcq-5">
+                        <p><strong>5. 如果陳老師繼續往下深挖，在煉鐵爐的<em>更下方</em>地層，他<em>最不可能</em>發現下列哪一樣東西？</strong></p>
+                        <div class="mcq-options">
+                            <button class="mcq-option" data-answer="A">(A) 磨製精美的石斧</button>
+                            <button class="mcq-option" data-answer="B">(B) 破碎的繩紋陶片</button>
+                            <button class="mcq-option" data-answer="C">(C) 長濱文化的打製石器</button>
+                            <button class="mcq-option" data-answer="D" data-correct="true">(D) 漢人使用的瓷碗</button>
+                        </div>
+                        <div class="explanation" id="explanation-5">
+                            <strong>理由</strong>：考古學的「地層學」告訴我們，<strong>越下面的地層，年代越古老</strong>。十三行文化屬於金屬器時代（約2000-400年前），(A)磨製石斧、(B)繩紋陶片屬於更早的新石器時代，(C)打製石器屬於最早的舊石器時代，這些都有可能出現在十三行文化的下方。而「漢人使用的瓷碗」是歷史時代的產物，年代比十三行文化更晚，只可能出現在它的<strong>上方</strong>地層，不可能在更深的下方。
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- 開場動動腦: Interactive Cards ---
+    const toolCards = document.querySelectorAll('.tool-card');
+    toolCards.forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('active');
+        });
+    });
+
+    // --- 主題一: Interactive Timeline ---
+    const timelineNodes = document.querySelectorAll('.timeline-node');
+    const eraCards = document.querySelectorAll('.era-card');
+    const timelineContent = document.getElementById('timeline-content');
+    
+    // Set initial state
+    const initialNode = document.querySelector('.timeline-node[data-era="neolithic"]');
+    if(initialNode) {
+        initialNode.classList.add('active');
+        document.querySelector('.era-card[data-era="neolithic"]').classList.add('active');
+        timelineContent.querySelector('p').style.display = 'none';
+    }
+
+
+    timelineNodes.forEach(node => {
+        node.addEventListener('click', () => {
+            const era = node.dataset.era;
+            
+            timelineNodes.forEach(n => n.classList.remove('active'));
+            node.classList.add('active');
+            
+            eraCards.forEach(card => card.classList.remove('active'));
+            const activeCard = document.querySelector(`.era-card[data-era="${era}"]`);
+            if (activeCard) {
+                activeCard.classList.add('active');
+            }
+            
+            // Hide initial message
+            const initialMessage = timelineContent.querySelector('p');
+            if (initialMessage) {
+                initialMessage.style.display = 'none';
+            }
+        });
+    });
+
+    // --- 主題二: Interactive Map ---
+    const hotspots = document.querySelectorAll('#taiwan-map-svg .hotspot');
+    const cultureCards = document.querySelectorAll('.culture-card');
+    const mapInfoCard = document.getElementById('map-info-card');
+    const mapInitialMessage = mapInfoCard.querySelector('p');
+    
+    // Set initial state for map
+    const initialHotspot = document.getElementById('spot-changbin');
+     if(initialHotspot) {
+        initialHotspot.classList.add('active');
+        document.getElementById('culture-changbin').classList.add('active');
+        mapInitialMessage.style.display = 'none';
+    }
+
+    hotspots.forEach(spot => {
+        spot.addEventListener('click', () => {
+            const culture = spot.dataset.culture;
+            
+            hotspots.forEach(s => s.classList.remove('active'));
+            spot.classList.add('active');
+            
+            cultureCards.forEach(card => card.classList.remove('active'));
+            const activeCard = document.getElementById(`culture-${culture}`);
+            if (activeCard) {
+                activeCard.classList.add('active');
+            }
+
+            if (mapInitialMessage) {
+                mapInitialMessage.style.display = 'none';
+            }
+        });
+    });
+    
+    // --- 驗收成果: Quiz ---
+
+    // Q1: Matching Game
+    const draggables = document.querySelectorAll('.match-item');
+    const dropzones = document.querySelectorAll('.match-target');
+
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.id); // Use text/plain for dataTransfer
+            draggable.style.opacity = '0.5';
+        });
+
+        draggable.addEventListener('dragend', () => {
+            draggable.style.opacity = '1';
+        });
+    });
+
+    dropzones.forEach(zone => {
+        zone.addEventListener('dragover', e => {
+            e.preventDefault(); // Allow drop
+            if (!zone.classList.contains('correct')) {
+                 zone.classList.add('over');
+            }
+        });
+
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('over');
+        });
+
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('over');
+            if (zone.classList.contains('correct')) return;
+
+            const draggedId = e.dataTransfer.getData('text/plain'); // Retrieve with text/plain
+            const draggedEl = document.getElementById(draggedId);
+
+            if (draggedEl && zone.dataset.answer === draggedId) {
+                zone.classList.add('correct');
+                // Remove existing text and add the dragged item's text, plus the check icon
+                zone.innerHTML = `<span class="original-text">${draggedEl.textContent}</span>` + 
+                                 `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+                draggedEl.style.display = 'none';
+            } else {
+                zone.style.animation = 'shake 0.5s';
+                setTimeout(() => zone.style.animation = '', 500);
+            }
+        });
+    });
+    
+    // Add shake animation style dynamically
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = `@keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }`;
+    document.head.appendChild(styleSheet);
+
+
+    // Q2: Short Answer
+    const showHintBtn = document.getElementById('show-hint-btn');
+    const checkAnswerBtn = document.getElementById('check-answer-btn');
+    const hintBox = document.getElementById('hint-box');
+    const modelAnswerBox = document.getElementById('model-answer-box');
+
+    showHintBtn.addEventListener('click', () => {
+        hintBox.style.display = hintBox.style.display === 'block' ? 'none' : 'block';
+    });
+
+    checkAnswerBtn.addEventListener('click', () => {
+        modelAnswerBox.style.display = modelAnswerBox.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Q3-5: Reading Comprehension
+    const startQuizBtn = document.getElementById('start-reading-quiz-btn');
+    const quizQuestions = document.getElementById('reading-quiz-questions');
+
+    startQuizBtn.addEventListener('click', () => {
+        quizQuestions.style.display = 'block';
+        startQuizBtn.style.display = 'none';
+    });
+
+    const mcqContainer = document.getElementById('mcq-5');
+    const mcqOptions = mcqContainer.querySelectorAll('.mcq-option');
+    const explanation = document.getElementById('explanation-5');
+
+    mcqOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            // Disable all buttons after one is clicked
+            mcqOptions.forEach(btn => btn.disabled = true);
+
+            if (option.dataset.correct === 'true') {
+                option.classList.add('correct');
+            } else {
+                option.classList.add('incorrect');
+                mcqContainer.querySelector('[data-correct="true"]').classList.add('correct');
+            }
+            explanation.style.display = 'block';
+        });
+    });
+});
+</script>
+</body>
+</html>
