@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1-1 正數與負數：數線世界的冒險序章</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+    <style>
+        :root {
+            --bg-color: #F5F5F5;
+            --text-color: #333333;
+            --header-color: #6B7A8F;
+            --card-bg: #FFFFFF;
+            --accent-color-1: #D7C9AA;
+            --accent-color-2: #A3B18A;
+            --accent-color-3: #8A9EA3;
+            --success-color: #A3B18A;
+            --error-color: #D98880;
+            --font-family: Arial, Helvetica, sans-serif;
+            --border-radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1, h2, h3 {
+            color: var(--header-color);
+            font-weight: 600;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--accent-color-1);
+            padding-bottom: 10px;
+            margin-top: 50px;
+            font-size: 2em;
+        }
+        
+        h3 {
+            color: var(--accent-color-3);
+            font-size: 1.5em;
+            margin-top: 30px;
+        }
+
+        strong, .highlight {
+            color: var(--header-color);
+            font-weight: bold;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .interactive-title {
+            font-weight: bold;
+            color: var(--accent-color-3);
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        /* Opening Animation */
+        #opening-animation-container {
+            height: 50px;
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .number-line-base {
+            height: 3px;
+            background-color: var(--header-color);
+            position: absolute;
+        }
+        #line-positive {
+            width: 50%;
+            left: 50%;
+            transform-origin: left;
+        }
+        #line-negative {
+            width: 0%;
+            right: 50%;
+            transform-origin: right;
+            animation: grow-left 1s 1s forwards ease-out;
+        }
+        .tick {
+            position: absolute;
+            width: 3px;
+            height: 15px;
+            background-color: var(--header-color);
+            opacity: 0;
+            animation: fade-in 0.5s forwards;
+        }
+        .tick-label {
+             position: absolute;
+             top: 20px;
+             transform: translateX(-50%);
+             opacity: 0;
+             animation: fade-in 0.5s forwards;
+        }
+        @keyframes grow-left {
+            to { width: 50%; }
+        }
+        @keyframes fade-in {
+            to { opacity: 1; }
+        }
+        
+        /* Tooltip */
+        .tooltip-trigger {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            position: relative;
+        }
+        .tooltip-content {
+            visibility: hidden;
+            width: 220px;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -110px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip-content::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+        .tooltip-trigger:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Concept 1 Interactions */
+        .concept-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .concept-demo-item {
+            background-color: #F8F9FA;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .concept-demo-item h4 {
+            margin-top: 0;
+            color: var(--accent-color-3);
+        }
+        .concept-demo-controls button {
+            background-color: var(--header-color);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: background-color 0.2s;
+        }
+        .concept-demo-controls button:hover {
+            background-color: #505d6f;
+        }
+        #thermometer {
+            width: 30px;
+            height: 150px;
+            border: 2px solid var(--header-color);
+            border-radius: 15px;
+            margin: 10px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #thermometer-fill {
+            position: absolute;
+            bottom: 50%;
+            left: 0;
+            right: 0;
+            width: 100%;
+            background-color: #ccc;
+            transform-origin: bottom;
+            transition: transform 0.5s ease, background-color 0.5s ease;
+        }
+        #wallet {
+            padding: 15px;
+            border: 2px solid var(--accent-color-1);
+            border-radius: 8px;
+            margin: 10px auto;
+            width: 120px;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: box-shadow 0.3s ease;
+        }
+        #geography-demo {
+            height: 150px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #sea-level {
+            width: 100%;
+            height: 2px;
+            background-color: #87CEEB;
+            position: absolute;
+        }
+        #mountain, #trench {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+        #mountain {
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-bottom: 50px solid var(--accent-color-2);
+            bottom: 50%;
+            transform: translateY(-2px);
+        }
+        #trench {
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-top: 50px solid var(--accent-color-3);
+            top: 50%;
+            transform: translateY(2px);
+        }
+        
+        /* Drag and Drop */
+        .drag-drop-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .drop-zone {
+            flex: 1;
+            padding: 15px;
+            border: 2px dashed var(--accent-color-1);
+            border-radius: 8px;
+            min-height: 200px;
+            transition: all 0.3s ease;
+        }
+        .drop-zone.drag-over {
+            border-style: solid;
+            background-color: #f0f3f4;
+        }
+        #drag-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .drag-item {
+            padding: 10px 15px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+        .drag-item:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+        .drag-item.correct {
+            background-color: #e8f5e9;
+            border: 1px solid var(--success-color);
+        }
+        .drag-item.incorrect {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        /* Number Line Construction */
+        #number-line-builder-line {
+            width: 100%;
+            height: 3px;
+            background-color: #ccc;
+            position: relative;
+            margin: 40px 0;
+        }
+        #builder-origin, #builder-arrow, .builder-tick {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        #builder-origin {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--header-color);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #builder-arrow {
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 12px solid var(--header-color);
+            top: 50%;
+            right: -2px;
+            transform: translateY(-50%);
+        }
+        
+        /* Number Line Clicking Game */
+        #number-line-clicker {
+            width: 100%;
+            height: 50px;
+            background-image:
+                repeating-linear-gradient(90deg, transparent, transparent 4.9%, #ccc 4.9%, #ccc 5%),
+                repeating-linear-gradient(90deg, #ccc, #ccc 0.5px, transparent 0.5px, transparent 10%);
+            background-size: 100% 100%, 100% 100%;
+            position: relative;
+            cursor: crosshair;
+            margin: 20px 0;
+        }
+        #number-line-clicker::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 23.5px;
+            width: 100%;
+            height: 3px;
+            background-color: var(--header-color);
+        }
+        .clicker-label {
+            position: absolute;
+            top: -20px;
+            transform: translateX(-50%);
+            font-size: 0.9em;
+        }
+        .click-flag {
+            position: absolute;
+            top: -25px;
+            transform: translateX(-50%);
+            font-size: 1.5em;
+        }
+        .feedback-line {
+            position: absolute;
+            height: 1px;
+            border-top: 1px dashed var(--error-color);
+            top: 10px;
+        }
+        #clicker-feedback {
+            min-height: 1.5em;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* Opposite Number Slider */
+        #opposite-slider-container {
+            position: relative;
+            height: 80px;
+            padding: 0 20px;
+        }
+        #opposite-slider-line {
+            width: 100%;
+            height: 3px;
+            background-color: var(--header-color);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #opposite-mirror {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(135, 206, 235, 0.5);
+        }
+        .slider-handle {
+            position: absolute;
+            top: 50%;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        #handle-a { background-color: var(--accent-color-3); cursor: grab; }
+        #handle-b { background-color: var(--accent-color-1); }
+        .slider-label {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            font-weight: bold;
+        }
+        
+        /* Flipping Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .flip-card {
+            background-color: transparent;
+            aspect-ratio: 2 / 3;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.is-flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+        .flip-card-front {
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-3));
+        }
+        .flip-card-back {
+            background-color: var(--card-bg);
+            color: var(--header-color);
+            transform: rotateY(180deg);
+        }
+        .flip-card.matched {
+            opacity: 0.5;
+            cursor: default;
+            transform: scale(0.95);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        /* Absolute Value Sim */
+        #abs-sim-container {
+            position: relative;
+            height: 100px;
+            padding: 20px 0;
+        }
+        #abs-sim-line {
+            width: 100%;
+            height: 3px;
+            background-color: var(--header-color);
+            position: absolute;
+            top: 50%;
+        }
+        #abs-sim-home {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -100%);
+            font-size: 2em;
+        }
+        #abs-sim-dot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            background-color: var(--error-color);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 1s ease-in-out;
+        }
+        #abs-sim-distance-line {
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            height: 5px;
+            background-color: var(--accent-color-2);
+            transform-origin: left;
+            transition: width 1s ease-in-out, transform 1s ease-in-out;
+        }
+        
+        /* Accordion */
+        .accordion-item {
+            border: 1px solid var(--accent-color-1);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.5em;
+            transition: transform 0.3s;
+        }
+        .accordion-item.active .accordion-header::after {
+            transform: rotate(45deg);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            padding: 0 15px;
+        }
+        
+        /* Practice Questions */
+        #quiz-1-line {
+            width: 3px;
+            height: 300px;
+            background-color: var(--header-color);
+            margin: 20px auto;
+            position: relative;
+        }
+        #quiz-1-line::before {
+            content: '0 (海平面)';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .quiz-1-drop-zone {
+            position: absolute;
+            left: -50px;
+            width: 100px;
+            height: 1px;
+            transform: translateY(-50%);
+        }
+        #quiz-1-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .quiz-input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 5px 0;
+            width: 80%;
+        }
+
+        .quiz-btn {
+            background-color: var(--header-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        #quiz-3-options button {
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent-color-1);
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #quiz-3-options button.selected {
+            background-color: var(--accent-color-3);
+            color: white;
+            border-color: var(--accent-color-3);
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #eef2f3;
+            display: none;
+        }
+        
+        /* Details Summary */
+        details {
+            border: 1px solid var(--accent-color-1);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        summary {
+            font-weight: bold;
+            padding: 15px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+        }
+        details[open] summary {
+            border-bottom: 1px solid var(--accent-color-1);
+        }
+        .summary-content {
+            padding: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.6em; }
+            .card { padding: 20px; }
+            .drag-drop-container { flex-direction: column; }
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="card">
+        <h1>1-1 正數與負數：數線世界的冒險序章</h1>
+        <div id="opening-animation-container">
+            <div id="line-positive" class="number-line-base"></div>
+            <div id="line-negative" class="number-line-base"></div>
+        </div>
+        <p>嘿，未來的數學學霸！歡迎來到七年級數學的第一站，也是你整個國中數學世界的<strong class="tooltip-trigger">基石<span class="tooltip-content">這個觀念是未來學習「坐標平面」、「方程式」甚至「函數」的基礎，打穩它，後面就輕鬆囉！</span></strong>——「正數與負數」。</p>
+        <p>你可能會想：「老師，這我國小好像學過？」沒錯！但國中，我們要把它玩得更透徹、更深入！想像一下，如果數字世界只有正數，就像遊戲地圖只開放了一半。今天，我們就要解鎖整張地圖，探索充滿神秘與驚奇的「負數領域」！準備好你的探險家精神，我們出發囉！</p>
+    </header>
+
+    <section id="concept1">
+        <h2>🚀 觀念一：為什麼要有負數？—— 當世界不再只有「擁有」</h2>
+        <div class="card">
+            <p>在我們的生活中，很多事情都是<strong>一體兩面、相對存在</strong>的。</p>
+            <div class="concept-demo-grid">
+                <div class="concept-demo-item">
+                    <h4>溫度</h4>
+                    <p>有高於0度的炎熱夏天 (\(+35\)度)，也有低於0度的寒冷冬天 (\(-4\)度)。</p>
+                    <div id="thermometer"><div id="thermometer-fill"></div></div>
+                    <span id="temp-display">\(0\)°C</span>
+                    <div class="concept-demo-controls">
+                        <button id="temp-plus">+</button><button id="temp-minus">-</button>
+                    </div>
+                </div>
+                <div class="concept-demo-item">
+                    <h4>財富</h4>
+                    <p>賺了1000元 (\(+1000\))，賠了500元 (\(-500\))。</p>
+                    <div id="wallet">0</div>
+                    <div class="concept-demo-controls">
+                        <button id="wallet-plus">賺錢</button><button id="wallet-minus">賠錢</button>
+                    </div>
+                </div>
+                <div class="concept-demo-item">
+                    <h4>地理</h4>
+                    <p>珠穆朗瑪峰海拔 \(+8848\) 公尺；馬里亞納海溝則在 \(-11034\) 公尺！</p>
+                    <div id="geography-demo">
+                        <div id="sea-level"></div>
+                        <div id="mountain"></div>
+                        <div id="trench"></div>
+                    </div>
+                    <div class="concept-demo-controls">
+                        <button id="geo-plus">山峰</button><button id="geo-minus">海溝</button>
+                    </div>
+                </div>
+            </div>
+            <p>看到了嗎？「+」(正) 和「-」(負) 就像一對雙胞胎，用來描述<strong>意義相反或相對的量</strong>。我們把比 0 大的數稱為<strong>正數</strong>，比 0 小的數稱為<strong>負數</strong>。</p>
+            <p>那... \(0\) 呢？ \(0\) 是個特別的存在，它像是正、負數世界的分界點，<strong>不屬於正數，也不屬於負數</strong>。它代表著「沒有」、「基準點」或「不賺不賠」的狀態。</p>
+
+            <div class="interactive-section card" style="background-color: #f8f9fa;">
+                <span class="interactive-title">💡 互動時間：正負大配對</span>
+                <p><strong>玩法說明：</strong> 下方會出現一些生活中的情境詞彙，請把它們拖曳到左邊的「正數概念區」或右邊的「負數概念區」吧！</p>
+                <div id="drag-items">
+                    <div class="drag-item" draggable="true" data-type="positive">賺錢</div>
+                    <div class="drag-item" draggable="true" data-type="negative">賠錢</div>
+                    <div class="drag-item" draggable="true" data-type="negative">氣溫零下5度</div>
+                    <div class="drag-item" draggable="true" data-type="positive">地上10樓</div>
+                    <div class="drag-item" draggable="true" data-type="positive">收入</div>
+                    <div class="drag-item" draggable="true" data-type="negative">支出</div>
+                    <div class="drag-item" draggable="true" data-type="positive">進步5分</div>
+                    <div class="drag-item" draggable="true" data-type="negative">退步3分</div>
+                    <div class="drag-item" draggable="true" data-type="negative">地下3樓停車場</div>
+                </div>
+                <div class="drag-drop-container">
+                    <div class="drop-zone" data-type="positive"><strong>[正數概念區]</strong></div>
+                    <div class="drop-zone" data-type="negative"><strong>[負數概念區]</strong></div>
+                </div>
+                <button class="quiz-btn" id="check-drag-drop">對答案</button>
+                <div id="drag-drop-feedback" class="quiz-feedback"></div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="concept2">
+        <h2>🚀 觀念二：數線 —— 數字世界的地圖</h2>
+        <div class="card">
+            <p>既然我們解鎖了負數，就需要一張更完整的地圖來標示所有數字的位置。這張地圖，就是<strong>數線</strong>！</p>
+            <p>畫出一條完美的數線，你需要「三大神器」，缺一不可：</p>
+            <ol>
+                <li><strong>原點 (Origin)</strong>：地圖的中心點，也就是數字 \(0\) 的位置。</li>
+                <li><strong>正向 (Positive Direction)</strong>：通常是<strong>向右的箭頭</strong>，告訴我們數字變大的方向。</li>
+                <li><strong>單位長 (Unit Length)</strong>：地圖的比例尺！用來衡量 \(0\) 到 \(1\)、\(1\) 到 \(2\) 之間的固定距離。</li>
+            </ol>
+            <div class="interactive-section card" style="background-color: #f8f9fa;">
+                <span class="interactive-title">💡 互動時間：建造你的數線</span>
+                 <p>依序點擊按鈕，親手建造一條數線！</p>
+                <div id="number-line-builder-line">
+                    <div id="builder-origin"></div>
+                    <div id="builder-arrow"></div>
+                </div>
+                <div class="concept-demo-controls">
+                    <button id="btn-add-origin">1. 放置原點</button>
+                    <button id="btn-add-direction" disabled>2. 設定正向</button>
+                    <button id="btn-add-units" disabled>3. 加上單位長</button>
+                </div>
+            </div>
+            
+            <p>有了這張地圖，任何數（整數、分數、小數）都能找到它的家！</p>
+            <ul>
+                <li><strong>正數</strong>住在原點的<strong>右邊</strong>。</li>
+                <li><strong>負數</strong>住在原點的<strong>左邊</strong>。</li>
+            </ul>
+            <div style="background: linear-gradient(to right, #f0f0f0, #e6e9ee); padding: 15px; border-radius: 8px;">
+                在數線上，<strong>越右邊的數越大，越左邊的數越小</strong>。這是一個<strong>絕對的鐵則</strong>！所以，\(2 > -1\)，\( -2 > -5\) (想想看，零下2度是不是比零下5度溫暖一點？)
+            </div>
+
+             <div class="interactive-section card" style="background-color: #f8f9fa; margin-top:20px;">
+                <span class="interactive-title">💡 互動時間：數字點點名</span>
+                <p><strong>玩法說明：</strong> 下方有一條數線，請你用滑鼠點擊，標示出 \(-2.5\)、\(1\frac{1}{2}\) (\(1.5\))、\(-\frac{3}{4}\) (\(-0.75\)) 這三個數大概的位置。</p>
+                <div id="number-line-clicker">
+                    <div class="clicker-label" style="left: 12.5%">-3</div>
+                    <div class="clicker-label" style="left: 25%">-2</div>
+                    <div class="clicker-label" style="left: 37.5%">-1</div>
+                    <div class="clicker-label" style="left: 50%">0</div>
+                    <div class="clicker-label" style="left: 62.5%">1</div>
+                    <div class="clicker-label" style="left: 75%">2</div>
+                    <div class="clicker-label" style="left: 87.5%">3</div>
+                </div>
+                <div id="clicker-feedback">請點擊標示 \(-2.5\) 的位置。</div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="concept3">
+        <h2>🚀 觀念三：相反數 —— 鏡子裡的你</h2>
+        <div class="card">
+            <p>在數線這張地圖上，有些數字的關係很特別。它們就像是站在原點這面鏡子的兩端，看著彼此。</p>
+            
+            <div class="interactive-section card" style="background-color: #f8f9fa;">
+                <span class="interactive-title">💡 互動時間：鏡像滑桿</span>
+                <p>拖曳藍色的點，觀察另一個點如何對稱移動。</p>
+                <div id="opposite-slider-container">
+                    <div id="opposite-slider-line"></div>
+                    <div id="opposite-mirror"></div>
+                    <div class="slider-handle" id="handle-a"></div>
+                    <div class="slider-label" id="label-a">3.0</div>
+                    <div class="slider-handle" id="handle-b"></div>
+                    <div class="slider-label" id="label-b">-3.0</div>
+                </div>
+            </div>
+
+            <p>它們<strong>與原點的距離相同，但方向相反</strong>，我們就稱 \(3\) 和 \(-3\) <strong>互為相反數</strong>。</p>
+            <ul>
+                <li>\(5\) 的相反數是 \(-5\)。</li>
+                <li>\(-10.8\) 的相反數是 \(10.8\)。</li>
+                <li>\(0\) 的相反數是它自己 \(0\)！</li>
+            </ul>
+            <p><strong>找相反數的秘訣</strong>：正數的相反數 -> <strong>前面加個負號</strong>。負數的相反數 -> <strong>把前面的負號去掉</strong>。</p>
+            <p>這也引出一個超酷的規則：<strong>負負得正</strong>！ \(-(-3)\) 意思就是「-3的相反數」，那當然就是 \(3\) 啦！</p>
+            
+            <div class="interactive-section card" style="background-color: #f8f9fa; margin-top:20px;">
+                <span class="interactive-title">💡 互動時間：尋找失散的相反數</span>
+                <p>翻開一張卡，然後找出它的相反數配對！</p>
+                <div class="card-grid" id="matching-game">
+                </div>
+                 <div id="matching-feedback" style="text-align:center; margin-top:10px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="concept4">
+        <h2>🚀 觀念四：絕對值 —— 回家的距離！</h2>
+        <div class="card">
+            <p><strong>絕對值的核心意義只有一個：距離！</strong>想像一下，數線是你們家門口的路，\(0\) (原點) 就是你家的位置。</p>
+            
+            <div class="interactive-section card" style="background-color: #f8f9fa;">
+                <span class="interactive-title">💡 互動時間：回家距離模擬器</span>
+                <p>在下方輸入一個數字 (例如 5 或 -4)，按下「出發」，看看你離家多遠！</p>
+                <div id="abs-sim-container">
+                    <div id="abs-sim-line"></div>
+                    <div id="abs-sim-home">🏠</div>
+                    <div id="abs-sim-dot"></div>
+                    <div id="abs-sim-distance-line"></div>
+                </div>
+                <div>
+                    <input type="number" id="abs-input" placeholder="輸入數字..." class="quiz-input" style="width:150px;">
+                    <button id="abs-go-btn" class="quiz-btn">出發</button>
+                </div>
+                <div id="abs-feedback" style="margin-top:10px; font-weight:bold;"></div>
+            </div>
+
+            <p>看到了嗎？<strong>距離是沒有負數的！</strong></p>
+            <p>\(+5\) 與原點(家)的距離是 \(5\)，我們記作 \(|+5| = 5\)。</p>
+            <p>\(-5\) 與原點(家)的距離是 \(5\)，我們記作 \(|-5| = 5\)。</p>
+            <p>兩邊的直線 \(| |\) 就是<strong>絕對值的符號</strong>，把它想像成一個神奇的「正能量機器」，任何數字進去，出來的結果<strong>永遠是正數或 0</strong>！</p>
+            
+            <p><strong>絕對值的快算法</strong>：</p>
+            <ul>
+                <li>正數的絕對值，就是<strong>它自己</strong>。 \(|100| = 100\)。</li>
+                <li>負數的絕對值，就是<strong>把負號拿掉</strong>。 \(|-99| = 99\)。</li>
+                <li>\(0\) 的絕對值，就是 \(0\)。 \(|0| = 0\)。</li>
+            </ul>
+
+            <div id="accordion-container" style="margin-top: 20px;">
+                <div class="accordion-item">
+                    <div class="accordion-header">💡 老師的考前碎碎念 (點我展開)</div>
+                    <div class="accordion-content">
+                        <div style="padding: 15px 0;">
+                            <strong>1. 必考陷阱：比較負數大小。</strong><br>
+                            記住口訣：<strong>負數比大小，數字越小，其值越大</strong>！\(-1 > -100\)。在數線上，\(-1\) 在 \(-100\) 的右邊，所以比較大。
+                        </div>
+                        <div style="padding: 15px 0;">
+                             <strong>2. 易混淆觀念：相反數 vs 絕對值</strong><br>
+                            <ul>
+                                <li><strong>相反數</strong>：\(5\) 的相反數是 \(-5\)。（結果可以是負數）</li>
+                                <li><strong>絕對值</strong>：\(|5|\) 和 \(|-5|\) 的結果都是 \(5\)。（結果永遠不可能是負數）</li>
+                            </ul>
+                        </div>
+                        <div style="padding: 15px 0;">
+                            <strong>3. 絕對值的應用：</strong><br>
+                            當題目問到「距離」或「差距」時，十之八九就是要用絕對值來思考！
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="summary">
+        <details>
+            <summary><strong>[點我展開] 1-1 正數與負數 核心概念懶人包</strong></summary>
+            <div class="summary-content">
+                <ul>
+                    <li><strong>正數/負數</strong>：用來表示意義相反的量，以 \(0\) 為分界。</li>
+                    <li><strong>數線三要素</strong>：原點、正向、單位長。</li>
+                    <li><strong>數線比大小</strong>：右邊的數 > 左邊的數。</li>
+                    <li><strong>相反數</strong>：與原點等距但方向相反的兩數。\(a\) 的相反數是 \(-a\)。</li>
+                    <li><strong>絕對值</strong>：表示數線上某數與原點的<strong>距離</strong>，結果恆為正數或0。\(|a| \geq 0\)。</li>
+                    <li><strong>負負得正</strong>：\(-(-a) = a\)。</li>
+                </ul>
+            </div>
+        </details>
+    </section>
+
+    <section id="practice">
+        <h2>🏆 實戰演練：挑戰關卡！</h2>
+        <p>你已經掌握了探索新世界的所有工具，現在來小試身手吧！</p>
+
+        <div class="card">
+            <h3>第一題 (基礎題 - 拖曳配對)</h3>
+            <p><strong>情境：</strong> 潛水員阿翰正在進行海底探勘，他以海平面為基準點 0 公尺。<br><strong>任務：：</strong> 請將下方的事件拖曳到數線上對應的高度位置。</p>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                 <div id="quiz-1-items">
+                    <div class="drag-item" draggable="true" data-value="0">1. 船停在海平面</div>
+                    <div class="drag-item" draggable="true" data-value="-5.5">2. 下潛到 5.5 公尺</div>
+                    <div class="drag-item" draggable="true" data-value="3">3. 海鳥飛過 3 公尺上空</div>
+                    <div class="drag-item" draggable="true" data-value="-8">4. 發現 8 公尺深寶箱</div>
+                </div>
+                <div id="quiz-1-line">
+                    <div class="quiz-1-drop-zone" style="top: 12.5%;" data-value="8"></div>
+                    <div class="quiz-1-drop-zone" style="top: 31.25%;" data-value="3"></div>
+                    <div class="quiz-1-drop-zone" style="top: 50%;" data-value="0"></div>
+                    <div class="quiz-1-drop-zone" style="top: 73.75%;" data-value="-5.5"></div>
+                    <div class="quiz-1-drop-zone" style="top: 87.5%;" data-value="-8"></div>
+                </div>
+            </div>
+            <div id="quiz-1-feedback" class="quiz-feedback"></div>
+        </div>
+        
+        <div class="card">
+            <h3>第二題 (進階題 - 開放填答)</h3>
+            <p><strong>情境：</strong> 在數線上，有 A、B 兩點。已知 A 點的坐標是 \(-4\)。</p>
+            <ol>
+                <li>如果 B 點是 A 點的相反數，那麼 B 點的坐標是多少？<br><input id="q2_1" class="quiz-input" type="text"></li>
+                <li>C 點與原點的距離是 6，那麼 C 點的坐標可能是多少？ (答案用逗號分隔)<br><input id="q2_2" class="quiz-input" type="text"></li>
+                <li>在 A、B、C 所有可能的點中，位置最左邊的點是什麼？<br><input id="q2_3" class="quiz-input" type="text"></li>
+            </ol>
+            <button id="check-q2" class="quiz-btn">檢查答案</button>
+            <div id="q2-feedback" class="quiz-feedback"></div>
+        </div>
+
+        <div class="card">
+            <h3>第三題 (素養題 - 互動點選)</h3>
+            <p><strong>情境：</strong>「數線飲料店」的規則：店員給數字 \(a\)，你回答 \(|a|\) 的值。如果答案 \(x\) 滿足 \(|a| = x\)，你就能獲得免費飲料！</p>
+            <p><strong>任務：</strong> 店員的挑戰：`「有一個整數 a，我們知道 |a| < 5」。`請問，這個神秘的整數 \(a\) 可能是下列哪些數字？ (可複選)</p>
+            <div id="quiz-3-options">
+                <button data-value="5">5</button>
+                <button data-value="4">4</button>
+                <button data-value="1.5">1.5</button>
+                <button data-value="0">0</button>
+                <button data-value="-3">-3</button>
+                <button data-value="-5">-5</button>
+                <button data-value="-6">-6</button>
+            </div>
+            <button id="check-q3" class="quiz-btn">確認選擇</button>
+            <div id="q3-feedback" class="quiz-feedback"></div>
+        </div>
+        
+        <div class="card">
+            <h3>第四題 (素養題 - 翻卡作答)</h3>
+            <p><strong>情境：</strong> A 牌和 B 牌遊戲機比較電池續航力，以「連續玩 8 小時」為標準，記錄剩餘電量百分比變化。`+` 代表高於標準，`-` 代表低於標準。</p>
+            <div class="card-grid" style="grid-template-columns: repeat(2, 1fr);">
+                <div class="flip-card" id="card-a">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">A 牌遊戲機</div>
+                        <div class="flip-card-back">\(-3\%\)</div>
+                    </div>
+                </div>
+                <div class="flip-card" id="card-b">
+                     <div class="flip-card-inner">
+                        <div class="flip-card-front">B 牌遊戲機</div>
+                        <div class="flip-card-back">\(+2\%\)</div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <p>1. 哪一台遊戲機的續航力表現<strong>比較好</strong>？</p>
+                <input type="radio" name="q4_1" id="q4_1_a" value="A"><label for="q4_1_a"> A 牌</label>
+                <input type="radio" name="q4_1" id="q4_1_b" value="B"><label for="q4_1_b"> B 牌</label>
+                <p>2. 兩台遊戲機的續航力表現<strong>相差</strong>了多少個百分點？</p>
+                <input type="number" id="q4_2" class="quiz-input" style="width: 100px;">
+                <button id="check-q4" class="quiz-btn">檢查答案</button>
+            </div>
+            <div id="q4-feedback" class="quiz-feedback"></div>
+        </div>
+
+        <div class="card">
+            <h3>第五題 (挑戰題 - 開放填答)</h3>
+            <p><strong>情境：</strong> 一隻螞蟻在數線上移動，牠從原點出發。第一步：向正向走 5 個單位。第二步：接著向負向走 8 個單位。第三步：最後又向正向走 2 個單位。</p>
+             <p><strong>任務：</strong></p>
+            <ol>
+                <li>請問這隻螞蟻最後停在哪個數字上？<br><input id="q5_1" class="quiz-input" type="text"></li>
+                <li>在整個移動過程中，這隻螞蟻<strong>總共走</strong>了多少個單位長？<br><input id="q5_2" class="quiz-input" type="text"></li>
+            </ol>
+            <button id="check-q5" class="quiz-btn">檢查答案</button>
+            <div id="q5-feedback" class="quiz-feedback"></div>
+        </div>
+
+    </section>
+
+    <footer class="card" style="text-align:center; margin-top:50px;">
+        <p>恭喜你完成了今天的冒險！你已經成功掌握了整個國中數學最基礎也最重要的地圖。繼續加油，你超棒的！</p>
+    </footer>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Opening Animation
+    const lineNegative = document.getElementById('line-negative');
+    const animationContainer = document.getElementById('opening-animation-container');
+    lineNegative.addEventListener('animationend', () => {
+        const totalWidth = animationContainer.offsetWidth;
+        const ticks = [-3, -2, -1, 0, 1, 2, 3];
+        ticks.forEach((tick, i) => {
+            const pos = 12.5 * (i + 1);
+            const tickEl = document.createElement('div');
+            tickEl.className = 'tick';
+            tickEl.style.left = `${pos}%`;
+            tickEl.style.animationDelay = `${i * 0.1}s`;
+            
+            const labelEl = document.createElement('div');
+            labelEl.className = 'tick-label';
+            labelEl.textContent = tick;
+            labelEl.style.left = `${pos}%`;
+            labelEl.style.animationDelay = `${i * 0.1}s`;
+
+            animationContainer.appendChild(tickEl);
+            animationContainer.appendChild(labelEl);
+        });
+    });
+
+    // Concept 1 Interactions
+    const tempFill = document.getElementById('thermometer-fill');
+    const tempDisplay = document.getElementById('temp-display');
+    document.getElementById('temp-plus').onclick = () => {
+        tempFill.style.transform = 'scaleY(0.7)';
+        tempFill.style.backgroundColor = '#E57373';
+        tempDisplay.textContent = '+35°C';
+    };
+    document.getElementById('temp-minus').onclick = () => {
+        tempFill.style.transform = 'scaleY(-0.2)';
+        tempFill.style.backgroundColor = '#64B5F6';
+        tempDisplay.textContent = '-4°C';
+    };
+
+    const wallet = document.getElementById('wallet');
+    document.getElementById('wallet-plus').onclick = () => {
+        wallet.textContent = '+1000';
+        wallet.style.boxShadow = '0 0 15px gold';
+        setTimeout(() => wallet.style.boxShadow = '', 500);
+    };
+    document.getElementById('wallet-minus').onclick = () => {
+        wallet.textContent = '-500';
+        wallet.style.boxShadow = '0 0 15px gray';
+        setTimeout(() => wallet.style.boxShadow = '', 500);
+    };
+
+    const mountain = document.getElementById('mountain');
+    const trench = document.getElementById('trench');
+    document.getElementById('geo-plus').onclick = () => {
+        trench.style.opacity = '0';
+        mountain.style.opacity = '1';
+    };
+    document.getElementById('geo-minus').onclick = () => {
+        mountain.style.opacity = '0';
+        trench.style.opacity = '1';
+    };
+
+    // Drag and Drop
+    const dragItems = document.querySelectorAll('.drag-item');
+    const dropZones = document.querySelectorAll('.drop-zone');
+    let draggedItem = null;
+
+    dragItems.forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            draggedItem = e.target;
+            setTimeout(() => e.target.style.display = 'none', 0);
+        });
+        item.addEventListener('dragend', (e) => {
+            setTimeout(() => {
+                draggedItem.style.display = 'block';
+                draggedItem = null;
+            }, 0);
+        });
+    });
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            zone.classList.add('drag-over');
+        });
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('drag-over');
+        });
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            if (draggedItem) {
+                if (zone.dataset.type === draggedItem.dataset.type) {
+                    draggedItem.parentNode.removeChild(draggedItem);
+                    zone.appendChild(draggedItem);
+                    draggedItem.style.display = 'inline-block';
+                    draggedItem.draggable = false;
+                } else {
+                    draggedItem.classList.add('incorrect');
+                    setTimeout(() => draggedItem.classList.remove('incorrect'), 500);
+                }
+            }
+        });
+    });
+    
+    document.getElementById('check-drag-drop').onclick = () => {
+        let allCorrect = true;
+        dropZones.forEach(zone => {
+            const items = zone.querySelectorAll('.drag-item');
+            items.forEach(item => {
+                if(item.dataset.type === zone.dataset.type) {
+                    item.classList.add('correct');
+                } else {
+                    allCorrect = false;
+                }
+            });
+        });
+        const feedbackEl = document.getElementById('drag-drop-feedback');
+        feedbackEl.style.display = 'block';
+        feedbackEl.textContent = allCorrect ? '太棒了，全部正確！' : '有些項目放錯了喔，再試一次！';
+    };
+    
+    // Number Line Builder
+    const btnOrigin = document.getElementById('btn-add-origin');
+    const btnDir = document.getElementById('btn-add-direction');
+    const btnUnits = document.getElementById('btn-add-units');
+    btnOrigin.onclick = () => {
+        document.getElementById('builder-origin').style.opacity = '1';
+        btnOrigin.disabled = true;
+        btnDir.disabled = false;
+    };
+    btnDir.onclick = () => {
+        document.getElementById('builder-arrow').style.opacity = '1';
+        btnDir.disabled = true;
+        btnUnits.disabled = false;
+    };
+    btnUnits.onclick = () => {
+        const line = document.getElementById('number-line-builder-line');
+        for (let i = 1; i <= 4; i++) {
+            ['50% + ' + i*30 + 'px', '50% - ' + i*30 + 'px'].forEach(pos => {
+                const tick = document.createElement('div');
+                tick.className = 'builder-tick';
+                tick.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 10px;
+                    background: var(--header-color);
+                    left: calc(${pos});
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                    transition: opacity 0.5s;
+                `;
+                line.appendChild(tick);
+            });
+        }
+        btnUnits.disabled = true;
+    };
+
+    // Number Line Clicker
+    const clickerLine = document.getElementById('number-line-clicker');
+    const clickerFeedback = document.getElementById('clicker-feedback');
+    const targets = [{val: -2.5, name: '-2.5'}, {val: 1.5, name: '1½'}, {val: -0.75, name: '-¾'}];
+    let currentTargetIndex = 0;
+
+    clickerLine.addEventListener('click', (e) => {
+        const rect = clickerLine.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const percent = (clickX / rect.width) * 100;
+        
+        // Map percent (0-100) to number range (-4 to 4)
+        const clickedValue = (percent / 100) * 8 - 4;
+        const targetValue = targets[currentTargetIndex].val;
+        
+        const flag = document.createElement('span');
+        flag.className = 'click-flag';
+        flag.textContent = '🚩';
+        flag.style.left = `${percent}%`;
+        clickerLine.appendChild(flag);
+        
+        if (Math.abs(clickedValue - targetValue) < 0.2) {
+            clickerFeedback.textContent = '太棒了！';
+            clickerFeedback.style.color = 'var(--success-color)';
+            currentTargetIndex++;
+            if (currentTargetIndex >= targets.length) {
+                clickerFeedback.textContent += ' 全部完成！';
+            } else {
+                 setTimeout(() => {
+                    clickerFeedback.textContent = `請點擊標示 ${targets[currentTargetIndex].name} 的位置。`;
+                    clickerFeedback.style.color = 'var(--text-color)';
+                    clickerLine.innerHTML = clickerLine.innerHTML.replace(/<span class="click-flag".*?<\/span>/g, '');
+                }, 1500);
+            }
+        } else {
+            clickerFeedback.textContent = `再靠近一點點！你點在 ${clickedValue.toFixed(1)} 附近。`;
+            clickerFeedback.style.color = 'var(--error-color)';
+            setTimeout(() => flag.remove(), 1000);
+        }
+    });
+
+    // Opposite Number Slider
+    const sliderContainer = document.getElementById('opposite-slider-container');
+    const handleA = document.getElementById('handle-a');
+    const handleB = document.getElementById('handle-b');
+    const labelA = document.getElementById('label-a');
+    const labelB = document.getElementById('label-b');
+    let isDragging = false;
+    
+    function updateHandles(percent) {
+        if (percent < 0) percent = 0;
+        if (percent > 100) percent = 100;
+        
+        handleA.style.left = `${percent}%`;
+        handleB.style.left = `${100-percent}%`;
+        
+        const valueA = (percent / 100) * 8 - 4;
+        const valueB = -valueA;
+        
+        labelA.textContent = valueA.toFixed(1);
+        labelA.style.left = `${percent}%`;
+        labelB.textContent = valueB.toFixed(1);
+        labelB.style.left = `${100-percent}%`;
+    }
+    
+    handleA.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const rect = sliderContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            let percent = (x / rect.width) * 100;
+            updateHandles(percent);
+        }
+    });
+    updateHandles(87.5); // Initial position for 3.0
+
+    // Matching Game
+    const gameContainer = document.getElementById('matching-game');
+    const matchFeedback = document.getElementById('matching-feedback');
+    const cards = [
+        {v: '7', id: 1}, {v: '-7', id: 1},
+        {v: '-2.5', id: 2}, {v: '2.5', id: 2},
+        {v: '\\frac{1}{3}', id: 3}, {v: '-\\frac{1}{3}', id: 3},
+        {v: '0', id: 4}, {v: '0', id: 4}
+    ];
+    let firstCard = null, secondCard = null;
+    let lockBoard = false;
+
+    cards.sort(() => 0.5 - Math.random()).forEach(card => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'flip-card';
+        cardEl.dataset.id = card.id;
+        cardEl.innerHTML = `
+            <div class="flip-card-inner">
+                <div class="flip-card-front"></div>
+                <div class="flip-card-back">${card.v === '0' ? '0' : `\\(${card.v}\\)`}</div>
+            </div>
+        `;
+        cardEl.addEventListener('click', flipCard);
+        gameContainer.appendChild(cardEl);
+    });
+    
+    function flipCard() {
+        if (lockBoard || this.classList.contains('is-flipped')) return;
+        this.classList.add('is-flipped');
+
+        if (!firstCard) {
+            firstCard = this;
+            return;
+        }
+        secondCard = this;
+        checkForMatch();
+    }
+    
+    function checkForMatch() {
+        // As per the lesson, "0 的相反數是它自己 0！", so 0 should match 0.
+        // The IDs are already set up to correctly pair (0,0) with id=4.
+        // Removed the incorrect condition that was preventing '0' from matching itself.
+        let isMatch = firstCard.dataset.id === secondCard.dataset.id;
+        isMatch ? disableCards() : unflipCards();
+    }
+
+    function disableCards() {
+        matchFeedback.textContent = "配對成功！";
+        matchFeedback.style.color = 'var(--success-color)';
+        firstCard.removeEventListener('click', flipCard);
+        secondCard.removeEventListener('click', flipCard);
+        firstCard.classList.add('matched');
+        secondCard.classList.add('matched');
+        resetBoard();
+    }
+
+    function unflipCards() {
+        lockBoard = true;
+        matchFeedback.textContent = "不對喔，再試試！";
+        matchFeedback.style.color = 'var(--error-color)';
+        setTimeout(() => {
+            firstCard.classList.remove('is-flipped');
+            secondCard.classList.remove('is-flipped');
+            resetBoard();
+        }, 1200);
+    }
+    
+    function resetBoard() {
+        [firstCard, secondCard, lockBoard] = [null, null, false];
+    }
+    
+    // Absolute Value Sim
+    document.getElementById('abs-go-btn').onclick = () => {
+        const val = parseFloat(document.getElementById('abs-input').value);
+        if (isNaN(val)) return;
+        
+        const percent = 50 + (val / 10) * 50; // map -10 to 10 on 0-100%
+        document.getElementById('abs-sim-dot').style.left = `${percent}%`;
+
+        const distanceLine = document.getElementById('abs-sim-distance-line');
+        const absVal = Math.abs(val);
+        const widthPercent = (absVal / 10) * 50;
+        
+        distanceLine.style.width = `${widthPercent}%`;
+        if (val < 0) {
+            distanceLine.style.transform = 'scaleX(-1)';
+        } else {
+            distanceLine.style.transform = 'scaleX(1)';
+        }
+        
+        document.getElementById('abs-feedback').textContent = `你離家的距離是 ${absVal}`;
+    };
+
+    // Accordion
+    document.querySelectorAll('.accordion-header').forEach(header => {
+        header.addEventListener('click', () => {
+            const item = header.parentElement;
+            item.classList.toggle('active');
+            const content = header.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                content.style.padding = '0 15px';
+            } else {
+                content.style.padding = '15px';
+                content.style.maxHeight = content.scrollHeight + 30 + "px";
+            }
+        });
+    });
+
+    // Quiz 1 Drag Drop
+    const quiz1Items = document.querySelectorAll('#quiz-1-items .drag-item');
+    const quiz1Zones = document.querySelectorAll('.quiz-1-drop-zone');
+    let quiz1Dragged = null;
+    
+    quiz1Items.forEach(item => {
+        item.addEventListener('dragstart', (e) => {
+            quiz1Dragged = e.target;
+        });
+    });
+
+    quiz1Zones.forEach(zone => {
+        zone.addEventListener('dragover', e => e.preventDefault());
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (quiz1Dragged && quiz1Dragged.dataset.value === zone.dataset.value) {
+                zone.appendChild(quiz1Dragged);
+                quiz1Dragged.draggable = false;
+                quiz1Dragged.style.position = 'absolute';
+                quiz1Dragged.style.left = '110%';
+                quiz1Dragged.style.top = '50%';
+                quiz1Dragged.style.transform = 'translateY(-50%)';
+                quiz1Dragged.classList.add('correct');
+            } else {
+                quiz1Dragged.classList.add('incorrect');
+                setTimeout(() => quiz1Dragged.classList.remove('incorrect'), 500);
+            }
+        });
+    });
+
+    // Quiz 2
+    document.getElementById('check-q2').onclick = () => {
+        const ans1 = document.getElementById('q2_1').value.trim();
+        const ans2 = document.getElementById('q2_2').value.trim().split(',').map(s => s.trim()).sort().join(',');
+        const ans3 = document.getElementById('q2_3').value.trim();
+        let correct = 0;
+        let feedback = "<ul>";
+        if (ans1 === '4') {
+            feedback += "<li>第1題正確！A(-4)的相反數是4。</li>";
+            correct++;
+        } else {
+            feedback += "<li>第1題錯誤。相反數是在原點另一側等距的數。</li>";
+        }
+        if (ans2 === '-6,6' || ans2 === '6,-6') {
+            feedback += "<li>第2題正確！與原點距離為6的點有6和-6。</li>";
+            correct++;
+        } else {
+            feedback += "<li>第2題錯誤。與原點的距離是絕對值的概念，別忘了負數喔！</li>";
+        }
+        if (ans3 === '-6') {
+            feedback += "<li>第3題正確！比較-4, 4, 6, -6，最左邊的是-6。</li>";
+            correct++;
+        } else {
+            feedback += "<li>第3題錯誤。把所有可能的點都列出來比大小看看。</li>";
+        }
+        feedback += "</ul>";
+        const feedbackEl = document.getElementById('q2-feedback');
+        feedbackEl.innerHTML = feedback;
+        feedbackEl.style.display = 'block';
+    };
+
+    // Quiz 3
+    const q3options = document.querySelectorAll('#quiz-3-options button');
+    q3options.forEach(btn => {
+        btn.addEventListener('click', () => btn.classList.toggle('selected'));
+    });
+    document.getElementById('check-q3').onclick = () => {
+        const correctAnswers = ['4', '0', '-3']; // Integers whose absolute value is < 5
+        const selectedAnswers = Array.from(document.querySelectorAll('#quiz-3-options button.selected')).map(b => b.dataset.value);
+        let isCorrect = correctAnswers.length === selectedAnswers.length && correctAnswers.every(val => selectedAnswers.includes(val));
+        
+        const feedbackEl = document.getElementById('q3-feedback');
+        if (isCorrect) {
+            feedbackEl.innerHTML = "完全正確！絕對值小於5的整數有 -4, -3, -2, -1, 0, 1, 2, 3, 4。";
+            feedbackEl.style.backgroundColor = '#e8f5e9';
+        } else {
+            feedbackEl.innerHTML = "答案不完全正確喔。提示：`|a| < 5` 的意思是「a 這個數，到原點的距離要比 5 小」。哪些選項中的整數符合呢？";
+            feedbackEl.style.backgroundColor = '#fbe9e7';
+        }
+        feedbackEl.style.display = 'block';
+    };
+
+    // Quiz 4
+    document.querySelectorAll('#card-a, #card-b').forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+        });
+    });
+    document.getElementById('check-q4').onclick = () => {
+        const ans1 = document.querySelector('input[name="q4_1"]:checked')?.value;
+        const ans2 = document.getElementById('q4_2').value.trim();
+        let feedback = "<ul>";
+        if (ans1 === 'B') {
+            feedback += "<li>第1題正確！+2 > -3，所以B牌表現較好。</li>";
+        } else {
+            feedback += "<li>第1題錯誤。正數比負數大喔！</li>";
+        }
+        if (ans2 === '5') {
+            feedback += "<li>第2題正確！從-3到+2的距離是5。</li>";
+        } else {
+            feedback += "<li>第2題錯誤。問「相差」就是在問距離，想想數線上-3和+2差幾格。</li>";
+        }
+        feedback += "</ul>";
+        const feedbackEl = document.getElementById('q4-feedback');
+        feedbackEl.innerHTML = feedback;
+        feedbackEl.style.display = 'block';
+    };
+
+    // Quiz 5
+    document.getElementById('check-q5').onclick = () => {
+        const ans1 = document.getElementById('q5_1').value.trim();
+        const ans2 = document.getElementById('q5_2').value.trim();
+        let feedback = "<ul>";
+        if (ans1 === '-1') {
+            feedback += "<li>第1題正確！0 + 5 - 8 + 2 = -1。</li>";
+        } else {
+            feedback += "<li>第1題錯誤。試著畫數線走一遍：0 → 5 → -3 → -1。</li>";
+        }
+        if (ans2 === '15') {
+            feedback += "<li>第2題正確！總路程是 |5| + |-8| + |2| = 5 + 8 + 2 = 15。</li>";
+        } else {
+            feedback += "<li>第2題錯誤。總共走的路程是每次移動距離的總和，距離沒有負數。</li>";
+        }
+        feedback += "</ul>";
+        const feedbackEl = document.getElementById('q5-feedback');
+        feedbackEl.innerHTML = feedback;
+        feedbackEl.style.display = 'block';
+    };
+    
+    // Final MathJax typeset
+    if (window.MathJax) {
+        window.MathJax.typeset();
+    }
+});
+</script>
+
+</body>
+</html>
