@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第一課〈夏夜〉沈浸式學習講義</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap');
+
+        :root {
+            --font-serif: 'Noto Serif TC', serif;
+            --font-sans: 'Noto Sans TC', sans-serif;
+            
+            /* 莫蘭迪色系 Morandi Color Palette */
+            --color-bg: #f5f5f0; /* 柔和米白 */
+            --color-text: #5b5b5b; /* 灰褐色 */
+            --color-heading: #4a5568; /* 灰藍 */
+            --color-primary: #8d9b9a; /* 灰綠 */
+            --color-secondary: #c0a99d; /* 灰粉 */
+            --color-accent: #a8b3c2; /* 淺灰藍 */
+            --color-card-front: #e9e4e0; /* 卡片正面底色 */
+            --color-card-back: #d8e2dc;  /* 卡片背面底色 */
+            --color-highlight-bg: rgba(168, 179, 194, 0.2); /* 重點標示背景 */
+            --color-border: #dcdcdc;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            color: var(--color-text);
+            background-color: var(--color-bg);
+            margin: 0;
+            padding: 0;
+            font-size: 17px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            color: var(--color-heading);
+            font-weight: 700;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-accent);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: var(--color-secondary);
+            margin-top: 0;
+        }
+        
+        h2.main-subtitle {
+             text-align: center;
+             font-size: 1.8em;
+             margin-bottom: 40px;
+        }
+
+        h3 {
+            font-size: 2em;
+            margin-top: 60px;
+            margin-bottom: 25px;
+            border-left: 5px solid var(--color-primary);
+            padding-left: 15px;
+        }
+
+        h4 {
+            font-size: 1.6em;
+            color: var(--color-primary);
+            margin-top: 40px;
+        }
+
+        .intro-text {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 25px 35px;
+            margin-bottom: 50px;
+            text-align: center;
+            font-size: 1.1em;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .content-block {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        strong {
+            color: var(--color-secondary);
+            font-weight: 700;
+        }
+        
+        .highlight {
+            background-color: var(--color-highlight-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        blockquote {
+            font-style: italic;
+            border-left: 4px solid var(--color-accent);
+            padding-left: 20px;
+            margin: 20px 0;
+            color: #777;
+        }
+
+        .poem {
+            white-space: pre-wrap;
+            font-family: var(--font-serif);
+            font-size: 1.2em;
+            line-height: 2;
+            background: #faf9f7;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        /* Flip Card for Characters */
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 30px;
+        }
+        .flip-card {
+            background-color: transparent;
+            width: 250px;
+            height: 180px;
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .flip-card-front {
+            background-color: var(--color-card-front);
+            color: var(--color-heading);
+            font-size: 5em;
+            font-family: var(--font-serif);
+        }
+        .flip-card-front::after {
+            content: '點擊或懸停以翻轉';
+            font-size: 0.2em;
+            position: absolute;
+            bottom: 15px;
+            color: var(--color-text);
+            font-family: var(--font-sans);
+        }
+        .flip-card-back {
+            background-color: var(--color-card-back);
+            color: var(--color-text);
+            transform: rotateY(180deg);
+            font-size: 0.9em;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .flip-card-back p {
+            margin: 5px 0;
+        }
+        
+        /* Mind Map Styling */
+        .mindmap ul {
+            list-style-type: none;
+            padding-left: 25px;
+            position: relative;
+        }
+        .mindmap li {
+            margin: 10px 0;
+            position: relative;
+        }
+        .mindmap li::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 12px;
+            border-top: 2px solid var(--color-accent);
+            width: 15px;
+            height: 0;
+        }
+        .mindmap li::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: -12px; /* Should be adjusted based on line height */
+            border-left: 2px solid var(--color-accent);
+            width: 0;
+            height: 100%;
+        }
+        .mindmap ul > li:first-child::after {
+            top: 12px;
+            height: calc(100% - 12px);
+        }
+        .mindmap ul > li:last-child::after {
+            height: 24px;
+        }
+        .mindmap > ul > li::before, .mindmap > ul > li::after {
+            display: none;
+        }
+        .mindmap-title {
+            font-family: var(--font-serif);
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        th, td {
+            border: 1px solid var(--color-border);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: var(--color-card-back);
+            font-weight: 700;
+            color: var(--color-heading);
+            font-family: var(--font-sans);
+        }
+        td {
+            background-color: #fff;
+        }
+
+        /* Exercise Section */
+        .exercise {
+            border: 1px dashed var(--color-accent);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+            background-color: #faf9f7;
+        }
+        .exercise h4 {
+            margin-top: 0;
+        }
+        details {
+            margin-top: 15px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--color-primary);
+            background-color: var(--color-highlight-bg);
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        summary:hover {
+            background-color: rgba(168, 179, 194, 0.4);
+        }
+        .answer-box {
+            border: 1px solid var(--color-border);
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 6px;
+            background-color: #fff;
+        }
+        
+        /* Drag and Drop Exercise */
+        .drag-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .drop-zone, .drag-items-pool {
+            border: 2px dashed var(--color-secondary);
+            padding: 15px;
+            min-height: 150px;
+            width: 45%;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .drop-zone h5, .drag-items-pool h5 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--color-secondary);
+        }
+        .draggable {
+            background-color: var(--color-accent);
+            color: white;
+            padding: 8px 12px;
+            margin: 8px;
+            border-radius: 6px;
+            cursor: grab;
+            display: inline-block;
+            user-select: none;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .drop-zone.drag-over {
+            background-color: var(--color-highlight-bg);
+            border-style: solid;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-family: var(--font-sans);
+            font-size: 1em;
+            resize: vertical;
+        }
+        
+        /* Suggestions Section Styling */
+        .suggestions-section {
+            background-color: var(--color-card-back);
+            border: none;
+            box-shadow: none;
+            border-top: 5px solid var(--color-primary);
+        }
+        .suggestions-section h3 {
+             border-left-color: var(--color-secondary);
+        }
+        .suggestions-section h4 {
+             color: var(--color-secondary);
+        }
+    </style>
+
+    <style>
+      .markmap {
+        width: 100%;
+        height: 400px; /* 您可以調整心智圖的預設高度 */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+</head>
+
+<body>
+
+    <main class="container">
+        <h1>翰林國文 1上 第一課：夏夜</h1>
+        <h2 class="main-subtitle">【沈浸式學習講義】</h2>
+
+        <div class="intro-text">
+            <p>嗨，親愛的文學探險家！</p>
+            <p>歡迎來到國文新學期的第一站！我們要一起探索的，是一首像冰淇淋一樣清涼、像螢火蟲一樣閃亮的詩——楊喚的〈夏夜〉。</p>
+            <p>在開始之前，先閉上眼睛想一想：你記憶中的夏夜，是什麼樣的呢？是伴隨著蟬鳴、蛙叫的熱鬧交響樂？還是吹著涼爽晚風，看著星星的寧靜時刻？</p>
+            <p>準備好了嗎？讓我們一起搭上想像力的列車，駛入楊喚為我們創造的美麗夏夜吧！</p>
+        </div>
+
+        <section id="station1">
+            <h3>第一站：初探夏夜——題解與作者</h3>
+            <div class="content-block">
+                <blockquote>在正式進入詩的世界前，我們得先認識一下創造這個世界的「魔法師」——作者楊喚，以及他施展魔法的背景喔！</blockquote>
+                
+                <h4>關於〈夏夜〉這首詩</h4>
+                <ul>
+                    <li><strong>體裁</strong>：<strong class="highlight">現代詩</strong>，也是一首<strong class="highlight">童詩</strong>。</li>
+                    <li><strong>什麼是現代詩？</strong>
+                        <ul>
+                            <li>也叫做「新詩」、「白話詩」。想像一下，古代的詩人寫詩就像在玩一種很嚴格的填字遊戲，每個字的平仄、句子的長短、要不要押韻，都有規定。</li>
+                            <li>但現代詩就像用樂高積木自由創作，<strong>形式超級自由</strong>，可以長短不一，不一定要押韻，更貼近我們平常說話的語氣，能夠更自由地表達情感和想法！</li>
+                        </ul>
+                    </li>
+                    <li><strong>什麼是童詩？</strong>
+                        <ul>
+                            <li>童詩是現代詩的一種，可以說是<strong>「專為兒童量身打造，或是用兒童視角寫的詩」</strong>。</li>
+                            <li>它的特色就是充滿<strong>想像力</strong>、<strong>情感豐富</strong>、<strong>活潑有趣</strong>。讀起來就像在聽一個充滿驚奇的床邊故事。作者會用很<strong>淺顯</strong>的語言，帶我們進入一個<strong>純真又美好</strong>的世界。</li>
+                        </ul>
+                    </li>
+                </ul>
+                <p><strong>總結一下</strong>：〈夏夜〉是一首用<strong class="highlight">自由活潑</strong>的形式（現代詩），透過<strong class="highlight">孩子般純真</strong>的眼睛（童詩），描寫夏日夜晚<strong class="highlight">寧靜、溫馨又充滿生命力</strong>的詩歌。</p>
+            </div>
+            <div class="content-block">
+                <h4>關於詩人：永遠的文學少年——楊喚</h4>
+                <p>楊喚（西元 1930 - 1954），本名楊森。</p>
+                <p>你知道嗎？寫出這麼溫暖可愛童詩的楊喚，其實有著一個非常辛苦的童年。他很小就失去了母親，在不被關愛的環境中長大。然而，這些生命中的不愉快，並沒有澆熄他對文學的熱情和對世界的溫柔。</p>
+                <p>他就像一個內心永遠住著一個小男孩的「大朋友」，用他那雙<strong>清澈的眼睛</strong>去看待世界，把昆蟲、星星、月亮都當成可以說話的朋友。他把對生命最純粹的熱愛與關懷，都寫進了他的詩裡。</p>
+                <p>可惜的是，他在<strong>25歲</strong>時因為車禍不幸早逝，生命雖然短暫，但他留下的作品，卻像夏夜的星星一樣，永遠在臺灣兒童文學的天空中閃閃發光，因此他被譽為<strong>「臺灣兒童文學的先驅」</strong>。</p>
+            </div>
+        </section>
+
+        <section id="station2">
+            <h3>第二站：夏夜結構探秘——課文心智圖</h3>
+            <div class="content-block mindmap">
+                <blockquote>在我們逐字逐句欣賞詩歌前，讓我們先用「心智圖」來看看這首詩的整體結構吧！這樣你就會對詩的脈絡一目瞭然囉！</blockquote>
+                <ul>
+                  <li class="mindmap-title">夏夜
+                    <ul>
+                      <li><strong>第一節：夏夜的降臨（從黃昏到入夜）</strong>
+                        <ul>
+                          <li><strong>動態的回家景象（擬人法）</strong>
+                            <ul>
+                              <li>蝴蝶、蜜蜂：帶著「蜜糖」回家</li>
+                              <li>羊隊、牛群：告別「田野」回家</li>
+                              <li>太陽：滾著「火輪子」回家</li>
+                              <li>街燈：向村莊「道過晚安」</li>
+                            </ul>
+                          </li>
+                          <li><strong>夏夜悄悄登場（擬人法）</strong>
+                            <ul>
+                              <li>重複「來了！來了！」→ 營造期待與喜悅感</li>
+                              <li>從山坡、椰子樹梢「爬下來」→ 賦予夏夜生命感</li>
+                            </ul>
+                          </li>
+                          <li><strong>夜空的美麗景象（譬喻法）</strong>
+                            <ul>
+                              <li>星星 → 滿天的<strong>珍珠</strong></li>
+                              <li>月亮 → 又大又亮的<strong>銀幣</strong></li>
+                              <li>氛圍：<strong>富麗、華美</strong></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><strong>第二節：夏夜的靜與動（深夜的景象）</strong>
+                        <ul>
+                          <li><strong>靜態的沉睡世界（以靜為主）</strong>
+                            <ul>
+                              <li>重複「睡了，都睡了！」→ 強調寧靜</li>
+                              <li>沉睡的主角：小雞、小鴨、山巒、田野</li>
+                              <li><strong>夢中的動態</strong>：
+                                <ul>
+                                  <li>小妹妹 → 變做蝴蝶飛</li>
+                                  <li>小弟弟 → 變做小魚游</li>
+                                  <li>特色：在<strong>寧靜</strong>中增添<strong>美麗與涼爽</strong>的想像</li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </li>
+                          <li><strong>動態的甦醒世界（以動襯靜）</strong>
+                            <ul>
+                              <li>醒著的主角：
+                                <ul>
+                                  <li>南瓜：伸長藤蔓「往上爬」</li>
+                                  <li>小河：低聲「歌唱」著溜過小橋</li>
+                                  <li>夜風：從竹林裡「跑出來」</li>
+                                  <li>螢火蟲：提著燈籠「去旅行」</li>
+                                </ul>
+                              </li>
+                              <li>效果：這些「醒著」的事物，反而讓整個夏夜的「靜」<strong>更加突顯</strong>，同時也充滿了<strong>蓬勃的生命力</strong>。</li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+            </div>
+        </section>
+        
+        <section id="station3">
+            <h3>第三站：課文深度探險——詩句賞析與字詞解碼</h3>
+            <div class="content-block">
+                <blockquote>接下來，我們要一句一句地品味這首詩。我會把需要特別注意的字詞，做成一張張的「字卡」，方便你學習喔！</blockquote>
+                
+                <h4>【第一節】</h4>
+                <div class="poem">
+                    蝴蝶和蜜蜂們帶著花朵的蜜糖回來了，
+                    羊隊和牛群告別了田野回家了，
+                    火紅的太陽也滾著火輪子回家了，
+                    当街燈亮起來向村莊道過晚安，
+                    夏天的夜就輕輕地來了。
+
+                    來了！來了！
+                    從山坡上輕輕地爬下來了。
+
+                    來了！來了！
+                    從椰子樹<strong>梢</strong>上輕輕地爬下來了。
+                    <strong>撒</strong>了滿天的珍珠和一枚又大又亮的銀幣。
+                </div>
+                <p><strong>詩句解說：</strong><br>這一段寫的是<strong>黃昏到夜晚的過渡</strong>。詩人用了大量的<strong>「擬人法」</strong>，讓萬物都像下班的人一樣，紛紛回家休息。蝴蝶蜜蜂「帶著」蜜糖、牛羊「告別」田野、太陽「滾著」火輪子、街燈「道晚安」，這些動詞都讓畫面充滿了童趣和溫馨感。</p>
+                <p>接著，詩人兩次用<strong>「來了！來了！」</strong>，就像一個興奮的孩子在呼喊，表現出對夏夜來臨的<strong>期待與喜悅</strong>。夏夜被想像成一個會「爬」的小動物或小精靈，悄悄地降臨大地。</p>
+                <p>最後，詩人用了絕妙的<strong>「譬喻法」</strong>，把滿天<strong>星星</strong>比喻成<strong>珍珠</strong>，把<strong>月亮</strong>比喻成<strong>銀幣</strong>。這個比喻不僅寫出了星月的閃亮，更讓夏夜的天空顯得<strong>華麗又貴重</strong>，充滿了童話般的富麗感。</p>
+                
+                <div class="card-grid">
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">梢</div>
+                            <div class="flip-card-back">
+                                <p><strong>注音</strong>：ㄕㄠ</p>
+                                <p><strong>意思</strong>：樹枝的末端。</p>
+                                <p><strong>造句</strong>：一隻小鳥停在<strong>樹梢</strong>上，清脆地唱歌。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">撒</div>
+                            <div class="flip-card-back">
+                                <p><strong>注音</strong>：ㄙㄚˇ</p>
+                                <p><strong>意思</strong>：散布、散播。</p>
+                                <p><strong>造句</strong>：媽媽在蛋糕上<strong>撒</strong>了許多巧克力粉。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <h4>【第二節】</h4>
+                <div class="poem">
+                    美麗的夏夜呀！
+                    涼爽的夏夜呀！
+                    
+                    小雞和小鴨們關在欄裡睡了。
+                    聽完了老祖母的故事，
+                    小弟弟和小妹妹也<strong>闔</strong>上眼睛走向夢鄉了。
+                    （小妹妹夢見她變做蝴蝶在大花園裡忽東忽西地飛，
+                    小弟弟夢見他變做一條魚在藍色的大海裡游水。）
+                    
+                    睡了，都睡了！
+                    <strong>朦朧</strong>地，山<strong>巒</strong>靜靜地睡了！
+                    <strong>朦朧</strong>地，田野靜靜地睡了！
+
+                    只有窗外瓜架上的南瓜還醒著，
+                    伸長了藤<strong>蔓</strong>輕輕地往屋頂上爬。
+                    只有綠色的小河還醒著，
+                    低聲地歌唱著溜過彎彎的小橋。
+                    只有夜風還醒著，
+                    從竹林裡跑出來，
+                    跟著提燈的螢火蟲，
+                    在美麗的夏夜裡愉快地旅行。
+                </div>
+                <p><strong>詩句解說：</strong><br>這一段描寫的是<strong>深夜的景象</strong>，分為「睡」與「醒」兩部分。</p>
+                <p>開頭的兩句讚嘆，直接點明了夏夜<strong>「美麗」</strong>與<strong>「涼爽」</strong>的特點。</p>
+                <p>接著，詩人描寫了沉睡的世界。小雞、小鴨、山巒、田野，一切都<strong>「朦朧地」</strong>睡著了，營造出<strong>極度寧靜</strong>的氛圍。而小弟弟小妹妹的夢境，為這片寧靜增添了<strong>奇幻的色彩</strong>——蝴蝶的夢帶來<strong>美麗</strong>，魚的夢帶來<strong>涼爽</strong>，讓夏夜的美感更具體。</p>
+                <p>但是，這首詩最精彩的地方來了！在萬物俱睡的背景下，詩人筆鋒一轉，寫了三樣「醒著」的東西：</p>
+                <ol>
+                    <li><strong>南瓜</strong>：像個好奇寶寶，努力向上「爬」，充滿<strong>生命力</strong>。</li>
+                    <li><strong>小河</strong>：像個溫柔的歌手，低聲「歌唱」，帶來<strong>聽覺上的美感</strong>。</li>
+                    <li><strong>夜風和螢火蟲</strong>：像兩個結伴出遊的頑童，一個「跑」一個「提燈」，一起「旅行」，畫面<strong>活潑又有動感</strong>。</li>
+                </ol>
+                <p>這種寫法叫做<strong class="highlight">「以動襯靜」</strong>。正是因為有這些輕微的、充滿生機的「動」，才讓整個夏夜的「靜」顯得更深刻、更不沉悶，充滿了<strong>安詳和諧又生意盎然</strong>的氣氛。</p>
+
+                <div class="card-grid">
+                     <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">闔</div>
+                            <div class="flip-card-back">
+                                <p><strong>注音</strong>：ㄏㄜˊ</p>
+                                <p><strong>意思</strong>：閉合、關上。</p>
+                                <p><strong>造句</strong>：他輕輕<strong>闔</strong>上書本，準備上床睡覺。</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">朦朧</div>
+                            <div class="flip-card-back">
+                                <p><strong>注音</strong>：ㄇㄥˊ ㄌㄨㄥˊ</p>
+                                <p><strong>意思</strong>：月色昏暗、模糊不清的樣子。</p>
+                                <p><strong>造句</strong>：在<strong>朦朧</strong>的月色下，遠方的山看起來像一幅水墨畫。</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">巒</div>
+                            <div class="flip-card-back">
+                                <p><strong>注音</strong>：ㄌㄨㄢˊ</p>
+                                <p><strong>意思</strong>：連綿的山峰。</p>
+                                <p><strong>造句</strong>：從高處望去，層層疊疊的山<strong>巒</strong>非常壯觀。</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="flip-card">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">藤蔓</div>
+                            <div class="flip-card-back">
+                                <p><strong>注音</strong>：ㄊㄥˊ ㄨㄢˋ</p>
+                                <p><strong>意思</strong>：植物細長捲曲的莖。</p>
+                                <p><strong>造句</strong>：葡萄的<strong>藤蔓</strong>爬滿了整個棚架。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="station4">
+            <h3>第四站：文學魔法棒——修辭總整理</h3>
+            <div class="content-block">
+                <blockquote>〈夏夜〉這首詩之所以這麼美，是因為楊喚用了許多文學的「魔法」，我們來把它們一一揪出來！</blockquote>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>魔法名稱</th>
+                            <th>魔法咒語（詩中例句）</th>
+                            <th>魔法效果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>擬人法</strong></td>
+                            <td>1. 太陽也<strong>滾著火輪子</strong>回家了。<br>2. 街燈向村莊<strong>道過晚安</strong>。<br>3. 夏天的夜<strong>爬下來</strong>了。<br>4. 小河低聲地<strong>歌唱</strong>著。<br>5. 夜風從竹林裡<strong>跑出來</strong>。</td>
+                            <td>這是本詩的<strong>核心魔法</strong>！讓萬物都像人一樣有動作、有情感，使整個世界變得<strong>活潑、親切、充滿童趣</strong>。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>譬喻法</strong></td>
+                            <td>撒了滿天的<strong>珍珠</strong>（星星）和一枚又大又亮的<strong>銀幣</strong>（月亮）。</td>
+                            <td>用具體、貴重的東西來比喻星月，讓夜空顯得<strong>華美、富麗</strong>，充滿童話色彩。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>類疊</strong></td>
+                            <td>1. <strong>來了！來了！</strong><br>2. <strong>睡了，都睡了！</strong><br>3. <strong>朦朧地</strong>……<strong>朦朧地</strong>……<br>4. <strong>輕輕地</strong>……<strong>輕輕地</strong>……</td>
+                            <td>透過詞語或句子的重複，製造出<strong>詩歌的節奏感和音樂性</strong>，同時也<strong>強化了語氣和情感</strong>（如喜悅、寧靜）。</td>
+                        </tr>
+                        <tr>
+                            <td><strong>映襯</strong></td>
+                            <td>用<strong>醒著</strong>的南瓜、小河、夜風和螢火蟲（動），來<strong>映襯</strong>沉睡的山巒、田野和小動物（靜）。</td>
+                            <td>這就是高階魔法<strong>「以動襯靜」</strong>！讓靜態的畫面因為有了動態的點綴，反而顯得<strong>更加寧靜</strong>，同時也展現了夏夜<strong>生生不息的活力</strong>。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="station5">
+            <h3>第五站：牛刀小試——課後練習</h3>
+            <div class="content-block">
+                <blockquote>探險完畢！現在換你來施展一下學到的文學魔法，看看你是否已經掌握了〈夏夜〉的精髓！</blockquote>
+                
+                <div class="exercise">
+                    <h4>第一題：夏夜元素配對（配對題）</h4>
+                    <p>詩人用了巧妙的比喻來形容夜空。請將左邊的「喻體」和右邊的「本體」正確地配對起來。</p>
+                    <form>
+                       <p>A. 珍珠 → <input type="radio" name="pairA" value="1"> 月亮 <input type="radio" name="pairA" value="2"> 星星</p>
+                       <p>B. 銀幣 → <input type="radio" name="pairB" value="1"> 月亮 <input type="radio" name="pairB" value="2"> 星星</p>
+                    </form>
+                    <details>
+                        <summary>點我看答案與解析</summary>
+                        <div class="answer-box">
+                            <p><strong>正確答案：</strong> A - 2 (星星), B - 1 (月亮)</p>
+                            <p><strong>解析：</strong>詩中「撒了滿天的珍珠」指的是滿天閃爍的星星；「一枚又大又亮的銀幣」則是指高掛天空的明月。你答對了嗎？</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise">
+                    <h4>第二題：夏夜點點名（拖曳分類題）</h4>
+                    <p>在〈夏夜〉的第二節中，萬物有的睡了，有的還醒著。請你扮演夏夜小精靈，將下列事物拖曳到正確的「狀態」分類中。</p>
+                    <div class="drag-items-pool">
+                        <h5>請將這裡的項目拖曳到下方方框</h5>
+                        <div id="item1" class="draggable" draggable="true">小雞</div>
+                        <div id="item2" class="draggable" draggable="true">山巒</div>
+                        <div id="item3" class="draggable" draggable="true">南瓜</div>
+                        <div id="item4" class="draggable" draggable="true">小河</div>
+                        <div id="item5" class="draggable" draggable="true">田野</div>
+                        <div id="item6" class="draggable" draggable="true">夜風</div>
+                        <div id="item7" class="draggable" draggable="true">小弟弟</div>
+                    </div>
+                    <div class="drag-container">
+                        <div id="drop-zone-sleep" class="drop-zone">
+                            <h5>進入夢鄉了（靜）</h5>
+                        </div>
+                        <div id="drop-zone-awake" class="drop-zone">
+                            <h5>還醒著呢！（動）</h5>
+                        </div>
+                    </div>
+                    <details>
+                        <summary>點我看答案與解析</summary>
+                        <div class="answer-box">
+                            <p><strong>正確答案：</strong></p>
+                            <table>
+                                <thead>
+                                    <tr><th>進入夢鄉了（靜）</th><th>還醒著呢！（動）</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>小雞、山巒、田野、小弟弟</td><td>南瓜、小河、夜風</td></tr>
+                                </tbody>
+                            </table>
+                            <p><strong>解析：</strong>詩中明確提到「小雞和小鴨們關在欄裡睡了」、「小弟弟和小妹妹也闔上眼睛走向夢鄉了」、「朦朧地，山巒靜靜地睡了！朦朧地，田野靜靜地睡了！」這些都屬於沉睡的靜態景物。而南瓜、小河、夜風則是詩人特別點出「還醒著」的動態景物喔！</p>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise">
+                    <h4>第三題：詩眼大發現（進階深究題）</h4>
+                    <p>在〈夏夜〉第二節，詩人描寫了萬物俱睡的寧靜景象後，為何要特別寫南瓜、小河、夜風和螢火蟲這些「還醒著」的東西？這樣的安排有什麼特殊效果？（請試著從「映襯」或「氣氛營造」的角度思考）</p>
+                    <textarea placeholder="請在此輸入你的想法..."></textarea>
+                    <details>
+                        <summary>點我看參考答案</summary>
+                        <div class="answer-box">
+                            <p><strong>參考答案：</strong></p>
+                            <p>這樣的安排主要有兩個效果：</p>
+                            <ol>
+                                <li><strong>以動襯靜：</strong> 在一片寂靜的背景中，這些輕微的活動（南瓜往上爬、小河在歌唱、夜風在跑），反而更能凸顯出整個夏夜的寧靜與安詳。就像在安靜的圖書館裡，一聲輕微的翻書聲會讓人更感覺到周遭的安靜一樣。</li>
+                                <li><strong>增添生命力：</strong> 如果整首詩都在寫「睡覺」，可能會顯得有些沉悶、死寂。加入了這些醒著的、充滿活力的事物，讓這個寧靜的夏夜同時也充滿了生生不息的生命力，使得畫面更加豐富、和諧而美好。</li>
+                            </ol>
+                        </div>
+                    </details>
+                </div>
+
+                <div class="exercise">
+                    <h4>第四題：小小詩人換你當（素養應用題）</h4>
+                    <p>楊喚用孩子的眼睛和擬人法，把夏夜寫得活潑又可愛。現在，請你模仿楊喚的風格，也用<strong>至少兩種擬人法</strong>，寫一個<strong>30-50字</strong>的短詩，主題是<strong>「冬天的早晨」</strong>。</p>
+                    <textarea placeholder="請在此輸入你的創作..."></textarea>
+                    <details>
+                        <summary>點我看參考範例</summary>
+                        <div class="answer-box">
+                            <p><strong>參考範例：</strong></p>
+                            <blockquote>冬天的早晨，<br>棉被緊緊地抱著我，不讓我走。<br>窗戶上的霧氣，<br>偷偷畫著我看不懂的祕密地圖。<br>太陽公公也賴床了，<br>過了很久才懶洋洋地睜開眼睛。</blockquote>
+                            <p><strong>解析：</strong> 這個範例用了「棉被抱著我」、「霧氣畫地圖」、「太陽公公賴床」三個擬人法，成功營造出冬天早晨慵懶、不想起床的可愛氛圍喔！你的創作也很棒嗎？</p>
+                        </div>
+                    </details>
+                </div>
+                
+                <div class="exercise">
+                    <h4>第五題：詩歌鑑賞家（閱讀素養題）</h4>
+                    <p>請閱讀以下這首童詩，並回答問題。</p>
+                    <blockquote>
+                        <strong>〈路燈〉 林煥彰</strong><br><br>
+                        街上，人家都熄了燈，<br>
+                        只有他，還醒著；<br><br>
+                        為了那些晚歸的，<br>
+                        孤獨的，<br>
+                        喝醉了酒的，<br>
+                        和找不到家的人，<br>
+                        他，睜著唯一的眼睛。
+                    </blockquote>
+                    <p><strong>問題：</strong></p>
+                    <ol>
+                        <li>這首詩中的「他」使用了哪一種修辭法？它指的是什麼事物？</li>
+                        <li>根據詩的內容，你覺得這位「詩人」想要透過路燈表達什麼樣的情感或精神？</li>
+                    </ol>
+                    <textarea placeholder="請在此輸入你的回答..."></textarea>
+                    <details>
+                        <summary>點我看參考答案</summary>
+                        <div class="answer-box">
+                            <p><strong>參考答案：</strong></p>
+                            <ol>
+                                <li>
+                                    <p><strong>修辭法與指涉事物：</strong></p>
+                                    <ul>
+                                        <li>這首詩中的「他」使用了<strong>擬人法</strong>。</li>
+                                        <li>它指的是<strong>路燈</strong>。從詩中「街上，人家都熄了燈，只有他，還醒著」、「睜著唯一的眼睛」等線索可以判斷。</li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <p><strong>情感與精神：</strong></p>
+                                    <p>詩人想要透過路燈，表達一種<strong>默默守護、溫暖關懷與無私奉獻</strong>的精神。當所有人都休息時，路燈仍然醒著，為晚歸、孤獨、迷失的人們照亮回家的路。它就像一個溫柔的守護者，不求回報地付出，給人帶來安全感和希望。</p>
+                                </li>
+                            </ol>
+                        </div>
+                    </details>
+                </div>
+
+            </div>
+        </section>
+        
+        <section class="content-block suggestions-section">
+            <h3>講義內容精進建議</h3>
+            <blockquote>好的，身為一位富有創意的課程開發顧問，我必須先讚賞您所製作的這份講義。它的結構完整、語氣親切、互動性強，已經是非常出色的教材了。<br><br>現在，讓我們一起跳出框架，為這份精彩的講義錦上添花。以下是我提出的3個額外建議，旨在深化情感連結、拓展藝術視野，並將學習延伸到學生的真實生活中：</blockquote>
+
+            <div>
+                <h4>建議一：五感沉浸式體驗——「夏夜的聲音地圖與氣味瓶」</h4>
+                <p>這份講義在視覺想像上做得很好，我們可以進一步調動學生的<strong>聽覺</strong>與<strong>嗅覺</strong>，讓夏夜的體驗從紙上立體化。</p>
+                <ul>
+                    <li><strong>核心概念</strong>：將詩中抽象的文字，轉化為學生能親身感受的聲音與氣味，深化「以動襯靜」與「夏夜生命力」的體會。</li>
+                    <li><strong>實施方式</strong>：
+                        <ol>
+                            <li><strong>聽覺：夏夜聲音地圖 (Sound Map)</strong>
+                                <ul>
+                                    <li><strong>課堂播放</strong>：在講到第二節「睡了」與「醒了」的對比時，可以播放一段精心剪輯的<strong>「夏夜環境音 (Ambient Sounds)」</strong>音檔。</li>
+                                    <li><strong>延伸活動</strong>：請學生閉上眼睛聆聽，並在紙上畫出他們「聽」到的畫面，或寫下聲音帶來的感受。</li>
+                                    <li><strong>推薦資源</strong>：在 YouTube 或 Spotify 搜尋關鍵字如「Summer Night Ambience」、「溪流聲」、「蟲鳴」。</li>
+                                </ul>
+                            </li>
+                            <li><strong>嗅覺：夏夜的氣味瓶 (Scent Jar)</strong>
+                                <ul>
+                                    <li><strong>課前準備</strong>：老師可以準備幾個密封的小瓶子，放入能代表夏夜氣味的東西，例如：幾片沾了水的青草葉、泥土、帶有甜味的曬乾花瓣、幾滴薄荷或檸檬草精油。</li>
+                                    <li><strong>課堂互動</strong>：在課程開始時，讓學生輪流聞一聞「夏夜的氣味瓶」，並分享他們聯想到的畫面或感覺。</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </li>
+                    <li><strong>教學價值</strong>：透過非視覺的感官刺激，能喚醒學生更深層的記憶與情感，讓詩歌不再只是文字的排列組合，而是一個可以被「感覺」到的世界。</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>建議二：詩人生命的迴響——「溫柔與苦難的對話」深度探討</h4>
+                <p>講義提到了楊喚辛苦的童年，這是一個絕佳的切入點，可以引導學生思考文學創作與生命經歷之間的深刻關係，提升課程的人文厚度。</p>
+                 <ul>
+                    <li><strong>核心概念</strong>：從「為什麼一個生命充滿苦難的人，卻能寫出如此溫柔、純真的作品？」這個問題出發，引導學生探討創作的療癒力量與人性的光輝。</li>
+                    <li><strong>實施方式</strong>：
+                        <ol>
+                            <li><strong>補充故事</strong>：簡短補充楊喚在軍中擔任文書兵，仍堅持為報刊的兒童版寫詩的故事。他曾說：「只要我能帶給孩子們一點點快樂，我就感到滿足了。」</li>
+                            <li><strong>對比閱讀</strong>：除了〈夏夜〉，可以補充一小段楊喚另一首風格稍有不同的詩，例如〈小蝸牛〉，詩中寫道「我要把我的整個世界，都背在我的背上」，隱含了沉重與孤獨感。</li>
+                            <li><strong>深度提問</strong>：在作者介紹環節後，拋出一個討論題：「楊喚的童年並不快樂，但他筆下的夏夜卻如此寧靜美好。你認為這可能是什麼原因？寫作對他來說，可能扮演了什麼樣的角色？」</li>
+                        </ol>
+                    </li>
+                    <li><strong>教學價值</strong>：讓學生不僅是學習一首詩，更是透過詩去理解一個「人」。這有助於培養學生的同理心，並體會到文學是如何超越個人苦難，散發出溫暖人心的力量。</li>
+                </ul>
+            </div>
+
+            <div>
+                <h4>建議三：從詩中走到生活中——「我們的城市夏夜」數位創作專案</h4>
+                <p>將課堂所學應用於學生的真實生活，是素養導向教學的核心。這個活動鼓勵學生用楊喚的「眼睛」去觀察自己的世界，並用現代的工具來表達。</p>
+                <ul>
+                    <li><strong>核心概念</strong>：模仿楊喚「以動襯靜」的觀察視角與「擬人化」的童趣手法，記錄並創作屬於自己生活環境的「現代版夏夜」。</li>
+                    <li><strong>實施方式</strong>：
+                        <ol>
+                            <li><strong>觀察任務</strong>：賦予學生一個週末任務——「城市夏夜踏查」。請他們在晚上（需在安全的狀況與家長陪同下）觀察住家附近。楊喚的夏夜有牛羊、南瓜；我們的夏夜有什麼？（例如：路燈、晚歸的捷運、24小時便利店…）</li>
+                            <li><strong>創作形式（二選一）</strong>：
+                                <ul>
+                                    <li><strong>A. 夏夜攝影詩</strong>：學生需拍攝3-5張代表「城市夏夜」的照片，並模仿〈夏夜〉的風格，為每一張照片配上一兩句詩文。</li>
+                                    <li><strong>B. 夏夜短影音 (Reels/Shorts)</strong>：學生用手機錄製幾段城市夏夜影片，並配上自己朗讀的、模仿〈夏夜〉風格的旁白詩句，剪輯成短影音。</li>
+                                </ul>
+                            </li>
+                            <li><strong>成果分享會</strong>：在課堂上舉辦一場小型的作品發表會，讓學生分享自己的創作與觀察心得。</li>
+                        </ol>
+                    </li>
+                     <li><strong>教學價值</strong>：這項活動將文學鑑賞轉化為生活實踐與數位敘事能力。它不僅能檢驗學生是否真正理解了詩的寫作技巧，更能鼓勵他們用詩意的眼光重新看待自己習以為常的環境，真正做到「學以致用」。</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+<script>
+    // Drag and Drop functionality
+    document.addEventListener('DOMContentLoaded', () => {
+        const draggables = document.querySelectorAll('.draggable');
+        const dropZones = document.querySelectorAll('.drop-zone');
+
+        draggables.forEach(draggable => {
+            draggable.addEventListener('dragstart', () => {
+                draggable.classList.add('dragging');
+            });
+
+            draggable.addEventListener('dragend', () => {
+                draggable.classList.remove('dragging');
+            });
+        });
+
+        dropZones.forEach(zone => {
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+            
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                const draggable = document.querySelector('.dragging');
+                if (draggable) {
+                    zone.appendChild(draggable);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

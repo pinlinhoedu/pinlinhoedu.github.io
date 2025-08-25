@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第二課 無心的錯誤 - 互動學習講義</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --font-serif: 'Noto Serif TC', serif;
+            --font-sans: 'Noto Sans TC', sans-serif;
+            --color-bg: #f4f1ea;
+            --color-block-bg: #ffffff;
+            --color-block-light: #e3dbd0;
+            --color-accent-sage: #a2a8a1;
+            --color-accent-rose: #b2a7a1;
+            --color-text-dark: #5c544b;
+            --color-text-light: #6a737b;
+            --color-border: #d1c7ba;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --border-radius: 12px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            line-height: 1.8;
+            color: var(--color-text-dark);
+            background-color: var(--color-bg);
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-serif);
+            color: var(--color-text-dark);
+            line-height: 1.4;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 0;
+            color: var(--color-accent-sage);
+        }
+
+        h2 {
+            font-size: 2rem;
+            border-left: 5px solid var(--color-accent-sage);
+            padding-left: 1rem;
+            margin-top: 0;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--color-accent-rose);
+            border-bottom: 2px solid var(--color-block-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        h4 {
+            font-size: 1.2rem;
+        }
+
+        section {
+            background-color: var(--color-block-bg);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+
+        blockquote {
+            font-style: italic;
+            color: var(--color-text-light);
+            border-left: 3px solid var(--color-accent-rose);
+            padding-left: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        strong, b {
+            color: var(--color-accent-rose);
+            font-weight: 700;
+        }
+
+        mark {
+            background-color: rgba(162, 168, 161, 0.3);
+            border-radius: 4px;
+            padding: 0.1em 0.3em;
+        }
+        
+        .warm-tip {
+            background-color: #fcf8e3;
+            border: 1px solid #faebcc;
+            color: #8a6d3b;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        /* --- 字詞翻轉卡 --- */
+        .flip-card-container {
+            perspective: 1000px;
+            width: 100%;
+            height: 180px;
+            margin: 1.5rem 0;
+            cursor: pointer;
+        }
+
+        .flip-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s;
+        }
+
+        .flip-card-container.is-flipped .flip-card {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--color-border);
+        }
+
+        .flip-card-front {
+            background-color: #fff;
+        }
+        
+        .flip-card-front h3 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .flip-card-front .pronunciation {
+            color: var(--color-text-light);
+            margin-top: 0.5rem;
+        }
+
+        .flip-card-back {
+            background-color: var(--color-accent-sage);
+            color: white;
+            transform: rotateY(180deg);
+            font-size: 0.95rem;
+        }
+        
+        .flip-card-back ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .flip-card-back li {
+            margin-bottom: 0.5rem;
+        }
+        .flip-card-back strong {
+            color: #fff;
+            background-color: rgba(255,255,255,0.2);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* --- 老師說區塊 --- */
+        .teacher-talk {
+            background-color: #f0f3f2;
+            border-left: 5px solid var(--color-accent-sage);
+            padding: 1rem 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        .teacher-talk strong {
+            color: var(--color-accent-sage);
+        }
+
+        /* --- 心智圖 UL 樣式 --- */
+        .mindmap-list {
+            list-style: none;
+            padding-left: 20px;
+            position: relative;
+        }
+        .mindmap-list ul {
+            list-style: none;
+            padding-left: 25px;
+        }
+        .mindmap-list li {
+            position: relative;
+            margin: 0.5rem 0;
+        }
+        .mindmap-list li::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 13px;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color-accent-rose);
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--color-accent-rose);
+        }
+        .mindmap-list li > ul > li::before {
+             background-color: var(--color-accent-sage);
+             box-shadow: 0 0 0 2px var(--color-accent-sage);
+        }
+        .mindmap-list li::after {
+            content: '';
+            position: absolute;
+            left: -16px;
+            top: 17px;
+            border-left: 1px solid var(--color-border);
+            height: calc(100% + 0.5rem);
+        }
+        .mindmap-list li:last-child::after {
+            height: 0;
+        }
+
+        /* --- 表格樣式 --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--color-border);
+        }
+        th {
+            background-color: #f8f6f2;
+            font-family: var(--font-serif);
+            font-weight: 700;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* --- 練習題樣式 --- */
+        details {
+            margin: 1.5rem 0;
+            background-color: #fdfcf9;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+        }
+        summary {
+            cursor: pointer;
+            padding: 1rem;
+            font-weight: 700;
+            color: var(--color-accent-rose);
+        }
+        summary::marker {
+            color: var(--color-accent-rose);
+        }
+        details[open] > summary {
+            border-bottom: 1px solid var(--color-border);
+        }
+        .details-content {
+            padding: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+        
+        .exercise-prompt {
+            margin-bottom: 1rem;
+            color: var(--color-text-light);
+        }
+
+        /* Q1 & Q3: Drag and Drop */
+        .dnd-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+        .dnd-source, .dnd-target {
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #f8f6f2;
+        }
+        .draggable-item {
+            background-color: white;
+            border: 1px solid var(--color-border);
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            cursor: grab;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .draggable-item:active {
+            cursor: grabbing;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .drop-zone {
+            background-color: #e3dbd0;
+            border: 2px dashed var(--color-border);
+            padding: 0.75rem;
+            min-height: 58px;
+            border-radius: 6px;
+            transition: background-color 0.2s, border-color 0.2s;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .drop-zone.drag-over {
+            background-color: #d1c7ba;
+            border-color: var(--color-accent-rose);
+        }
+        .drop-zone.correct {
+            border: 2px solid #5cb85c;
+        }
+        .drop-zone.correct .draggable-item {
+            border-color: #5cb85c;
+        }
+        .drop-zone.incorrect {
+            border: 2px solid #d9534f;
+        }
+        .drop-zone.incorrect .draggable-item {
+            border-color: #d9534f;
+        }
+
+        /* Q3 Fill in Blank specific */
+        .fill-in-blank-sentence p { display: inline; }
+        .fill-in-blank-container .drop-zone {
+            display: inline-flex;
+            width: 120px;
+            vertical-align: middle;
+            margin: 0 5px;
+            min-height: 48px;
+        }
+        .fill-in-blank-container .draggable-item {
+            width: 100%;
+            text-align: center;
+        }
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            background-color: #f8f6f2;
+            border-radius: 8px;
+        }
+        .word-bank .draggable-item {
+            margin-bottom: 0;
+        }
+
+
+        /* Q2 Flip Card */
+        #q2-flip-card {
+            height: 250px;
+            max-width: 500px;
+            margin: 1rem auto;
+        }
+        #q2-flip-card .flip-card-front {
+            background-color: var(--color-accent-rose);
+            color: white;
+            text-align: center;
+        }
+        #q2-flip-card .flip-card-back {
+            background-color: var(--color-accent-sage);
+        }
+
+    </style>
+
+    <style>
+      .markmap {
+        width: 100%;
+        height: 400px; /* 您可以調整心智圖的預設高度 */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/markmap-autoloader"></script>
+</head>
+
+<body>
+
+    <main class="container">
+        <header>
+            <h1>第二課 無心的錯誤</h1>
+        </header>
+        
+        <section id="intro">
+            <blockquote>「鳥三顧而後飛，人三思而後行。」——《格言聯璧》</blockquote>
+            <p>嗨，同學你好！歡迎來到第二課《無心的錯誤》。</p>
+            <p>你有沒有過這種經驗：只是想開個小玩笑，結果卻讓朋友生氣了？或者只是「不小心」做錯了一件事，卻造成了意想不到的後果？</p>
+            <p>今天，我們要跟著知名作家劉墉，一起從生活中的小故事，來思考「無心」與「錯誤」之間，那條我們必須謹慎對待的界線。準備好了嗎？讓我們一起開始這趟深度思考之旅吧！</p>
+        </section>
+
+        <section id="analysis">
+            <h2>壹、題解探究</h2>
+            <div class="warm-tip"><strong>【溫馨提示】</strong> 這一課的標題《無心的錯誤》，其實藏著兩個重要的思考點喔！</div>
+            <p>這篇課文選自劉墉寫給兒子劉軒的書信集《超越自己》。文章的核心，就是要跟青少年談談「犯錯」這件事。</p>
+            <p>劉墉發現，很多年輕人犯錯時，總喜歡用「我不是故意的」或「我沒有惡意」來當作藉口。但他認為，<mark>許多嚴重的後果，往往源於最初的「不經意」</mark>。</p>
+            <p>因此，我們可以從兩個層面來理解標題：</p>
+            <ol>
+                <li><strong>「無心」</strong>：這指的是<strong>動機</strong>。當事人做這件事的時候，並<strong>沒有害人的念頭</strong>，可能只是出於好玩、衝動，或是根本沒想那麼多。</li>
+                <li><strong>「錯誤」</strong>：這指的是<strong>行為與結果</strong>。儘管動機是「無心」的，但這個行為本身，或它造成的後果，卻是<strong>不對的、有害的</strong>。</li>
+            </ol>
+            <p>所以，作者想透過這篇文章告訴我們：<strong>不能因為「我沒有惡意」，就忽略了行為可能帶來的傷害，更不能把「無心」當成逃避責任的擋箭牌。</strong> 凡事都應該<strong>審慎思考</strong>、<strong>謹慎行動</strong>，這才是成熟的表現。</p>
+        </section>
+
+        <section id="author">
+            <h2>貳、關於作者：劉墉</h2>
+            <blockquote>劉墉不僅是一位作家，更是一位畫家、演說家，以及一位時常與孩子鬥智鬥勇的父親。</blockquote>
+            <h3>斜槓大師劉墉</h3>
+            <p>本名劉鏞，是一位全方位的文化人。他畢業於臺灣師範大學美術系，所以他的畫畫得非常好！後來又到美國留學，拿到了碩士學位。他的身分很多元，當過記者、主持人、大學教授，現在則是專業的作家和畫家。</p>
+            <h3>寫給兒子的成長書信</h3>
+            <p>劉墉的兒子<strong>劉軒</strong>（也是一位知名的作家和心理學家喔！）在青少年時期，進入了紐約一間競爭非常激烈的明星高中——史岱文森高中。劉墉不放心兒子獨自在外求學，於是開始頻繁地寫信給他。</p>
+            <p>這些信件的內容，不是嚴肅的說教，而是針對兒子生活中遇到的各種大小事，給予引導和關懷。後來，這些充滿父愛的書信被集結成冊，出版了《超越自己》、《創造自己》、《肯定自己》三部曲，成為無數人的成長指南，《無心的錯誤》就是出自《超越自己》這本書。</p>
+            <h3>寫作風格</h3>
+            <p>劉墉的文字<strong>淺顯易懂</strong>，非常<strong>貼近生活</strong>。他最擅長從一個個小故事、生活中的例子，提煉出深刻的人生道理。讀他的文章，就像在聽一位智慧的長輩分享他的人生經驗，溫暖又有啟發性，讓人很容易產生共鳴。</p>
+        </section>
+
+        <section id="mindmap">
+            <h2>參、課文心智圖</h2>
+            <p>這張心智圖可以幫助你快速掌握整篇文章的脈絡喔！</p>
+            <ul class="mindmap-list">
+              <li><strong>無心的錯誤</strong>
+                <ul>
+                  <li>核心思想
+                    <ul>
+                      <li>凡事三思而行 → 審度自己的行為 → 為自己的行為負責</li>
+                    </ul>
+                  </li>
+                  <li>第一層：破題 (舉例一：新聞事件)
+                    <ul>
+                      <li>留學生開玩笑劫機 (結果：被判刑15年)</li>
+                      <li>提出核心問題 (什麼是無心之過？)</li>
+                    </ul>
+                  </li>
+                  <li>第二層：闡述 (舉例二：生活實例)
+                    <ul>
+                      <li>兒子的行為
+                        <ul>
+                          <li>帶朋友放沖天炮</li>
+                          <li>幫陌生人開鎖</li>
+                          <li>公園練習弓箭</li>
+                        </ul>
+                      </li>
+                      <li>提醒兒子：「無心」也可能造成嚴重的「惡果」</li>
+                    </ul>
+                  </li>
+                  <li>第三層：深化 (舉例三：個人經驗)
+                    <ul>
+                      <li>自己的學生討債
+                         <ul>
+                           <li>動機：拿回自己的錢</li>
+                           <li>行為：抓人、逼迫家人</li>
+                           <li>結果：成為通緝犯</li>
+                         </ul>
+                      </li>
+                      <li>強化論點：動機雖無錯，但方法錯了，就要承擔法律責任</li>
+                    </ul>
+                  </li>
+                  <li>第四層：總結
+                    <ul>
+                      <li>呼告語氣：「記住！年輕人」</li>
+                      <li>點明主旨：「無心」往往就是一種「錯誤」</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+        </section>
+
+        <section id="text-detail">
+            <h2>肆、課文解析與重點字詞</h2>
+            <p>接下來，讓我們一句一句來細讀課文，並把重要的字詞變成你的知識卡片吧！</p>
+            
+            <h4>第一段～第三段</h4>
+            <blockquote>有一個年輕的留美學生，在從佛羅里達到紐約的飛機上，笑嘻嘻地遞給空中小姐一張紙條，寫著：「我身上有炸彈，我要劫機。」……空中小姐笑了笑，把紙條還給那個留學生，便離開了。……而當飛機降落時，地面已經有近百位荷槍實彈的警察……雖然那留學生大喊：「我只是開個小玩笑……」但是他怎麼說都沒用。他被押上警車送審，並面臨十五年的徒刑。</blockquote>
+            
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="荷槍實彈 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>荷槍實彈</h3>
+                        <div class="pronunciation">ㄏㄜˋ ㄑㄧㄤ ㄕˊ ㄉㄢˋ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：形容持有已裝填子彈的槍枝，進入高度警戒的狀態。這裡的「荷」是「扛、背負」的意思。</li>
+                            <li><strong>用法</strong>：這個成語用來描寫情勢非常緊張、戒備森嚴的樣子。</li>
+                            <li><strong>例句</strong>：為了圍捕要犯，警方<strong>荷槍實彈</strong>地包圍了整棟大樓。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher-talk">
+                <strong>【老師說】</strong><br>
+                文章一開始就用一個<strong>真實、震撼的新聞事件</strong>當開頭，這是一個非常高明的寫作手法！它不像一般議論文那樣枯燥地講道理，而是立刻抓住讀者的目光，讓我們好奇：「天啊！開個玩笑怎麼會這麼嚴重？」這就成功地為後面的論說鋪陳了懸念。
+            </div>
+
+            <h4>第四段～第七段</h4>
+            <blockquote>我剛從臺北回到紐約，你的母親就告訴我這個報上才登過的新聞，並在說完之後，十分感慨地說：「這個年輕人多可憐哪！我相信如果坐在飛機上的是我們的兒子，他的朋友又慫恿他開這個玩笑，他也可能會做的！」<br>對！這是最令人心悚的一句話……我們都知道年輕人常犯無心之錯，只是那錯誤又可能造成難以彌補的傷害。<br>問題是，什麼是無心呢？酒醉駕車肇事的人是有心殺人嗎？……考試時受不住朋友請託而傳個紙條的是惡意犯規嗎？</blockquote>
+            
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="慫恿 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>慫恿</h3>
+                        <div class="pronunciation">ㄙㄨㄥˇ ㄩㄥˇ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：從旁煽動、鼓動別人去做某件事（通常是不太好的事）。</li>
+                            <li><strong>用法</strong>：當你想表達某人被慫恿去做某件事時，可以使用這個詞。</li>
+                            <li><strong>例句</strong>：在他的再三<strong>慫恿</strong>下，我終於答應參加這次的冒險活動。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="心悚 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>心悚</h3>
+                        <div class="pronunciation">ㄒㄧㄣ ㄙㄨㄥˇ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：內心感到驚懼、害怕。悚，就是恐懼的意思。</li>
+                            <li><strong>用法</strong>：形容一件事情讓人聽了感到毛骨悚然。</li>
+                            <li><strong>例句</strong>：這部恐怖電影的情節，實在是令人<strong>心悚</strong>。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="彌補 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>彌補</h3>
+                        <div class="pronunciation">ㄇㄧˊ ㄅㄨˇ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：補償、補足。</li>
+                            <li><strong>用法</strong>：用來表示對過去的損失或錯誤進行補償。</li>
+                            <li><strong>例句</strong>：為了<strong>彌補</strong>他的過錯，他決定向對方誠心道歉。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="肇事 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>肇事</h3>
+                        <div class="pronunciation">ㄓㄠˋ ㄕˋ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：引起事端、闖禍。</li>
+                            <li><strong>用法</strong>：通常指引發了不好的事件，特別是交通事故。</li>
+                            <li><strong>例句</strong>：酒後駕車是造成車禍<strong>肇事</strong>的主要原因之一。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher-talk">
+                <strong>【老師說】</strong><br>
+                這一段作者開始<strong>提出問題</strong>，引導讀者思考。他用了<strong>連續三個問句</strong>（「什麼是無心呢？」、「酒醉駕車的人是有心殺人嗎？」、「傳紙條是惡意犯規嗎？」），這種修辭手法叫做「<strong>設問</strong>」。這不是真的要你回答，而是要<strong>激發我們的思考</strong>，讓我們去想：動機和行為之間的界線到底在哪裡？
+            </div>
+
+            <h4>第八段～第十四段</h4>
+            <blockquote>你明知在紐約放炮是違法的……卻答應朋友用我們鄰接樹林的院子作掩護。……<br>你必然記得幾年前，你經過一戶人家，兩個人正試著開門鎖。你過去看，他們對你說不知是不是鎖壞了，打不開，而你居然熱心地幫著他們開。……<br>而對所有的事情，你給我的解釋都是：「他們沒有惡意，我也無心！」</blockquote>
+            
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="掩護 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>掩護</h3>
+                        <div class="pronunciation">ㄧㄢˇ ㄏㄨˋ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：遮蔽、保護，這裡引申為提供場所方便行事。</li>
+                            <li><strong>用法</strong>：指利用某種方式來隱藏或保護人事物。</li>
+                            <li><strong>例句</strong>：他利用地形的<strong>掩護</strong>，成功躲過了敵人的追擊。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher-talk">
+                <strong>【老師說】</strong><br>
+                從這一段開始，作者的筆鋒轉向了<strong>自己的兒子</strong>。他不再講別人的故事，而是直接舉出兒子生活中的例子。這樣寫有什麼好處呢？
+                <ol>
+                    <li><strong>更親切、更有說服力</strong>：因為是發生在自己家裡的事，所以讀起來特別真實，也讓勸告顯得更有力。</li>
+                    <li><strong>拉近與讀者的距離</strong>：文章的對象雖然是兒子，但其實也是寫給所有年輕讀者看的。這些生活小事，我們可能也做過，因此更容易產生共鳴。</li>
+                </ol>
+            </div>
+            
+            <h4>第十五段～第十八段</h4>
+            <blockquote>現下你應當知道，那無心卻可能有惡果。……若是肯尼的弓箭和朋友的氣槍傷了人，你也脫不開關係。……不懂得審度自己的行為，只怕那無心，就會惹下天大的麻煩。<br>最後，讓我告訴你一個十年前的往事。……一個朋友欠他錢不還……所以找朋友幫忙，把欠錢的人抓住，逼他家裡還錢。……可是對方家人報警，他成了擄人勒贖的通緝犯。<br>記住！年輕人，「無心」往往就是一種錯誤！</blockquote>
+
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="審度 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>審度</h3>
+                        <div class="pronunciation">ㄕㄣˇ ㄉㄨㄛˋ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：審查、衡量。這裡的「度」念 ㄉㄨㄛˋ。</li>
+                            <li><strong>用法</strong>：指仔細地思考和評估。</li>
+                            <li><strong>例句</strong>：做任何決定前，都應該仔細<strong>審度</strong>其利弊得失。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flip-card-container" tabindex="0" role="button" aria-label="擄人勒贖 知識卡，點擊翻面">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h3>擄人勒贖</h3>
+                        <div class="pronunciation">ㄌㄨˇ ㄖㄣˊ ㄌㄜˋ ㄕㄨˊ</div>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <ul>
+                            <li><strong>意思</strong>：綁架人質，藉以勒索、強取財物。</li>
+                            <li><strong>用法</strong>：這是一個嚴重的法律罪名。</li>
+                            <li><strong>例句</strong>：歹徒因<strong>擄人勒贖</strong>罪，被判處重刑。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher-talk">
+                <strong>【老師說】</strong><br>
+                文章的結尾非常有力！作者先用自己學生的慘痛經歷，把「無心的錯誤」可能導致的後果推到最高峰，讓我們深刻體會到事情的嚴重性。<br>
+                最後，他用「<strong>記住！年輕人……</strong>」這種<strong>呼告</strong>的語氣，直接對讀者喊話，像警鐘一樣敲在我們心上，再次強調了文章的主旨：「<mark>『無心』往往就是一種錯誤！</mark>」這使得文章的教育意義得到了昇華，餘韻深長。
+            </div>
+
+        </section>
+
+        <section id="extension">
+            <h2>伍、延伸補充</h2>
+            <p>讀完課文，我們來看看這些「無心的錯誤」在現實世界中，可能會觸犯哪些法律吧！這能幫助我們更了解「謹慎行事」的重要性。</p>
+            <h3>法律小學堂：這些玩笑開不得！</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>課文中的「無心之過」</th>
+                        <th>可能觸犯的法律/造成的後果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>在飛機上謊稱有炸彈</strong></td>
+                        <td>可能觸犯《民用航空法》，散布危害飛航安全之不實訊息，最重可處有期徒刑。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>酒醉駕車</strong></td>
+                        <td>觸犯《刑法》公共危險罪，若致人死傷，刑責更重，且需負擔鉅額民事賠償。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>幫陌生人開鎖</strong></td>
+                        <td>若對方是小偷，你可能成為「共犯」，觸犯竊盜罪。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>在公園使用有殺傷力的弓箭</strong></td>
+                        <td>可能違反《社會秩序維護法》。若傷及他人，則需負過失傷害的刑責與民事賠償。</td>
+                    </tr>
+                    <tr>
+                        <td><strong>限制他人行動討債</strong></td>
+                        <td>可能觸犯《刑法》的剝奪他人行動自由罪（私行拘禁罪），甚至是強盜罪。</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="markmap"><h3>和「謹慎」有關的成語</h3>
+            <ul>
+                <li><strong>三思而行</strong>：反覆再三地思考，然後才付諸行動。</li>
+                <li><strong>臨深履薄</strong>：像是走在深淵旁邊，踩在薄冰上面。比喻行事極為小心謹慎。</li>
+                <li><strong>戰戰兢兢</strong>：形容做事非常小心、戒慎恐懼的樣子。</li>
+                <li><strong>防微杜漸</strong>：在錯誤或壞事剛有徵兆時，就加以防止、遏止，不讓它發展。</li>
+            </ul></div>
+        </section>
+
+        <section id="improvement-suggestions">
+            <h2>陸、跨域思辨與活動</h2>
+            <p>這份講義不僅是文學賞析，更是思考的起點。讓我們從心理學與生活實踐的角度，更深入地探索「無心之錯」這個主題。</p>
+
+            <h3>從文學到心理學：「無心之錯」的科學解釋</h3>
+            <p>你知道嗎？劉墉當年寫信的對象——他的兒子劉軒，長大後成為了哈佛大學的心理學博士！父親的人生智慧，在兒子身上得到了科學的印證。讓我們用心理學的「認知偏誤 (Cognitive Bias)」來解釋，為什麼人們容易犯下「無心之錯」。</p>
+            <ul>
+                <li><strong>樂觀偏誤 (Optimism Bias)：</strong> 人們傾向於低估自己遭遇負面事件的風險。這能解釋為什麼學生會覺得「只是開個玩笑，不會那麼嚴重啦！」或「我酒駕一下下，不會出事的」。</li>
+                <li><strong>行為者-觀察者偏誤 (Actor-Observer Bias)：</strong> 我們傾向於將自己的錯誤歸因於外部環境（我無心的），卻將他人的錯誤歸因於其內在特質（他就是故意的）。這能解釋為何我們總能輕易原諒自己的「無心」，卻很難接受別人的「無心」。</li>
+            </ul>
+            <p>了解這些思維上的「小bug」，能幫助我們更警惕自己的直覺，真正做到三思而後行。</p>
+
+            <h3>互動思辨活動：「無心法庭」與「有心之善」</h3>
+            <h4>活動一：無心法庭</h4>
+            <p>將課堂轉化為一個模擬法庭，透過角色扮演，親身體驗「動機」與「結果」之間的拉扯。</p>
+            <ol>
+                <li><strong>設定劇本：</strong>選擇一個貼近生活的案例，如「A同學將B同學的糗照發到私密小群組開玩笑，結果照片外流導致B被霸凌」。</li>
+                <li><strong>分配角色：</strong>將學生分組扮演當事人（主張無心）、受害者、雙方朋友、以及最終裁決的陪審團。</li>
+                <li><strong>引導思辨：</strong>由老師引導，讓各方陳述觀點，並思考「『無心』是否可以完全免責？」、「如何彌補傷害？」等問題。</li>
+            </ol>
+            <h4>活動二：從「無心之錯」到「有心之善」——蝴蝶效應挑戰</h4>
+            <p>既然微小的「無心」能造成巨大的「惡果」，那麼微小的「有心」是否也能創造正向的漣漪呢？</p>
+            <p><strong>挑戰內容：</strong>發起「一週正向漣漪挑戰」。鼓勵同學在一週內，每天刻意去做一件「微小但有心的善事」(A small, intentional act of kindness)，例如真誠地讚美一位同學、主動幫忙做一件小事等，並觀察或記錄可能產生的漣漪。這個練習能讓我們從「避免犯錯」的消極思維，轉向「創造美好」的積極行動。</p>
+
+        </section>
+        
+        <section id="exercises">
+            <h2>柒、課後練習</h2>
+            <p>恭喜你完成了本課的學習！現在，讓我們透過幾個小互動，來檢驗一下你的學習成果吧！</p>
+            
+            <hr>
+
+            <h3>第一題：情境配對</h3>
+            <p class="exercise-prompt">請將左邊課文中的「無心之過」拖曳到右邊，與它可能造成的「嚴重惡果」進行配對。</p>
+            <div class="dnd-container" id="q1-container">
+                <div class="dnd-source">
+                    <div class="draggable-item" draggable="true" id="q1-item-1" data-source="D">1. 朋友慫恿下，在飛機上開劫機玩笑</div>
+                    <div class="draggable-item" draggable="true" id="q1-item-2" data-source="A">2. 熱心幫自稱忘記帶鑰匙的陌生人開鎖</div>
+                    <div class="draggable-item" draggable="true" id="q1-item-3" data-source="C">3. 朋友欠錢不還，找人把他抓住討債</div>
+                    <div class="draggable-item" draggable="true" id="q1-item-4" data-source="B">4. 答應朋友，在乾燥的冬天到自家後院放炮</div>
+                </div>
+                <div class="dnd-target">
+                    <p>A. 自己成為共犯，捲入竊盜案</p>
+                    <div class="drop-zone" data-target="A"></div>
+                    <p>B. 引發森林大火，面臨鉅額賠償與法律責任</p>
+                    <div class="drop-zone" data-target="B"></div>
+                    <p>C. 成為擄人勒贖的通緝犯，斷送前途</p>
+                    <div class="drop-zone" data-target="C"></div>
+                    <p>D. 被判處15年重刑，人生毀於一旦</p>
+                    <div class="drop-zone" data-target="D"></div>
+                </div>
+            </div>
+            <details>
+                <summary>點此查看參考答案與解析</summary>
+                <div class="details-content">
+                    <p>1 -> D</p>
+                    <p>2 -> A</p>
+                    <p>3 -> C</p>
+                    <p>4 -> B</p>
+                    <p><strong>【答錯提示】</strong> 再想一想，每個行為最直接、最嚴重的後果是什麼呢？可以回到課文的例子中找找線索喔！</p>
+                </div>
+            </details>
+            
+            <hr>
+
+            <h3>第二題：翻開智慧卡</h3>
+            <p class="exercise-prompt">作者在文章中，舉了大量自己和兒子的生活例子，而不是直接講大道理。請思考一下，這種寫作手法有什麼好處？（請點擊卡片翻面，看看你的想法和老師的分析是否一樣！）</p>
+            <div class="flip-card-container" id="q2-flip-card" tabindex="0" role="button" aria-label="問題卡片，點擊翻面查看答案">
+                <div class="flip-card">
+                    <div class="flip-card-face flip-card-front">
+                        <h4>問題：</h4>
+                        <p>作者為什麼不直接說教，而是舉了大量生活中的例子？</p>
+                    </div>
+                    <div class="flip-card-face flip-card-back">
+                        <h4>參考答案：</h4>
+                        <ol>
+                            <li><strong>增加說服力：</strong> 真實的例子比空洞的道理更有力量，更能讓人信服。</li>
+                            <li><strong>拉近與讀者的距離：</strong> 這些生活化的例子讓讀者覺得親切，容易產生共鳴，感覺作者就像在和自己對話。</li>
+                            <li><strong>使文章更生動：</strong> 透過故事性的敘述，讓議論文不再枯燥，提高了文章的可讀性。</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h3>第三題：成語填空</h3>
+            <p class="exercise-prompt">請根據句意，從下方的成語庫中選擇最適合的成語拖曳至空格中。</p>
+            <div class="fill-in-blank-container" id="q3-container">
+                <div class="fill-in-blank-sentence">
+                    <p>1. 這起嚴重的交通事故，是因其中一方酒駕</p><div class="drop-zone" data-target="肇事"></div><p>所引起的。</p>
+                </div>
+                <div class="fill-in-blank-sentence">
+                    <p>2. 面對這個重大的決定，我們必須</p><div class="drop-zone" data-target="三思而行"></div><p>，絕不能草率。</p>
+                </div>
+                <div class="fill-in-blank-sentence">
+                    <p>3. 對於微小的錯誤，我們應該要能</p><div class="drop-zone" data-target="防微杜漸"></div><p>，才不會釀成大禍。</p>
+                </div>
+                 <div class="fill-in-blank-sentence">
+                    <p>4. 聽完這個鬼故事，大家都感到毛骨悚然，十分</p><div class="drop-zone" data-target="心悚"></div><p>。</p>
+                </div>
+                <div class="word-bank">
+                    <div class="draggable-item" draggable="true" id="q3-item-1" data-source="三思而行">三思而行</div>
+                    <div class="draggable-item" draggable="true" id="q3-item-2" data-source="心悚">心悚</div>
+                    <div class="draggable-item" draggable="true" id="q3-item-3" data-source="肇事">肇事</div>
+                    <div class="draggable-item" draggable="true" id="q3-item-4" data-source="彌補">彌補</div>
+                    <div class="draggable-item" draggable="true" id="q3-item-5" data-source="防微杜漸">防微杜漸</div>
+                </div>
+            </div>
+            <details>
+                <summary>點此查看參考答案</summary>
+                <div class="details-content">
+                    <p>1. 肇事</p>
+                    <p>2. 三思而行</p>
+                    <p>3. 防微杜漸</p>
+                    <p>4. 心悚</p>
+                    <p><strong>【答錯提示】</strong> 試著從每個成語的意思去思考，哪一個最符合句子的情境呢？</p>
+                </div>
+            </details>
+            
+            <hr>
+
+            <h3>第四題：素養閱讀與思考</h3>
+            <blockquote>近年來，網路上流行一種「惡作劇挑戰」(Prank Challenge)，有些網紅為了博取點閱率，會對路人或朋友進行惡作劇並拍成影片。例如，假裝在圖書館大聲喧嘩、故意打翻別人的飲料等。雖然他們事後常說「這只是個玩笑」，但常引起被捉弄者的不滿，甚至引發衝突。</blockquote>
+            <p><strong>問題：</strong> 請根據《無心的錯誤》一文的核心觀點，分析為什麼這類「惡作劇挑戰」即使出於「無心」（只是想開玩笑），仍然是一種「錯誤」？</p>
+            <details>
+                <summary>點此查看參考答案</summary>
+                <div class="details-content">
+                    <p><strong>參考答案：</strong></p>
+                    <p>根據課文的觀點，即使這些網紅的動機只是「開玩笑」（無心），但他們的行為已經對他人造成了實質的困擾和傷害，這就是一種「錯誤」。</p>
+                    <ol>
+                        <li><strong>未考慮後果：</strong> 他們只想到自己的樂趣和影片效果，沒有「三思而行」，審度自己的行為會給別人帶來什麼樣的負面影響（如驚嚇、憤怒、不便）。</li>
+                        <li><strong>「無心」不能免責：</strong> 正如課文所說，「無心」不能當作藉口。一句「只是開玩笑」，並不能抹去對他人造成的困擾。這種行為缺乏對他人的尊重，最終必須為其造成的後果負責。</li>
+                        <li><strong>可能觸法：</strong> 某些惡作劇甚至可能觸犯法律，例如毀損他人財物、或構成騷擾等，這就從單純的道德問題，上升到了法律層面的錯誤。</li>
+                    </ol>
+                </div>
+            </details>
+            
+            <hr>
+
+            <h3>第五題：觀點申論</h3>
+            <p>在課文的結尾，作者說：「『無心』往往就是一種錯誤！」你同意這個看法嗎？請舉一個生活中的例子來支持你的觀點。</p>
+            <details>
+                <summary>點此查看參考答案</summary>
+                <div class="details-content">
+                    <p><strong>參考答案：</strong>（這是一個開放式問題，以下為範例）</p>
+                    <p>我<strong>同意</strong>作者的看法。</p>
+                    <p>我認為，雖然「無心」代表動機上沒有惡意，但它也反映出一個人考慮不周、缺乏責任感。一個成熟的人在行動前，應該要能預見到可能的後果。</p>
+                    <p><strong>舉例：</strong> 比如說，在走廊上奔跑。奔跑的同學可能只是急著去合作社，並不是「有心」想要撞倒誰。但是，走廊空間狹窄，本來就不適合奔跑，他的「無心」之舉，卻很可能撞到轉角走出來的同學或老師，造成別人受傷。這個時候，「我不是故意的」並不能完全免除他的責任，因為他本來就應該知道在走廊奔跑是危險的。所以，這個「無心」的行為，本身就是一種需要被糾正的「錯誤」。</p>
+                </div>
+            </details>
+        </section>
+
+    </main>
+    
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- 翻轉卡片互動 ---
+    const flipCards = document.querySelectorAll('.flip-card-container');
+    flipCards.forEach(card => {
+        const flipAction = () => {
+            card.classList.toggle('is-flipped');
+        };
+        card.addEventListener('click', flipAction);
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                flipAction();
+            }
+        });
+    });
+
+
+    // --- 拖放互動 (第一題 & 第三題) ---
+    const draggables = document.querySelectorAll('.draggable-item');
+    const dropZones = document.querySelectorAll('.drop-zone');
+
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+            draggable.classList.add('dragging');
+        });
+
+        draggable.addEventListener('dragend', () => {
+            draggable.classList.remove('dragging');
+        });
+    });
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', e => {
+            e.preventDefault();
+            zone.classList.add('drag-over');
+        });
+
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('drag-over');
+        });
+
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            
+            const draggingId = document.querySelector('.dragging').id;
+            const draggedEl = document.getElementById(draggingId);
+            
+            // 如果 drop-zone 裡已經有東西，把它移回原本的容器
+            if (zone.children.length > 0) {
+                const existingItem = zone.firstElementChild;
+                let originalContainer;
+                // 判斷是第一題還是第三題，來決定移回哪裡
+                if (existingItem.id.startsWith('q1-')) {
+                    originalContainer = document.querySelector('#q1-container .dnd-source');
+                } else if (existingItem.id.startsWith('q3-')) {
+                    originalContainer = document.querySelector('#q3-container .word-bank');
+                }
+                if (originalContainer) {
+                    originalContainer.appendChild(existingItem);
+                }
+            }
+            
+            zone.appendChild(draggedEl);
+
+            // 檢查答案
+            const sourceData = draggedEl.dataset.source;
+            const targetData = zone.dataset.target;
+            
+            zone.classList.remove('correct', 'incorrect'); // Reset classes
+            if (sourceData === targetData) {
+                zone.classList.add('correct');
+            } else {
+                zone.classList.add('incorrect');
+            }
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>
