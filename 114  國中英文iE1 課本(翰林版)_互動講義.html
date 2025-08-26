@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1 課文精講：嗨！那個帥哥是誰？</title>
+    <style>
+        :root {
+            --bg-main: #F5F5F3;
+            --bg-card: #EAE7E1;
+            --bg-sub-block-1: #DCD6CC;
+            --bg-sub-block-2: #E9E3D9;
+            --text-color: #5C5854;
+            --text-highlight: #7A7067;
+            --color-teacher-note: #B3A698;
+            --color-interactive-blue: #A2B2C2;
+            --color-interactive-blue-dark: #8E9FAA;
+            --color-interactive-green: #B5C2B1;
+            --color-interactive-yellow: #E1C5A8;
+            --color-interactive-red: #C2A2A2;
+            --color-correct: #A9B3A2;
+            --color-incorrect: #C2A2A2;
+            --font-family: Arial, Helvetica, sans-serif;
+            --border-radius: 12px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-main);
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--text-highlight);
+        }
+
+        h1 { font-size: 2.2rem; margin-top: 1rem; }
+        h2 { font-size: 1.8rem; margin-top: 2.5rem; border-bottom: 2px solid var(--bg-sub-block-1); padding-bottom: 0.5rem;}
+        h3 { font-size: 1.4rem; margin-top: 2rem; }
+        p { margin-bottom: 1rem; }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .highlight {
+            color: var(--text-highlight);
+            font-weight: bold;
+        }
+
+        .teacher-note {
+            color: var(--color-teacher-note);
+            font-style: italic;
+            padding: 0.5rem 1rem;
+            border-left: 3px solid var(--color-teacher-note);
+            background-color: var(--bg-main);
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+
+        /* Welcome Card */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        #welcome-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .welcome-card {
+            background-color: var(--color-interactive-blue);
+            color: white;
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            max-width: 90%;
+            width: 500px;
+            transform: scale(0.9);
+            opacity: 0;
+            animation: welcome-pop-in 0.5s forwards ease-out;
+        }
+        @keyframes welcome-pop-in {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        .welcome-card h1 {
+            color: white;
+            border: none;
+        }
+        .welcome-card p {
+            font-size: 1.1rem;
+        }
+        
+        .btn {
+            background-color: white;
+            color: var(--color-interactive-blue-dark);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: 1.5rem;
+        }
+        .btn:hover {
+            background-color: var(--color-interactive-blue-dark);
+            color: white;
+        }
+
+        #main-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s 0.2s ease, transform 0.5s 0.2s ease;
+        }
+        #main-content.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Accordion for translation */
+        .sentence-block {
+            margin-bottom: 1.5rem;
+        }
+        .sentence-header {
+            background-color: var(--bg-sub-block-1);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+        }
+        .sentence-header:hover {
+            background-color: #D1C9BF;
+        }
+        .sentence-header::after {
+            content: '▼';
+            position: absolute;
+            right: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .sentence-header.active::after {
+            transform: rotate(180deg);
+        }
+        .sentence-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background-color: var(--bg-sub-block-2);
+            border-radius: 0 0 8px 8px;
+            padding: 0 1.5rem;
+        }
+        .sentence-details-content {
+            padding: 1rem 0;
+        }
+        .sentence-details h4 {
+            font-size: 1.1rem;
+            color: var(--text-highlight);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .sentence-details ul {
+            list-style-position: inside;
+            padding-left: 0.5rem;
+        }
+        .example-sentence {
+            background: #F4F0E9;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+        }
+
+        /* Flashcards */
+        .flashcard-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .flashcard-container {
+            perspective: 1000px;
+            min-width: 150px;
+        }
+        .flashcard {
+            width: 100%;
+            height: 120px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        .flashcard.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .card-front {
+            background-color: #D4CFC7;
+        }
+        .card-front-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-highlight);
+        }
+        .card-back {
+            background-color: #E9E3D9;
+            transform: rotateY(180deg);
+            font-size: 0.9rem;
+        }
+        .card-back p { margin-bottom: 0.5rem; }
+
+        /* Sentence Scramble */
+        .scramble-container {
+            background: var(--bg-main);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .scramble-drop-zone {
+            min-height: 50px;
+            border: 2px dashed var(--color-teacher-note);
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .scramble-word-bank {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .word-token {
+            background-color: var(--color-interactive-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+            transition: opacity 0.2s;
+        }
+        .word-token.dragging {
+            opacity: 0.5;
+        }
+        .placeholder-text {
+            color: #aaa;
+        }
+
+        /* Tooltip */
+        .tooltip-trigger {
+            background-color: #F0E5D8;
+            padding: 0 0.3em;
+            border-radius: 4px;
+            position: relative;
+            cursor: help;
+        }
+        .tooltip-content {
+            visibility: hidden;
+            opacity: 0;
+            width: 160px;
+            background-color: rgba(92, 88, 84, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -80px;
+            transition: opacity 0.3s;
+        }
+        .tooltip-content::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(92, 88, 84, 0.9) transparent transparent transparent;
+        }
+        .tooltip-trigger:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Reading Highlighter */
+        .reading-controls { margin-bottom: 1rem; }
+        .reading-sentence {
+            transition: background-color 0.5s;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+        .reading-sentence.reading-highlight {
+            background-color: var(--color-interactive-yellow);
+        }
+
+        /* Sentence Generator & A/An Challenge */
+        .interactive-box {
+            background: var(--bg-main);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .interactive-box h4 {
+            margin-top: 0;
+        }
+        .interactive-box input {
+            padding: 0.5rem;
+            border: 1px solid var(--bg-sub-block-1);
+            border-radius: 4px;
+            margin-right: 0.5rem;
+        }
+        .interactive-box .btn {
+            margin-top: 0;
+            font-size: 0.9rem;
+            padding: 0.6rem 1rem;
+        }
+        .generated-sentence {
+            margin-top: 1rem;
+            font-weight: bold;
+            background: #fff;
+            padding: 0.8rem;
+            border-radius: 4px;
+        }
+        .choice-buttons { display: flex; gap: 1rem; }
+        .choice-btn {
+            border: 2px solid var(--color-interactive-blue);
+            color: var(--color-interactive-blue);
+            background: white;
+            transition: all 0.3s;
+        }
+        .choice-btn:hover {
+            background: var(--color-interactive-blue);
+            color: white;
+        }
+        .choice-btn.correct {
+            background: var(--color-correct);
+            border-color: var(--color-correct);
+            color: white;
+        }
+        .choice-btn.incorrect {
+            background: var(--color-incorrect);
+            border-color: var(--color-incorrect);
+            color: white;
+        }
+        .choice-feedback {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            display: none;
+        }
+        .choice-feedback.correct {
+            background-color: #e6f1e4;
+            display: block;
+        }
+        .choice-feedback.incorrect {
+            background-color: #f1e4e4;
+            display: block;
+        }
+        
+        /* Matching Game */
+        .matching-game-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .matching-column {
+            flex: 1;
+            min-width: 200px;
+        }
+        .matching-drop-zone {
+            min-height: 80px;
+            border: 2px dashed var(--color-teacher-note);
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            background: #fff;
+            transition: background-color 0.3s;
+        }
+        .matching-drop-zone.drag-over {
+            background-color: #e0dcd5;
+        }
+        .matching-tag-bank {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .matching-tag {
+            background: var(--color-interactive-green);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: grab;
+            user-select: none;
+        }
+        .matching-result {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            visibility: hidden;
+        }
+
+        /* Dialogue Simulator */
+        .dialogue-sim-option {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 0.5rem;
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .dialogue-sim-option:hover {
+            border-color: var(--color-interactive-blue);
+            box-shadow: 0 0 5px var(--color-interactive-blue);
+        }
+        .dialogue-sim-feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            background: var(--bg-main);
+        }
+        .dialogue-sim-feedback.visible {
+            display: block;
+        }
+
+        /* Quiz */
+        .quiz-question {
+            background: var(--bg-main);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .quiz-question p { margin-bottom: 1.5rem; }
+        .quiz-options .quiz-option {
+            display: block;
+            width: 100%;
+            background: #fff;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: left;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-options .quiz-option:hover {
+            border-color: var(--color-interactive-blue);
+        }
+        .quiz-options .quiz-option.selected {
+            border-color: var(--color-interactive-blue-dark);
+            background-color: #dbe1e7;
+        }
+        .quiz-options .quiz-option.correct {
+            border-color: var(--color-correct);
+            background-color: #e6f1e4;
+        }
+        .quiz-options .quiz-option.incorrect {
+            border-color: var(--color-incorrect);
+            background-color: #f1e4e4;
+        }
+        .quiz-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+        .quiz-feedback.visible {
+            display: block;
+        }
+        .quiz-question textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--bg-sub-block-1);
+            font-family: var(--font-family);
+            font-size: 1rem;
+            resize: vertical;
+        }
+        .quiz-question textarea:focus {
+            outline: none;
+            border-color: var(--color-interactive-blue);
+            box-shadow: 0 0 5px var(--color-interactive-blue);
+        }
+        .family-tree {
+            margin-top: 1rem;
+            padding: 1rem;
+            border: 1px solid var(--bg-sub-block-1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .tree-level { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; align-items: center;}
+        .tree-node {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--text-color);
+            border-radius: 4px;
+            position: relative;
+        }
+        .tree-connector {
+            border-left: 1px solid var(--text-color);
+            border-right: 1px solid var(--text-color);
+            border-top: 1px solid var(--text-color);
+            height: 20px;
+            width: 150px;
+        }
+        .tree-vertical-line {
+            width: 1px;
+            height: 20px;
+            background-color: var(--text-color);
+            margin: 0 auto;
+        }
+        .tree-node.highlight {
+            background-color: var(--color-interactive-yellow);
+            transition: background-color 0.3s;
+        }
+
+
+        @media (max-width: 768px) {
+            body { padding: 0.5rem; font-size: 15px; }
+            .card { padding: 1.5rem; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.2rem; }
+            .sentence-header { padding: 0.8rem 1rem; }
+            .sentence-header::after { right: 1rem; }
+            .matching-game-container { flex-direction: column; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="welcome-overlay">
+        <div class="welcome-card">
+            <h1>Unit 1 課文精講</h1>
+            <p>哈囉，準備好成為英文高手了嗎？這份互動講義將帶你破解第一課的秘密，讓學習變得像追劇一樣有趣！</p>
+            <button id="start-learning-btn" class="btn">開始學習！</button>
+        </div>
+    </div>
+
+    <main id="main-content" class="container">
+        <header style="text-align:center; margin-bottom: 2rem;">
+            <h1>Unit 1 課文精講：嗨！那個帥哥是誰？ (Who's That Handsome Boy?)</h1>
+            <p class="teacher-note">你有沒有在路上或學校走廊，看到一個超吸睛的帥哥或美女，心裡偷偷好奇：「他是誰啊？」這課就是要教你怎麼用最高級、最道地的方式來開啟這樣的話題！讓我們一起來看看 Jamie 跟 Yuki 是怎麼聊天的吧！</p>
+        </header>
+
+        <section class="card">
+            <h2>Dialogue A: 校園初遇 (At school)</h2>
+
+            <div class="sentence-block">
+                <div class="sentence-header">1. Jamie: Good morning, Yuki.</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>早安，Yuki。</p>
+                        <h4>句法結構分析</h4><p>這是一個<span class="highlight">問候語 (Greeting)</span>，也是一個完整的句子。</p>
+                        <h4>重要用法</h4>
+                        <div class="teacher-note">記得，`Good night` 是「晚安」，通常是睡前或要離開時說的喔！</div>
+                        <div class="flashcard-section">
+                            <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">Good morning</span></div>
+                                    <div class="card-face card-back">
+                                        <p><strong>意思:</strong> 早安</p>
+                                        <p><strong>用法:</strong> 最標準的早上問候語，通常在中午 12 點前使用。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h4>例句</h4>
+                        <p class="example-sentence">1. <span class="highlight">Good morning</span>, Mom! What's for breakfast?</p>
+                        <p class="example-sentence">2. It's polite to say <span class="highlight">good morning</span> to your teacher.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">2. Yuki: Good morning, Jamie.</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>早安，Jamie。</p>
+                        <h4>句法結構分析</h4><p>同上，這是一個<span class="highlight">回應式的問候語</span>。</p>
+                        <h4>重要用法</h4><p>英文對話中，禮貌地回應對方的問候是很重要的。別人跟你說 `Good morning`，你也可以回 `Good morning` 或 `Morning`。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">3. Jamie: Look at that handsome boy. Who is he?</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>妳看那個帥氣的男孩。他是誰？</p>
+                        <h4>句法結構分析</h4>
+                        <ul>
+                            <li>第一句是<span class="highlight">祈使句 (Imperative Sentence)</span>。`Look at` (看著...) 是動詞片語，`that handsome boy` 是受詞。</li>
+                            <li>第二句是<span class="highlight">Wh-問句 (Wh-Question)</span>。`Who` 是疑問詞，`is` 是 be 動詞 (V.)，`he` 是主詞 (S.)。注意問句中動詞和主詞的位置會對調。</li>
+                        </ul>
+                        <div class="interactive-box">
+                            <h4>互動練習：句子重組</h4>
+                            <p>將下方的單字拖曳到框中，組成正確的問句。</p>
+                            <div class="scramble-drop-zone" id="scramble-drop-zone">
+                                <span class="placeholder-text">將單字拖到這裡...</span>
+                            </div>
+                            <div class="scramble-word-bank">
+                                <div class="word-token" draggable="true" id="token-he">he</div>
+                                <div class="word-token" draggable="true" id="token-is">is</div>
+                                <div class="word-token" draggable="true" id="token-who">Who</div>
+                                <span style="font-size:1.5rem; color: var(--text-highlight);">?</span>
+                            </div>
+                        </div>
+                        <h4>重要用法/單字/片語</h4>
+                        <div class="flashcard-section">
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">look at</span></div>
+                                    <div class="card-face card-back"><p><strong>意思:</strong> 看著...</p><p><strong>用法:</strong> 強調視線集中在某個目標上。</p></div>
+                                </div>
+                            </div>
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">handsome</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adj.</p><p><strong>意思:</strong> 英俊的、帥氣的 (通常形容男生)。</p></div>
+                                </div>
+                            </div>
+                            <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">Who is he?</span></div>
+                                    <div class="card-face card-back"><p><strong>意思:</strong> 他是誰？</p><p><strong>用法:</strong> 用來詢問某人的身份。</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="sentence-block">
+                <div class="sentence-header">4. Yuki: That's Zac, our new classmate.</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>那是 Zac，我們的新同學。</p>
+                        <h4>句法結構分析</h4><p>`That` 是主詞 (S.)，`'s` (is) 是動詞 (V.)，`Zac` 是主詞補語 (SC)。後面的 `our new classmate` 是一個<span class="highlight">同位語 (Appositive)</span>，用來補充說明 `Zac` 的身份。</p>
+                        <h4>重要用法/單字/片語</h4>
+                        <div class="flashcard-section">
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">That's...</span></div>
+                                    <div class="card-face card-back"><p><strong>意思:</strong> 那是...</p><p><strong>用法:</strong> 用來指認或介紹人事物。</p></div>
+                                </div>
+                            </div>
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">new</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adj.</p><p><strong>意思:</strong> 新的。</p></div>
+                                </div>
+                            </div>
+                            <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">classmate</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> n.</p><p><strong>意思:</strong> 同學。</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">5. Jamie: And the young woman?</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>那位年輕的女士呢？</p>
+                        <h4>句法結構分析</h4><p>這是一個<span class="highlight">省略問句</span>，完整的句子是 `And who is the young woman?`。在口語中，為了讓對話更流暢，常常會省略重複的部分。</p>
+                        <h4>重要用法/單字/片語</h4>
+                        <div class="flashcard-section">
+                            <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">young</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adj.</p><p><strong>意思:</strong> 年輕的。</p></div>
+                                </div>
+                            </div>
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">woman</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> n.</p><p><strong>意思:</strong> 女人、女士 (單數)。<br>複數是 <span class="highlight">women</span>。</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">6. Yuki: That's Zac's sister, Sophie. She's a nurse.</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>那是 Zac 的姐姐，Sophie。她是個護理師。</p>
+                        <h4>句法結構分析</h4>
+                        <ul>
+                            <li>第一句 `That's Zac's sister, Sophie.` 結構和第四句類似，`Sophie` 是 `Zac's sister` 的同位語。</li>
+                            <li>`Zac's` 這裡的 `'s` 是<span class="highlight">所有格</span>，表示「...的」。</li>
+                            <li>第二句 `She's a nurse.` 是 `主詞 (S.) + be動詞 (V.) + 主詞補語 (SC)` 的結構。</li>
+                        </ul>
+                        <h4>重要用法/單字/片語</h4>
+                        <p>
+                            <span class="highlight">所有格 ('s):</span> 用來表示「擁有」。例如 <span class="tooltip-trigger">Zac's<span class="tooltip-content">'s 是所有格，表示「...的」。</span></span> sister (Zac的姊姊), `Tom's book` (Tom 的書)。
+                        </p>
+                        <div class="flashcard-section">
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">sister</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> n.</p><p><strong>意思:</strong> 姊妹。</p></div>
+                                </div>
+                            </div>
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">nurse</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> n.</p><p><strong>意思:</strong> 護理師。</p><p class="teacher-note" style="font-size:0.8rem; padding: 0.2rem 0.5rem;">職業前面要加 a 或 an 喔！</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">7. Jamie: She's very tall.</div>
+                <div class="sentence-details">
+                     <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>她非常高。</p>
+                        <h4>句法結構分析</h4><p>`She` (S.) + `'s` (is) (V.) + `very tall` (SC)。`very` 是副詞，用來修飾形容詞 `tall`。</p>
+                        <h4>重要用法/單字/片語</h4>
+                         <div class="flashcard-section">
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">very</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adv.</p><p><strong>意思:</strong> 非常。</p></div>
+                                </div>
+                            </div>
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">tall</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adj.</p><p><strong>意思:</strong> 高的。</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">8. Yuki: She's beautiful, too.</div>
+                <div class="sentence-details">
+                     <div class="sentence-details-content">
+                        <h4>中文翻譯</h4><p>她也很漂亮。</p>
+                        <h4>句法結構分析</h4><p>`She` (S.) + `'s` (is) (V.) + `beautiful` (SC)。`too` 是副詞，放在句尾。</p>
+                        <h4>重要用法/單字/片語</h4>
+                        <div class="flashcard-section">
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">beautiful</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adj.</p><p><strong>意思:</strong> 美麗的。</p></div>
+                                </div>
+                            </div>
+                             <div class="flashcard-container">
+                                <div class="flashcard">
+                                    <div class="card-face card-front"><span class="card-front-text">too</span></div>
+                                    <div class="card-face card-back"><p><strong>詞性:</strong> adv.</p><p><strong>意思:</strong> 也。</p><p class="teacher-note" style="font-size:0.8rem; padding: 0.2rem 0.5rem;">通常放在肯定句句尾，前面有逗號。</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>My Dear Family (我的摯愛家人) - 閱讀文本精講</h2>
+            <p class="teacher-note">接下來，我們來看看 Jamie 寫的關於她家人的短文。學會如何介紹家人，可是超級實用的技能喔！</p>
+            
+            <div class="reading-controls">
+                <button id="play-reading-btn" class="btn">模擬朗讀</button>
+            </div>
+            <div id="reading-passage">
+                <p class="reading-sentence" data-translation="嗨，我是 Jamie，而這是我親愛的家人。"><span class="highlight">1.</span> Hi, I'm Jamie, and this is my dear family.</p>
+                <p class="reading-sentence" data-translation="我們是一個五口的家庭。"><span class="highlight">2.</span> We are a family of five.</p>
+                <p class="reading-sentence" data-translation="我媽媽是一位上班族。"><span class="highlight">3.</span> My mom is an office worker.</p>
+                <p class="reading-sentence" data-translation="她 35 歲。"><span class="highlight">4.</span> She's thirty-five years old.</p>
+                <p class="reading-sentence" data-translation="我爸爸是一位老師。"><span class="highlight">5.</span> My dad is a teacher.</p>
+                <p class="reading-sentence" data-translation="他也是 35 歲。"><span class="highlight">6.</span> He's thirty-five, too.</p>
+                <p class="reading-sentence" data-translation="我妹妹是個小學生，而我是一個國中生。"><span class="highlight">7.</span> My sister is an elementary school student, and I'm a junior high school student.</p>
+                <p class="reading-sentence" data-translation="她十歲，而我十三歲。"><span class="highlight">8.</span> She's ten, and I'm thirteen.</p>
+                <p class="reading-sentence" data-translation="還有我年幼的弟弟，Dan，他一歲。"><span class="highlight">9.</span> And my baby brother, Dan, is one year old.</p>
+                <p class="reading-sentence" data-translation="我的家人對我來說非常親愛。"><span class="highlight">10.</span> My family is very dear to me.</p>
+            </div>
+            <div id="reading-translation-display" style="margin-top: 1rem; padding: 1rem; background-color: var(--bg-main); border-radius: 8px; min-height: 50px; transition: background-color 0.3s;"></div>
+
+            <h3>重點句型分析</h3>
+            <div class="sentence-block">
+                <div class="sentence-header">2. We are a family of five.</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>重要用法</h4>
+                        <p><span class="highlight">a family of + 數字</span>: 這是表達「一個...人組成的家庭」的道地用法。</p>
+                        <div class="interactive-box">
+                            <h4>試試看！造一個句子</h4>
+                            <p>輸入一個數字，看看會變成什麼句子。</p>
+                            <input type="number" id="family-size-input" placeholder="例如: 3">
+                            <button id="generate-sentence-btn" class="btn">產生句子</button>
+                            <div id="generated-sentence-output" class="generated-sentence" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sentence-block">
+                <div class="sentence-header">3. My mom is an office worker.</div>
+                <div class="sentence-details">
+                    <div class="sentence-details-content">
+                        <h4>重要用法</h4>
+                        <p><span class="highlight">office worker:</span> (n.) 上班族、辦公室職員。</p>
+                        <p class="teacher-note">注意: `office` 是母音 `o` 開頭，所以前面的不定冠詞要用 `an`，不是 `a` 喔！</p>
+                        <div class="interactive-box">
+                            <h4>A/An 二選一挑戰</h4>
+                            <p>My mom is ___ office worker.</p>
+                            <div class="choice-buttons" id="an-challenge-buttons">
+                                <button class="btn choice-btn" data-choice="a">a</button>
+                                <button class="btn choice-btn" data-choice="an">an</button>
+                            </div>
+                            <div id="an-challenge-feedback" class="choice-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>延伸補充：老師的悄悄話</h2>
+            <h3>1. 帥哥美女怎麼說？</h3>
+            <div class="interactive-box">
+                <h4>情境配對卡片</h4>
+                <p>將下方的標籤拖曳到最適合的情境框中。</p>
+                <div class="matching-game-container">
+                    <div class="matching-column">
+                        <p>一位男電影明星</p>
+                        <div class="matching-drop-zone" data-answer="Handsome"></div>
+                        <div class="matching-result"></div>
+                    </div>
+                    <div class="matching-column">
+                        <p>一幅美麗的風景畫</p>
+                        <div class="matching-drop-zone" data-answer="Beautiful"></div>
+                        <div class="matching-result"></div>
+                    </div>
+                    <div class="matching-column">
+                        <p>隔壁班可愛的女孩</p>
+                        <div class="matching-drop-zone" data-answer="Pretty"></div>
+                         <div class="matching-result"></div>
+                    </div>
+                    <div class="matching-column">
+                        <p>一個蹣跚學步的嬰兒</p>
+                        <div class="matching-drop-zone" data-answer="Cute"></div>
+                         <div class="matching-result"></div>
+                    </div>
+                </div>
+                <div class="matching-tag-bank">
+                    <div class="matching-tag" draggable="true">Handsome</div>
+                    <div class="matching-tag" draggable="true">Beautiful</div>
+                    <div class="matching-tag" draggable="true">Pretty</div>
+                    <div class="matching-tag" draggable="true">Cute</div>
+                </div>
+            </div>
+
+            <h3>2. 問職業的道地問法</h3>
+            <div class="interactive-box">
+                <h4>對話模擬點擊</h4>
+                <p>你想問 Ben 的職業，你會怎麼說？</p>
+                <button class="dialogue-sim-option" data-feedback="文法正確，但有點生硬喔！">Is he a student?</button>
+                <button class="dialogue-sim-option" data-feedback="非常道地！這是在日常生活中更自然的問法。">What does he do?</button>
+                <div id="dialogue-sim-feedback" class="dialogue-sim-feedback"></div>
+            </div>
+        </section>
+
+
+        <section class="card">
+            <h2>小試身手！隨堂測驗</h2>
+            
+            <div class="quiz-question" id="quiz1" data-correct="C">
+                <h3>基礎題 1</h3>
+                <p>根據 "My Dear Family" 的內容，Jamie 的爸爸幾歲？</p>
+                <div class="quiz-options">
+                    <button class="quiz-option" data-option="A">(A) Ten</button>
+                    <button class="quiz-option" data-option="B">(B) Thirteen</button>
+                    <button class="quiz-option" data-option="C">(C) Thirty-five</button>
+                    <button class="quiz-option" data-option="D">(D) One</button>
+                </div>
+                <button class="btn submit-quiz">送出答案</button>
+                <div class="quiz-feedback">
+                    <p><span class="highlight">解題思路:</span> 文章提到 `My dad is a teacher. He's thirty-five, too.`，`too` 表示「也」，跟媽媽一樣是 35 歲。</p>
+                    <p class="teacher-note">給你的提示: 仔細找找文章中提到 `dad` 的那一句，答案就在附近喔！</p>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="quiz2">
+                <h3>進階應用題 2</h3>
+                <p>請用課堂所學的單字和句型，將以下三個資訊合併成一句通順的英文句子：</p>
+                <ul>
+                    <li>資訊一：That is a man. (那是個男人。)</li>
+                    <li>資訊二：He is young and handsome. (他又年輕又帥氣。)</li>
+                    <li>資訊三：He is our new English teacher. (他是我們的新英文老師。)</li>
+                </ul>
+                <textarea placeholder="請在此輸入你的答案..."></textarea>
+                <button class="btn show-answer">查看參考答案</button>
+                <div class="quiz-feedback">
+                    <p><span class="highlight">參考答案:</span> That young and handsome man is our new English teacher. (或是 That is our new, young, and handsome English teacher. 也可以)</p>
+                    <p><span class="highlight">解題思路:</span> 這題考的是如何用形容詞 (`young`, `handsome`, `new`) 來修飾名詞 (`man`, `teacher`)，並將它們組合成一個介紹人的完整句子。把形容詞放在名詞前面是關鍵。</p>
+                    <p class="teacher-note">給你的提示: 試著把形容詞放在你要形容的人事物前面，就像「帥氣的男孩」是 `handsome boy` 一樣。</p>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="quiz3" data-correct="C">
+                <h3>「易混淆文法觀念」素養題 3</h3>
+                <p>情境對話填空：<br>
+                Amy: Wow, who is that girl with long hair?<br>
+                Ben: That's my sister, Lisa.<br>
+                Amy: And the boy next to her? Is he your brother?<br>
+                Ben: No, he isn't. He's my ____. My dad and his dad are brothers.</p>
+                <div class="quiz-options">
+                    <button class="quiz-option" data-option="A">(A) son</button>
+                    <button class="quiz-option" data-option="B">(B) uncle</button>
+                    <button class="quiz-option" data-option="C">(C) cousin</button>
+                </div>
+                <button class="btn submit-quiz">送出答案</button>
+                <div class="quiz-feedback">
+                    <p><span class="highlight">解題思路:</span> 這題考的是家庭稱謂的理解。爸爸的兄弟的小孩，就是你的「堂表兄弟姊妹」，英文是 `cousin`。`son` 是兒子，`uncle` 是叔叔/伯伯。</p>
+                    <p class="teacher-note">給你的提示: 想一想，爸爸的兄弟，你要叫他 `uncle`。那 `uncle` 的小孩，跟你是什麼關係呢？</p>
+                    <div class="family-tree">
+                        <div class="tree-level">
+                            <div class="tree-node">爸爸</div>
+                            <div class="tree-connector"></div>
+                            <div class="tree-node">爸爸的兄弟 (Uncle)</div>
+                        </div>
+                        <div class="tree-level">
+                             <div class="tree-vertical-line"></div>
+                             <div style="width:150px"></div>
+                             <div class="tree-vertical-line"></div>
+                        </div>
+                         <div class="tree-level">
+                            <div class="tree-node">你</div>
+                            <div style="width:10px"></div>
+                            <div class="tree-node" id="cousin-node">他的小孩 (Cousin)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-question" id="quiz4" data-correct="C">
+                <h3>情境對話選擇 4</h3>
+                <p>
+                Clerk: Hi, can I help you?<br>
+                Customer: Yes, I'm looking for a gift for my mom.<br>
+                Clerk: How about this beautiful picture?<br>
+                Customer: Oh, it's lovely. ______ in the picture?<br>
+                Clerk: She's the artist. She's very famous.
+                </p>
+                <div class="quiz-options">
+                    <button class="quiz-option" data-option="A">(A) Who's she</button>
+                    <button class="quiz-option" data-option="B">(B) Whose is she</button>
+                    <button class="quiz-option" data-option="C">(C) Who's that woman</button>
+                </div>
+                <button class="btn submit-quiz">送出答案</button>
+                <div class="quiz-feedback">
+                    <p><span class="highlight">解題思路:</span> 這題考的是問句的完整性和 `Who's` vs. `Whose`。`(A)` `Who's she` 雖然文法對，但在指著圖片問時，用 `that woman` 來明確指代會更自然。`(B)` `Whose` 是問「誰的」，意思不對。`(C)` `Who's that woman` (那位女士是誰) 是最符合情境的問法。</p>
+                    <p class="teacher-note">給你的提示: `Who's` 是 `Who is` 的縮寫，問「是誰」。`Whose` 是問「是誰的」。你覺得 customer 想問的是「她是誰」還是「她是誰的」呢？</p>
+                </div>
+            </div>
+
+             <div class="quiz-question" id="quiz5" data-correct="B">
+                <h3>短文填空 5</h3>
+                <p>My name is David. My family is great. My father is a cook, and my mother is a doctor. They are both very kind. I have a sister. She is a student. I am a student, _____. We are a happy family.</p>
+                <div class="quiz-options">
+                    <button class="quiz-option" data-option="A">(A) so</button>
+                    <button class="quiz-option" data-option="B">(B) too</button>
+                    <button class="quiz-option" data-option="C">(C) but</button>
+                </div>
+                <button class="btn submit-quiz">送出答案</button>
+                <div class="quiz-feedback">
+                    <p><span class="highlight">解題思路:</span> 前一句說「她是一個學生」，後一句說「我也是一個學生」，兩句的意思是並列、相同的，所以要用 `too` (也)。`so` 是「所以」，表因果。`but` 是「但是」，表轉折。</p>
+                    <p class="teacher-note">給你的提示: 看看空格前後兩句話的關係。是「我也是」的感覺，還是「但是我不是」的感覺呢？</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Welcome Card
+        const welcomeOverlay = document.getElementById('welcome-overlay');
+        const startBtn = document.getElementById('start-learning-btn');
+        const mainContent = document.getElementById('main-content');
+
+        startBtn.addEventListener('click', () => {
+            welcomeOverlay.classList.add('hidden');
+            mainContent.classList.add('visible');
+        });
+
+        // Accordion for translation
+        const sentenceHeaders = document.querySelectorAll('.sentence-header');
+        sentenceHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                header.classList.toggle('active');
+                const details = header.nextElementSibling;
+                if (details.style.maxHeight) {
+                    details.style.maxHeight = null;
+                } else {
+                    details.style.maxHeight = details.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Flashcards
+        const flashcards = document.querySelectorAll('.flashcard');
+        flashcards.forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('is-flipped');
+            });
+        });
+        
+        // Sentence Scramble
+        const wordTokens = document.querySelectorAll('.word-token');
+        const dropZone = document.getElementById('scramble-drop-zone');
+        let draggedToken = null;
+
+        wordTokens.forEach(token => {
+            token.addEventListener('dragstart', (e) => {
+                draggedToken = e.target;
+                setTimeout(() => e.target.style.display = 'none', 0);
+            });
+            token.addEventListener('dragend', (e) => {
+                setTimeout(() => {
+                    draggedToken.style.display = 'inline-block';
+                    draggedToken = null;
+                }, 0);
+            });
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            if (draggedToken) {
+                const placeholder = dropZone.querySelector('.placeholder-text');
+                if(placeholder) placeholder.style.display = 'none';
+                dropZone.appendChild(draggedToken);
+            }
+        });
+
+        // Reading Highlighter
+        const playReadingBtn = document.getElementById('play-reading-btn');
+        const readingSentences = document.querySelectorAll('.reading-sentence');
+        const translationDisplay = document.getElementById('reading-translation-display');
+        let currentSentenceIndex = 0;
+        let readingInterval = null;
+
+        playReadingBtn.addEventListener('click', () => {
+            if (readingInterval) {
+                clearInterval(readingInterval);
+                readingInterval = null;
+                playReadingBtn.textContent = '模擬朗讀';
+                return;
+            }
+            
+            playReadingBtn.textContent = '停止朗讀';
+            currentSentenceIndex = 0;
+            readingSentences.forEach(s => s.classList.remove('reading-highlight'));
+            translationDisplay.textContent = '';
+
+            const highlightNext = () => {
+                if (currentSentenceIndex > 0) {
+                     readingSentences[currentSentenceIndex-1].classList.remove('reading-highlight');
+                }
+                if (currentSentenceIndex < readingSentences.length) {
+                    const currentSentence = readingSentences[currentSentenceIndex];
+                    currentSentence.classList.add('reading-highlight');
+                    translationDisplay.textContent = currentSentence.dataset.translation;
+                    currentSentenceIndex++;
+                } else {
+                    clearInterval(readingInterval);
+                    readingInterval = null;
+                    playReadingBtn.textContent = '重新朗讀';
+                    setTimeout(() => {
+                        readingSentences.forEach(s => s.classList.remove('reading-highlight'));
+                        translationDisplay.textContent = '';
+                    }, 2000);
+                }
+            };
+            highlightNext();
+            readingInterval = setInterval(highlightNext, 2500);
+        });
+
+        // Sentence Generator
+        const generateBtn = document.getElementById('generate-sentence-btn');
+        const familyInput = document.getElementById('family-size-input');
+        const sentenceOutput = document.getElementById('generated-sentence-output');
+
+        generateBtn.addEventListener('click', () => {
+            const num = familyInput.value;
+            if (num && !isNaN(num) && num > 0) {
+                sentenceOutput.textContent = `They are a family of ${num}.`;
+                sentenceOutput.style.display = 'block';
+            } else {
+                sentenceOutput.textContent = '請輸入一個有效的數字！';
+                sentenceOutput.style.display = 'block';
+            }
+        });
+        
+        // A/An Challenge
+        const anChallengeButtons = document.getElementById('an-challenge-buttons');
+        const anChallengeFeedback = document.getElementById('an-challenge-feedback');
+        anChallengeButtons.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const choice = e.target.dataset.choice;
+                if (choice === 'an') {
+                    e.target.classList.add('correct');
+                    anChallengeFeedback.textContent = "答對了！因為 office 是母音開頭。";
+                    anChallengeFeedback.className = 'choice-feedback correct';
+                } else {
+                    e.target.classList.add('incorrect');
+                    anChallengeFeedback.textContent = "再想一想，office 是母音 o 開頭喔！";
+                    anChallengeFeedback.className = 'choice-feedback incorrect';
+                }
+                // Disable buttons
+                Array.from(anChallengeButtons.children).forEach(btn => btn.disabled = true);
+            }
+        });
+        
+        // Matching Game
+        const matchingTags = document.querySelectorAll('.matching-tag');
+        const matchingDropZones = document.querySelectorAll('.matching-drop-zone');
+        let draggedTag = null;
+        
+        matchingTags.forEach(tag => {
+           tag.addEventListener('dragstart', (e) => {
+               draggedTag = e.target;
+           });
+        });
+        
+        matchingDropZones.forEach(zone => {
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                if (draggedTag && zone.childElementCount === 0) {
+                    zone.appendChild(draggedTag);
+                    const resultDiv = zone.nextElementSibling;
+                    resultDiv.style.visibility = 'visible';
+                    if (zone.dataset.answer === draggedTag.textContent) {
+                        resultDiv.textContent = '✔️ 正確！';
+                        resultDiv.style.color = '#38761d';
+                    } else {
+                        resultDiv.textContent = '❌ 不太對喔，再試試！';
+                        resultDiv.style.color = '#a61c00';
+                    }
+                }
+            });
+        });
+
+        // Dialogue Simulator
+        const simOptions = document.querySelectorAll('.dialogue-sim-option');
+        const simFeedback = document(dialogue-sim-feedback);
+        simOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                simFeedback.textContent = option.dataset.feedback;
+                simFeedback.classList.add('visible');
+            });
+        });
+
+        // Quiz Logic
+        const quizQuestions = document.querySelectorAll('.quiz-question');
+        quizQuestions.forEach(question => {
+            let selectedOption = null;
+            const options = question.querySelectorAll('.quiz-option');
+            const submitBtn = question.querySelector('.submit-quiz');
+            const showAnswerBtn = question.querySelector('.show-answer');
+            const feedback = question.querySelector('.quiz-feedback');
+            
+            // For multiple choice
+            if (options.length > 0) {
+                options.forEach(option => {
+                    option.addEventListener('click', () => {
+                        options.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                        selectedOption = option;
+                    });
+                });
+            }
+
+            if (submitBtn) {
+                submitBtn.addEventListener('click', () => {
+                    if (!selectedOption) {
+                        alert('請先選擇一個答案！');
+                        return;
+                    }
+                    const isCorrect = selectedOption.dataset.option === question.dataset.correct;
+                    if (isCorrect) {
+                        selectedOption.classList.add('correct');
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        question.querySelector(`.quiz-option[data-option="${question.dataset.correct}"]`).classList.add('correct');
+                    }
+                    feedback.classList.add('visible');
+                    options.forEach(opt => opt.disabled = true);
+                    submitBtn.disabled = true;
+
+                    // Cousin node highlight
+                    if(question.id === 'quiz3' && isCorrect) {
+                        const cousinNode = document.getElementById('cousin-node');
+                        cousinNode.classList.add('highlight');
+                    }
+                });
+            }
+
+            // For textarea questions
+            if (showAnswerBtn) {
+                showAnswerBtn.addEventListener('click', () => {
+                    feedback.classList.add('visible');
+                });
+            }
+        });
+    });
+    </script>
+</body>
+</html>

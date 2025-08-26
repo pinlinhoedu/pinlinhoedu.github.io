@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Who's That Handsome Boy? 深度文法講義</title>
+    <style>
+        :root {
+            --color-blue: #6488A8;
+            --color-blue-light: #e0e8ef;
+            --color-green: #788A73;
+            --color-green-light: #e4e8e3;
+            --color-pink: #D6A692;
+            --color-pink-light: #f6ede9;
+            --color-bg: #F5F5F0;
+            --color-text: #3D3D3D;
+            --color-heading: #2c2c2c;
+            --color-highlight: #f8c555;
+            --color-correct: #5f9a6e;
+            --color-incorrect: #c85e5e;
+            --font-family: Arial, Helvetica, sans-serif;
+            --border-radius: 12px;
+            --shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.7;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: var(--color-heading);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: white;
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            margin: 0;
+        }
+
+        h3 {
+            color: var(--color-heading);
+            border-bottom: 2px solid;
+            padding-bottom: 5px;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        strong, .emphasis {
+            color: var(--color-heading);
+            font-weight: bold;
+        }
+
+        .grammar-section {
+            margin-bottom: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .accordion-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        
+        .accordion-toggle:hover {
+            filter: brightness(1.05);
+        }
+
+        .accordion-icon {
+            width: 24px;
+            height: 24px;
+            position: relative;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            margin-right: 20px;
+        }
+
+        .accordion-icon::before,
+        .accordion-icon::after {
+            content: '';
+            position: absolute;
+            background-color: white;
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-icon::before {
+            width: 100%;
+            height: 4px;
+            left: 0;
+            top: 10px;
+        }
+
+        .accordion-icon::after {
+            width: 4px;
+            height: 100%;
+            left: 10px;
+            top: 0;
+        }
+
+        .accordion-toggle.active .accordion-icon {
+            transform: rotate(135deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 20px;
+        }
+
+        /* Color Themes */
+        #be-verbs .accordion-toggle, #be-verbs h3 { border-color: var(--color-blue); }
+        #be-verbs .accordion-toggle { background-color: var(--color-blue); }
+        #be-verbs .accordion-content { background-color: var(--color-blue-light); }
+
+        #adjectives .accordion-toggle, #adjectives h3 { border-color: var(--color-green); }
+        #adjectives .accordion-toggle { background-color: var(--color-green); }
+        #adjectives .accordion-content { background-color: var(--color-green-light); }
+
+        #wh-questions .accordion-toggle, #wh-questions h3 { border-color: var(--color-pink); }
+        #wh-questions .accordion-toggle { background-color: var(--color-pink); }
+        #wh-questions .accordion-content { background-color: var(--color-pink-light); }
+        
+        #practice {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        #practice h2 {
+             background-color: #555;
+        }
+
+        /* Interactive Elements */
+        .icon-svg {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+        
+        @keyframes float-animation {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .devil-icon {
+            animation: float-animation 1.5s infinite ease-in-out;
+        }
+
+        .comparison-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .comparison-box {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid;
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        #be-verbs .comparison-box { border-color: var(--color-blue); }
+        #adjectives .comparison-box { border-color: var(--color-green); }
+        #wh-questions .comparison-box { border-color: var(--color-pink); }
+
+        .comparison-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .highlight-group {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+        .highlight-group.highlighted {
+            background-color: var(--color-highlight);
+            color: #000;
+        }
+
+        .tshirt-icon {
+            display: inline-block;
+            width: 30px;
+            height: 35px;
+            background-color: #fff;
+            border: 2px solid var(--color-blue);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+        .tshirt-icon::before,
+        .tshirt-icon::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 7px;
+            background-color: #fff;
+            border: 2px solid var(--color-blue);
+            top: 2px;
+        }
+        .tshirt-icon::before {
+            left: -12px;
+            transform: rotate(-45deg);
+            border-radius: 5px 0 0 0;
+        }
+        .tshirt-icon::after {
+            right: -12px;
+            transform: rotate(45deg);
+            border-radius: 0 5px 0 0;
+        }
+
+        .filter-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            color: #fff;
+        }
+        .filter-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn-handsome { background-color: #8db3d1; }
+        .btn-tall { background-color: #92b496; }
+        .btn-young { background-color: #e0b09d; }
+
+        .adjective-placeholder {
+            transition: all 0.3s ease;
+            font-weight: bold;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+        .validation-input-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .validation-input {
+            padding: 8px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
+            font-size: 1em;
+        }
+        .validation-input.correct { border-color: var(--color-correct); }
+        .validation-input.incorrect { border-color: var(--color-incorrect); }
+        .validation-icon {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .validation-icon.correct { color: var(--color-correct); }
+        .validation-icon.incorrect { color: var(--color-incorrect); }
+        .validation-hint {
+            font-size: 0.9em;
+            color: var(--color-incorrect);
+        }
+
+        .chain-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .chain-link {
+            display: inline-block;
+            position: relative;
+            width: 20px;
+            height: 10px;
+        }
+        .chain-link::before, .chain-link::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--color-pink);
+            border-radius: 50%;
+        }
+        .chain-link::before { left: 0; }
+        .chain-link::after { right: 0; }
+        
+        .quiz-simulator-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid var(--color-pink);
+            background-color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.2s;
+        }
+        .quiz-simulator-btn:hover { background-color: var(--color-pink-light); }
+        
+        @keyframes shake-horizontal {
+          0%, 100% { transform: translateX(0); }
+          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+          20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .shake {
+            animation: shake-horizontal 0.5s ease;
+        }
+
+        /* Practice Questions */
+        .exercise {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+        }
+        .exercise h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .options-list {
+            list-style-type: none;
+        }
+        .options-list li {
+            margin-bottom: 8px;
+        }
+        .options-list label {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .options-list label:hover {
+            background-color: #f0f0f0;
+        }
+        .options-list input[type="radio"]:checked + label {
+            border-color: var(--color-blue);
+            background-color: var(--color-blue-light);
+        }
+        .options-list label.correct {
+            background-color: var(--color-correct);
+            border-color: var(--color-correct);
+            color: white;
+        }
+        .options-list label.incorrect {
+            background-color: var(--color-incorrect);
+            border-color: var(--color-incorrect);
+            color: white;
+        }
+         .options-list label.answer-key {
+            border: 2px solid var(--color-correct);
+            box-shadow: 0 0 5px var(--color-correct);
+        }
+
+        .check-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #555;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .check-btn:hover {
+            background-color: #333;
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 5px solid #ccc;
+        }
+
+        /* Dialogue Quiz */
+        .dialogue-container {
+            background-color: #f7f7f7;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .dialogue-bubble {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+        .bubble-mark {
+            background-color: #e1f5fe;
+            border-bottom-left-radius: 3px;
+            margin-right: auto;
+        }
+        .bubble-tina {
+            background-color: #fff9c4;
+            border-bottom-right-radius: 3px;
+            margin-left: auto;
+        }
+        .dialogue-select {
+            padding: 3px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        .dialogue-select.correct { border-color: var(--color-correct); background-color: #e8f5e9; }
+        .dialogue-select.incorrect { border-color: var(--color-incorrect); background-color: #ffebee; }
+        .feedback-icon {
+            display: inline-block;
+            font-weight: bold;
+            margin-left: 5px;
+            color: var(--color-correct);
+        }
+        .feedback-icon.incorrect { color: var(--color-incorrect); }
+        
+        /* Drag Drop */
+        .drag-drop-container, .sentence-reorder-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .draggable-items, .drop-zones {
+            flex: 1;
+            padding: 10px;
+            min-height: 100px;
+        }
+        .draggable {
+            padding: 8px 12px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            cursor: grab;
+            user-select: none;
+            transition: opacity 0.2s;
+        }
+        .draggable:active { cursor: grabbing; }
+        .drop-zone {
+            padding: 10px;
+            border: 2px dashed #aaa;
+            border-radius: 6px;
+            min-height: 50px;
+            margin-bottom: 10px;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .drop-zone.over {
+            background-color: #e0e0e0;
+            border-color: #333;
+        }
+        .drop-zone.correct {
+            border-color: var(--color-correct);
+            background-color: #e8f5e9;
+        }
+        .draggable.placed {
+            opacity: 0.5;
+            cursor: default;
+        }
+        
+        .sentence-reorder-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .drop-sentence-area {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 60px;
+            padding: 10px;
+            background-color: #fff;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+        }
+         .drop-sentence-area .draggable { margin-bottom: 0; }
+         .drop-sentence-area.correct { border-color: var(--color-correct); }
+         .drop-sentence-area.incorrect { border-color: var(--color-incorrect); }
+
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .comparison-container, .drag-drop-container, .sentence-reorder-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Unit 1: Who's That Handsome Boy? 深度文法講義</h1>
+        <p>嗨，同學！我是你的英文文法專屬教練。這一課我們認識了新同學 Zac 和他的家人，對話中充滿了各種介紹與描述。這些簡單的對話，其實藏著英文中最核心的三大文法基石。學會它們，你的英文大樓才能蓋得又高又穩！</p>
+
+        <!-- 文法點 1: Be 動詞 -->
+        <section class="grammar-section" id="be-verbs">
+            <div class="accordion-toggle">
+                <h2>文法點 1: Be 動詞的現在式 (am, is, are) — 你的身分識別證</h2>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="accordion-content">
+                <div style="padding: 20px 0;">
+                    <h3>觀念說明</h3>
+                    <p>想像一下，Be 動詞 (<code>am</code>, <code>is</code>, <code>are</code>) 就像是句子中的「<strong class="emphasis">等號 (=)</strong>」或是中文的「<strong class="emphasis">是</strong>」。它的主要工作就是連結主詞（主角是誰）和後面的資訊（他是什麼身分、狀態或在哪裡）。就像鑰匙配鎖頭一樣，不同的主詞要搭配不同的 Be 動詞：</p>
+                    <ul>
+                        <li><strong class="emphasis">我 (I)</strong> 的專屬鑰匙：<code>am</code> 
+                            <svg class="icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="25" cy="25" r="20" fill="none" stroke="#6488A8" stroke-width="8"/>
+                                <rect x="22" y="45" width="6" height="45" fill="#6488A8"/>
+                                <rect x="12" y="70" width="26" height="6" fill="#6488A8"/>
+                                <rect x="12" y="85" width="26" height="6" fill="#6488A8"/>
+                            </svg>
+                            <svg class="icon-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                               <path d="M20 40 A 30 30 0 1 1 80 40 L 80 80 A 10 10 0 0 1 70 90 L 30 90 A 10 10 0 0 1 20 80 Z" fill="none" stroke="#6488A8" stroke-width="8"/>
+                               <circle cx="50" cy="65" r="8" fill="#6488A8"/>
+                            </svg>
+                        </li>
+                        <li><strong class="emphasis">你 (You)</strong> 和 <strong class="emphasis">複數</strong> (兩個以上的人事物) 的萬用鑰匙：<code>are</code></li>
+                        <li><strong class="emphasis">他 (He)</strong> / <strong class="emphasis">她 (She)</strong> / <strong class="emphasis">它 (It)</strong> / <strong class="emphasis">單一個人或事物</strong> 的專屬鑰匙：<code>is</code></li>
+                    </ul>
+                    <p><strong class="emphasis">口訣：</strong> <code>I</code> 配 <code>am</code>，<code>you</code> 配 <code>are</code>，單數 <code>is</code>，複數 <code>are</code>。</p>
+
+                    <h3>重要考點</h3>
+                    <ol>
+                        <li><strong>人稱配對錯誤</strong>：這是最基本的考點，考試時一緊張就可能選錯。例如：<code>He are a student.</code> (X)</li>
+                        <li><strong>縮寫形式</strong>：口語和非正式寫作中很常用，也是考試重點。
+                            <ul>
+                                <li><code>I am</code> → <code>I'm</code></li>
+                                <li><code>He is</code> → <code>He's</code> / <code>She is</code> → <code>She's</code></li>
+                                <li><code>You are</code> → <code>You're</code></li>
+                                <li><code>is not</code> → <code>isn't</code></li>
+                                <li><code>are not</code> → <code>aren't</code> (注意：<code>am not</code> <strong>沒有</strong> <code>amn't</code> 這種縮寫喔！)</li>
+                            </ul>
+                        </li>
+                        <li><strong>職業/身分前的 <code>a/an</code></strong>：這是<strong class="emphasis">國中段考的超級大魔王</strong>！
+                            <svg class="icon-svg devil-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11 15H13V17H11V15ZM11 7H13V13H11V7Z" fill="#c85e5e"/>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M1 12C1 5.92487 5.92487 1 12 1C18.0751 1 23 5.92487 23 12C23 18.0751 18.0751 23 12 23C5.92487 23 1 18.0751 1 12ZM12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z" fill="#c85e5e"/>
+                                <path d="M8.5 4C8.5 4 8 2 7 2C6.5 2 6 2.5 6 3C6 3.5 7.5 4.5 8.5 4Z" stroke="#c85e5e" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M15.5 4C15.5 4 16 2 17 2C17.5 2 18 2.5 18 3C18 3.5 16.5 4.5 15.5 4Z" stroke="#c85e5e" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                             介紹<strong class="emphasis">單數</strong>的職業或身分時，前面<strong class="emphasis">一定要</strong>加上 <code>a</code> 或 <code>an</code>。</li>
+                    </ol>
+
+                    <h3>分析比較</h3>
+                    <div class="comparison-container">
+                        <div class="comparison-box">
+                            <h4>直述句 (說明事實)</h4>
+                            <p><strong>結構:</strong> 主詞 + Be 動詞...</p>
+                            <p><strong>範例:</strong> <span class="highlight-group" data-group="be-verb-compare">He is</span> a teacher.</p>
+                            <p><strong>說明:</strong> Be 動詞跟在主詞後面。</p>
+                        </div>
+                        <div class="comparison-box">
+                            <h4>疑問句 (提出問題)</h4>
+                            <p><strong>結構:</strong> Be 動詞 + 主詞...?</p>
+                            <p><strong>範例:</strong> <span class="highlight-group" data-group="be-verb-compare">Is he</span> a teacher?</p>
+                            <p><strong>說明:</strong> Be 動詞<strong class="emphasis">跑到主詞前面</strong>，形成問句。</p>
+                        </div>
+                    </div>
+                    
+                    <h3>互動練習：句子重組</h3>
+                    <p>請將下面的單字拖曳到正確的位置，組成句子："Are you a singer?"</p>
+                    <div class="sentence-reorder-container">
+                         <div id="reorder-words" class="sentence-reorder-words">
+                            <div class="draggable" draggable="true" id="word-you">you</div>
+                            <div class="draggable" draggable="true" id="word-singer">singer</div>
+                            <div class="draggable" draggable="true" id="word-question">?</div>
+                            <div class="draggable" draggable="true" id="word-a">a</div>
+                            <div class="draggable" draggable="true" id="word-are">Are</div>
+                        </div>
+                        <div id="reorder-drop-area" class="drop-sentence-area"></div>
+                    </div>
+
+                    <h3>易混淆觀念補充</h3>
+                    <p><strong class="emphasis">陷阱</strong>：中文說「我是學生」，不會說「我是一位學生」，所以很多同學會忘記加 <code>a/an</code>。<br>
+                    <strong class="emphasis">破解</strong>：請記得，在英文中，只要是「<strong class="emphasis">可數的、單數的</strong>」名詞，前面就<strong class="emphasis">必須</strong>有個東西來限定它，最常見的就是 <code>a/an</code>。把它想成是職業的「<strong class="emphasis">制服</strong>」<span class="tshirt-icon"></span>，單數職業名詞出門一定要穿！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文法點 2: 形容詞 -->
+        <section class="grammar-section" id="adjectives">
+            <div class="accordion-toggle">
+                <h2>文法點 2: 形容詞 (Adjectives) — 幫人事物畫上色彩</h2>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="accordion-content">
+                <div style="padding: 20px 0;">
+                    <h3>觀念說明</h3>
+                    <p>形容詞就像是修圖軟體的「<strong class="emphasis">濾鏡</strong>」或「<strong class="emphasis">特效筆</strong>」，它的工作就是<strong class="emphasis">描述或修飾名詞</strong>，讓句子更生動、資訊更豐富。</p>
+                    <div id="filter-demo">
+                        <p>This is a <span id="adjective-placeholder" class="adjective-placeholder">boy</span>.</p>
+                        <div class="filter-buttons">
+                            <button class="filter-btn btn-handsome" data-adj="handsome">handsome</button>
+                            <button class="filter-btn btn-tall" data-adj="tall">tall</button>
+                            <button class="filter-btn btn-young" data-adj="young">young</button>
+                        </div>
+                    </div>
+
+                    <h3>重要考點</h3>
+                    <p>形容詞在句子中有兩個最主要的站位，這兩個位置的考法完全不同！</p>
+                    <ol>
+                        <li><strong>位置一：站在 Be 動詞後面</strong> (句型：主詞 + Be 動詞 + <strong class="emphasis">形容詞</strong>.)</li>
+                        <li><strong>位置二：站在名詞前面</strong> (句型：... a/an + <strong class="emphasis">形容詞</strong> + 名詞.)</li>
+                    </ol>
+
+                    <h3>分析比較</h3>
+                     <div class="comparison-container">
+                        <div class="comparison-box">
+                            <h4>Be動詞後</h4>
+                            <p><strong>範例:</strong> The boy <span class="highlight-group" data-group="adj-compare">is handsome</span>.</p>
+                            <p><strong>中文語感:</strong> 那個男孩<strong class="emphasis">是英俊的</strong>。</p>
+                        </div>
+                        <div class="comparison-box">
+                            <h4>名詞前</h4>
+                            <p><strong>範例:</strong> He is a <span class="highlight-group" data-group="adj-compare">handsome boy</span>.</p>
+                            <p><strong>中文語感:</strong> 他是一位<strong class="emphasis">英俊的男孩</strong>。</p>
+                        </div>
+                    </div>
+
+                    <h3>易混淆觀念補充</h3>
+                    <p><strong class="emphasis">陷阱</strong>：形容詞本身<strong class="emphasis">沒有複數變化</strong>！<br>
+                    <strong class="emphasis">破解</strong>：英文的形容詞很「懶」，不管它修飾的名詞是單數還是複數，它自己永遠都長一個樣。試試看在下面輸入 "handsomes"：</p>
+                    <div class="validation-input-container">
+                        <span>They are</span>
+                        <input type="text" id="adj-input" class="validation-input" placeholder="handsome">
+                        <span>boys.</span>
+                        <span id="adj-validation-icon" class="validation-icon"></span>
+                    </div>
+                    <p id="adj-validation-hint" class="validation-hint" style="display:none;">形容詞沒有複數變化喔！</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文法點 3: Wh-疑問詞 -->
+        <section class="grammar-section" id="wh-questions">
+            <div class="accordion-toggle">
+                <h2>文法點 3: Wh-疑問詞 (Who & How old) — 精準提問的鑰匙</h2>
+                <span class="accordion-icon"></span>
+            </div>
+            <div class="accordion-content">
+                <div style="padding: 20px 0;">
+                    <h3>觀念說明</h3>
+                    <p>如果說 Be 動詞開頭的問句是「是非題」
+                        <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                            <path stroke="#5f9a6e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 7L9 18l-5-5"/>
+                        </svg>
+                        <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                            <path stroke="#c85e5e" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        (只能回答 Yes/No)，那 Wh-疑問詞開頭的問句就是「<strong class="emphasis">申論題</strong>」或「<strong class="emphasis">填空題</strong>」
+                        <svg class="icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none">
+                           <path stroke="#3D3D3D" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L14.732 3.732z"/>
+                           <path stroke="#3D3D3D" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15h14M5 19h14"/>
+                        </svg>
+                        ，它要求你提供<strong class="emphasis">具體的資訊</strong>。</p>
+                    <ul>
+                        <li><strong class="emphasis">Who</strong>: 用來問「<strong class="emphasis">誰</strong>」，想知道某人的<strong class="emphasis">身分或姓名</strong>。</li>
+                        <li><strong class="emphasis">How old</strong>: 用來問「<strong class="emphasis">幾歲</strong>」，想知道某人的<strong class="emphasis">年齡</strong>。</li>
+                    </ul>
+
+                    <h3>分析比較：問答模擬器</h3>
+                    <div id="quiz-simulator" class="comparison-box">
+                        <p><strong>Q: Who is he?</strong></p>
+                        <button class="quiz-simulator-btn" data-correct="false">Yes, he is.</button>
+                        <button class="quiz-simulator-btn" data-correct="true">He is my brother.</button>
+                        <p id="simulator-feedback" style="margin-top:10px; color: var(--color-incorrect); font-weight: bold;"></p>
+                    </div>
+
+                    <h3>易混淆觀念補充</h3>
+                    <p><strong class="emphasis">陷阱</strong>：回答年齡時的 <code>year(s) old</code>。<br>
+                    He is 29. (O)<br>
+                    He is 29 <strong class="emphasis">years old</strong>. (O)<br>
+                    He is 29 <strong class="emphasis">years</strong>. (X)  <-- <strong class="emphasis">超級大陷阱！</strong> 
+                    <span class="chain-container">
+                        <code>years</code> <span class="chain-link"></span> <code>old</code>
+                    </span>
+                     必須同生共死，要嘛都出現，要嘛都不要出現。</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="practice">
+            <h2 style="text-align: center;">實戰演練</h2>
+
+            <div class="exercise" id="ex1">
+                <h4>1. (基礎題)</h4>
+                <p>My aunt, Zoe, ______ an office worker, and she ______ very beautiful.</p>
+                <form id="quiz-form-1">
+                    <ul class="options-list">
+                        <li><input type="radio" name="q1" id="q1a" value="A"><label for="q1a">(A) is; is</label></li>
+                        <li><input type="radio" name="q1" id="q1b" value="B"><label for="q1b">(B) is; are</label></li>
+                        <li><input type="radio" name="q1" id="q1c" value="C"><label for="q1c">(C) are; is</label></li>
+                        <li><input type="radio" name="q1" id="q1d" value="D"><label for="q1d">(D) are; are</label></li>
+                    </ul>
+                    <button type="submit" class="check-btn">確認</button>
+                </form>
+                <div class="explanation">
+                    <p><strong>答案：(A)</strong></p>
+                    <p><strong>解題思路</strong>：第一格主詞是 `My aunt, Zoe`，是「一位阿姨」，屬於<strong>單數第三人稱</strong>，所以 Be 動詞用 `is`。第二格主詞是 `she`，同樣是單數第三人稱，Be 動詞也用 `is`。</p>
+                </div>
+            </div>
+            
+            <div class="exercise" id="ex2">
+                <h4>2. (進階應用題)</h4>
+                <p>將 "The woman is a doctor." 和 "The woman is young." 兩句合併成一句通順的句子。</p>
+                <form id="quiz-form-2">
+                    <ul class="options-list">
+                        <li><input type="radio" name="q2" id="q2a" value="A"><label for="q2a">(A) The woman is a young and doctor.</label></li>
+                        <li><input type="radio" name="q2" id="q2b" value="B"><label for="q2b">(B) The woman is a doctor young.</label></li>
+                        <li><input type="radio" name="q2" id="q2c" value="C"><label for="q2c">(C) The woman is a young doctor.</label></li>
+                        <li><input type="radio" name="q2" id="q2d" value="D"><label for="q2d">(D) The woman is young a doctor.</label></li>
+                    </ul>
+                    <button type="submit" class="check-btn">確認</button>
+                </form>
+                <div class="explanation">
+                    <p><strong>答案：(C)</strong></p>
+                    <p><strong>解題思路</strong>：這題考的是「形容詞的位置」。形容詞 `young` 要放在名詞 `doctor` 的前面來修飾它，形成 `a young doctor` (一位年輕的醫生) 這個詞組。</p>
+                </div>
+            </div>
+            
+            <div class="exercise" id="ex3">
+                <h4>3-5. (「易混淆文法觀念」素養題)</h4>
+                <div class="dialogue-container">
+                    <div class="dialogue-bubble bubble-mark">
+                        <strong>Mark:</strong> Look at that tall girl over there. 
+                        <select class="dialogue-select" id="q3" data-answer="A">
+                            <option value="">(3)</option>
+                            <option value="A">Who</option>
+                            <option value="B">How</option>
+                            <option value="C">Is</option>
+                            <option value="D">Are</option>
+                        </select>
+                         is she?<span class="feedback-icon" id="fb3"></span>
+                    </div>
+                    <div class="dialogue-bubble bubble-tina">
+                        <strong>Tina:</strong> Oh, that's my cousin, Lisa.
+                    </div>
+                     <div class="dialogue-bubble bubble-mark">
+                        <strong>Mark:</strong> She looks very nice. Is she a student here?
+                    </div>
+                    <div class="dialogue-bubble bubble-tina">
+                        <strong>Tina:</strong> No, she 
+                        <select class="dialogue-select" id="q4" data-answer="A">
+                            <option value="">(4)</option>
+                            <option value="A">isn't</option>
+                            <option value="B">doesn't</option>
+                            <option value="C">not</option>
+                            <option value="D">amn't</option>
+                        </select>
+                        . She's 
+                        <select class="dialogue-select" id="q5" data-answer="C">
+                            <option value="">(5)</option>
+                            <option value="A">a</option>
+                            <option value="B">the</option>
+                            <option value="C">an</option>
+                            <option value="D">an the</option>
+                        </select>
+                         English teacher.<span class="feedback-icon" id="fb4"></span><span class="feedback-icon" id="fb5"></span>
+                    </div>
+                </div>
+                <button id="check-dialogue-btn" class="check-btn">檢查答案</button>
+                <div id="dialogue-explanation" class="explanation">
+                    <p><strong>3. 答案 (A) Who</strong>: Mark 想知道女孩的<strong>身分</strong>，所以用 `Who` 提問。</p>
+                    <p><strong>4. 答案 (A) isn't</strong>: 問句是 `Is she...?`，Be 動詞問句的否定簡答用 `isn't`。</p>
+                    <p><strong>5. 答案 (C) an</strong>: 介紹單數職業，且 `English` 是母音發音開頭，所以用 `an`。</p>
+                </div>
+            </div>
+
+            <div class="exercise">
+                <h4>新增互動：句型與名稱配對遊戲</h4>
+                <p>請將左邊的例句拖曳到右邊對應的文法概念中。</p>
+                <div class="drag-drop-container">
+                    <div class="draggable-items" id="match-items">
+                        <div class="draggable" draggable="true" id="match-item-1" data-match="wh">"Who is that handsome boy?"</div>
+                        <div class="draggable" draggable="true" id="match-item-2" data-match="adj">"She is a new classmate."</div>
+                        <div class="draggable" draggable="true" id="match-item-3" data-match="yesno">"Is he your cousin?"</div>
+                    </div>
+                    <div class="drop-zones">
+                        <p><strong>「Wh- 疑問句」</strong></p>
+                        <div class="drop-zone" data-match="wh"></div>
+                        <p><strong>「形容詞 + 名詞」</strong></p>
+                        <div class="drop-zone" data-match="adj"></div>
+                        <p><strong>「Be 動詞 Yes/No 問句」</strong></p>
+                        <div class="drop-zone" data-match="yesno"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Accordion functionality
+            const accordions = document.querySelectorAll('.accordion-toggle');
+            accordions.forEach(accordion => {
+                accordion.addEventListener('click', () => {
+                    accordion.classList.toggle('active');
+                    const content = accordion.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        content.style.padding = "0 20px";
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 40 + "px";
+                        content.style.padding = "20px 20px";
+                    }
+                });
+            });
+
+            // Highlight functionality
+            const highlightGroups = document.querySelectorAll('.highlight-group');
+            highlightGroups.forEach(group => {
+                group.addEventListener('mouseover', () => {
+                    const groupName = group.dataset.group;
+                    document.querySelectorAll(`[data-group="${groupName}"]`).forEach(el => {
+                        el.classList.add('highlighted');
+                    });
+                });
+                group.addEventListener('mouseout', () => {
+                    document.querySelectorAll('.highlight-group.highlighted').forEach(el => {
+                        el.classList.remove('highlighted');
+                    });
+                });
+            });
+
+            // Adjective filter demo
+            const adjectivePlaceholder = document.getElementById('adjective-placeholder');
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const newAdj = btn.dataset.adj;
+                    const originalText = adjectivePlaceholder.textContent;
+                    
+                    if (originalText.includes("boy")) {
+                        adjectivePlaceholder.textContent = `${newAdj} boy`;
+                    } else {
+                         adjectivePlaceholder.textContent = `${newAdj} ${originalText.split(' ')[1]}`;
+                    }
+                    
+                    adjectivePlaceholder.style.backgroundColor = window.getComputedStyle(btn).backgroundColor;
+                    adjectivePlaceholder.style.color = '#fff';
+                    setTimeout(() => {
+                        adjectivePlaceholder.style.backgroundColor = 'transparent';
+                        adjectivePlaceholder.style.color = 'var(--color-heading)';
+                    }, 500);
+                });
+            });
+
+            // Adjective validation input
+            const adjInput = document.getElementById('adj-input');
+            const adjIcon = document.getElementById('adj-validation-icon');
+            const adjHint = document.getElementById('adj-validation-hint');
+            adjInput.addEventListener('input', (e) => {
+                const value = e.target.value.toLowerCase().trim();
+                if (value === 'handsomes') {
+                    adjInput.classList.add('incorrect');
+                    adjInput.classList.remove('correct');
+                    adjIcon.textContent = '✗';
+                    adjIcon.className = 'validation-icon incorrect';
+                    adjHint.style.display = 'block';
+                } else if (value === 'handsome') {
+                    adjInput.classList.add('correct');
+                    adjInput.classList.remove('incorrect');
+                    adjIcon.textContent = '✓';
+                    adjIcon.className = 'validation-icon correct';
+                    adjHint.style.display = 'none';
+                } else {
+                    adjInput.classList.remove('correct', 'incorrect');
+                    adjIcon.textContent = '';
+                    adjHint.style.display = 'none';
+                }
+            });
+            
+            // Quiz simulator
+            const simBtns = document.querySelectorAll('.quiz-simulator-btn');
+            const simFeedback = document.getElementById('simulator-feedback');
+            simBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const isCorrect = btn.dataset.correct === 'true';
+                    simFeedback.textContent = '';
+                    btn.classList.remove('shake');
+
+                    if(isCorrect) {
+                        simFeedback.textContent = '回答正確！';
+                        simFeedback.style.color = 'var(--color-correct)';
+                    } else {
+                        btn.classList.add('shake');
+                        simFeedback.textContent = '答非所問！Wh-問句需要提供具體資訊。';
+                        simFeedback.style.color = 'var(--color-incorrect)';
+                        setTimeout(() => btn.classList.remove('shake'), 500);
+                    }
+                });
+            });
+
+            // Multiple choice quiz forms
+            function handleQuizForm(formId, correctAnswer) {
+                const form = document.getElementById(formId);
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const explanation = form.nextElementSibling;
+                    const selected = form.querySelector('input[name^="q"]:checked');
+                    
+                    form.querySelectorAll('label').forEach(label => {
+                        label.classList.remove('correct', 'incorrect', 'answer-key');
+                    });
+                    
+                    if (selected) {
+                        const selectedLabel = selected.nextElementSibling;
+                        if (selected.value === correctAnswer) {
+                            selectedLabel.classList.add('correct');
+                        } else {
+                            selectedLabel.classList.add('incorrect');
+                            form.querySelector(`input[value="${correctAnswer}"]`).nextElementSibling.classList.add('answer-key');
+                        }
+                    } else {
+                        // If nothing is selected, just show the answer
+                        form.querySelector(`input[value="${correctAnswer}"]`).nextElementSibling.classList.add('answer-key');
+                    }
+                    
+                    explanation.style.display = 'block';
+                });
+            }
+            handleQuizForm('quiz-form-1', 'A');
+            handleQuizForm('quiz-form-2', 'C');
+            
+            // Dialogue quiz
+            document.getElementById('check-dialogue-btn').addEventListener('click', () => {
+                const selects = document.querySelectorAll('.dialogue-select');
+                selects.forEach(select => {
+                    const isCorrect = select.value === select.dataset.answer;
+                    const feedbackEl = document.getElementById(`fb${select.id.charAt(1)}`);
+                    select.className = 'dialogue-select'; // reset
+                    select.classList.add(isCorrect ? 'correct' : 'incorrect');
+                    feedbackEl.textContent = isCorrect ? '✓' : '✗';
+                    feedbackEl.className = 'feedback-icon ' + (isCorrect ? 'correct' : 'incorrect');
+                });
+                document.getElementById('dialogue-explanation').style.display = 'block';
+            });
+            
+            // Drag and Drop functionality (shared logic)
+            let draggedItem = null;
+
+            function dragStart(e) {
+                draggedItem = this;
+                setTimeout(() => this.style.display = 'none', 0);
+            }
+            function dragEnd(e) {
+                setTimeout(() => {
+                    draggedItem.style.display = 'block';
+                    draggedItem = null;
+                }, 0);
+            }
+            function dragOver(e) {
+                e.preventDefault();
+            }
+            function dragEnter(e) {
+                e.preventDefault();
+                if (this.classList.contains('drop-zone') || this.classList.contains('drop-sentence-area')) {
+                    this.classList.add('over');
+                }
+            }
+            function dragLeave(e) {
+                 if (this.classList.contains('drop-zone') || this.classList.contains('drop-sentence-area')) {
+                    this.classList.remove('over');
+                }
+            }
+
+            // Matching Game
+            const matchItems = document.querySelectorAll('#match-items .draggable');
+            const dropZones = document.querySelectorAll('.drop-zones .drop-zone');
+
+            matchItems.forEach(item => {
+                item.addEventListener('dragstart', dragStart);
+                item.addEventListener('dragend', dragEnd);
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', dragOver);
+                zone.addEventListener('dragenter', dragEnter);
+                zone.addEventListener('dragleave', dragLeave);
+                zone.addEventListener('drop', function(e) {
+                    this.classList.remove('over');
+                    if (draggedItem && this.dataset.match === draggedItem.dataset.match) {
+                        this.appendChild(draggedItem);
+                        draggedItem.style.display = 'block';
+                        draggedItem.classList.add('placed');
+                        draggedItem.setAttribute('draggable', 'false');
+                        this.classList.add('correct');
+                    } else {
+                       draggedItem.style.display = 'block'; // Item returns
+                    }
+                });
+            });
+
+            // Sentence Reordering Game
+            const reorderWords = document.querySelectorAll('#reorder-words .draggable');
+            const reorderDropArea = document.getElementById('reorder-drop-area');
+            const correctOrder = ["word-are", "word-you", "word-a", "word-singer", "word-question"];
+
+            reorderWords.forEach(word => {
+                word.addEventListener('dragstart', dragStart);
+                word.addEventListener('dragend', dragEnd);
+            });
+
+            reorderDropArea.addEventListener('dragover', dragOver);
+            reorderDropArea.addEventListener('dragenter', dragEnter);
+            reorderDropArea.addEventListener('dragleave', dragLeave);
+            reorderDropArea.addEventListener('drop', function(e) {
+                this.classList.remove('over');
+                if (draggedItem) {
+                    this.appendChild(draggedItem);
+                    draggedItem.style.display = 'inline-block';
+                    checkSentenceOrder();
+                }
+            });
+            
+             document.getElementById('reorder-words').addEventListener('drop', function(e) {
+                this.appendChild(draggedItem);
+                draggedItem.style.display = 'inline-block';
+                checkSentenceOrder();
+            });
+
+            function checkSentenceOrder() {
+                const wordsInDropArea = Array.from(reorderDropArea.children).map(child => child.id);
+                if (wordsInDropArea.length === correctOrder.length) {
+                    const isCorrect = JSON.stringify(wordsInDropArea) === JSON.stringify(correctOrder);
+                    reorderDropArea.classList.remove('correct', 'incorrect');
+                    reorderDropArea.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else {
+                    reorderDropArea.classList.remove('correct', 'incorrect');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

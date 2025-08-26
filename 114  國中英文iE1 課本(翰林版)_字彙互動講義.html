@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 1: Who's That Handsome Boy? 互動字彙講義</title>
+    <style>
+        :root {
+            --bg-main: #f4f3ee;
+            --bg-vocab-section: #dde3e7;
+            --bg-exercise-section: #e3e7dd;
+            --card-front-n: #b4c6d2;
+            --card-front-adj: #e0c8b3;
+            --card-back: #ffffff;
+            --text-primary: #3d405b;
+            --text-secondary: #5e6472;
+            --highlight-color: #d68c45;
+            --correct-color: #73a580;
+            --incorrect-color: #c27c78;
+            --tag-n-bg: #6A8EAE;
+            --tag-adj-bg: #D8A373;
+            --tag-text: #ffffff;
+            --border-color: #ccc;
+            --button-bg: #8a9a8b;
+            --button-hover-bg: #738374;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: var(--card-back);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--highlight-color);
+            padding-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        main {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-block {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+        }
+
+        #vocabulary-section {
+            background-color: var(--bg-vocab-section);
+        }
+
+        #exercises-section {
+            background-color: var(--bg-exercise-section);
+        }
+
+        /* Flashcards Grid */
+        #flashcards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card-container {
+            perspective: 1000px;
+            height: 420px;
+            cursor: pointer;
+        }
+
+        .card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 12px;
+        }
+
+        .card-container.is-flipped .card {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-front {
+            background-color: var(--card-front-n);
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 1rem;
+        }
+        .card-front.adj {
+            background-color: var(--card-front-adj);
+        }
+        
+        .card-front::after {
+            content: '↺';
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: rgba(0,0,0,0.3);
+        }
+
+        .card-back {
+            background-color: var(--card-back);
+            transform: rotateY(180deg);
+            padding: 1.5rem;
+            font-size: 0.9rem;
+            overflow-y: auto;
+        }
+        
+        .card-back::-webkit-scrollbar {
+            width: 8px;
+        }
+        .card-back::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .card-back::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 10px;
+        }
+        .card-back::-webkit-scrollbar-thumb:hover {
+            background: #aaa;
+        }
+
+        .card-back-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.75rem;
+        }
+        
+        .card-back-header h4 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+        
+        .card-back-item {
+            margin-bottom: 0.8rem;
+        }
+
+        .card-back-item strong {
+            display: block;
+            color: var(--text-secondary);
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+        }
+        
+        .card-back-item ul {
+            list-style-position: inside;
+            padding-left: 0;
+        }
+        
+        .card-back-item li {
+             margin-bottom: 0.25rem;
+        }
+
+        .highlight {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .tag {
+            display: inline-block;
+            color: var(--tag-text);
+            border-radius: 4px;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        .tag-n { background-color: var(--tag-n-bg); }
+        .tag-adj { background-color: var(--tag-adj-bg); }
+
+        .speaker-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.25rem;
+            display: inline-flex;
+            align-items: center;
+            vertical-align: middle;
+            margin-left: 0.5rem;
+        }
+        
+        .speaker-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-secondary);
+            transition: fill 0.2s;
+        }
+
+        .speaker-btn:hover svg {
+            fill: var(--text-primary);
+        }
+
+        /* Accordion for extra info */
+        .accordion-toggle {
+            background-color: #f0f0f0;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .accordion-toggle:hover {
+            background-color: #e0e0e0;
+        }
+
+        .accordion-toggle::after {
+            content: '+';
+            font-size: 1.5rem;
+            font-weight: 300;
+            transition: transform 0.3s ease-out;
+        }
+
+        .accordion-toggle.active::after {
+            transform: rotate(45deg);
+        }
+
+        .accordion-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        
+        .accordion-content.active {
+            grid-template-rows: 1fr;
+        }
+        
+        .accordion-content > div {
+            overflow: hidden;
+        }
+
+        .accordion-inner-content {
+            padding: 0.8rem;
+            background-color: #fafafa;
+            border: 1px solid #f0f0f0;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+        }
+
+        /* Exercises */
+        .exercise {
+            background-color: var(--card-back);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .exercise-controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .exercise-controls button {
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+
+        .exercise-controls button:hover {
+            background-color: var(--button-hover-bg);
+        }
+
+        /* Drag and Drop Exercise */
+        .diary-text {
+            background-color: #fcf8e3;
+            padding: 1rem;
+            border-radius: 6px;
+            line-height: 2.5;
+            font-style: italic;
+        }
+
+        .drop-zone {
+            display: inline-block;
+            background-color: #fff;
+            border: 2px dashed var(--border-color);
+            min-width: 100px;
+            height: 32px;
+            vertical-align: middle;
+            border-radius: 4px;
+            padding: 2px 4px;
+            transition: all 0.2s;
+        }
+        
+        .drop-zone.drag-over {
+            border-style: solid;
+            border-color: var(--highlight-color);
+            background-color: #feffde;
+        }
+
+        .drop-zone.correct {
+            border-color: var(--correct-color);
+            border-style: solid;
+        }
+
+        .drop-zone.incorrect {
+            border-color: var(--incorrect-color);
+            border-style: solid;
+        }
+
+        .word-bank {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #f0f0f0;
+            border-radius: 6px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        
+        .draggable-word {
+            padding: 0.4rem 0.8rem;
+            background-color: var(--card-front-n);
+            color: var(--text-primary);
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+            transition: opacity 0.2s;
+        }
+
+        .draggable-word.dragging {
+            opacity: 0.5;
+        }
+        
+        /* Matching Game */
+        #matching-game p {
+            margin-bottom: 1rem;
+        }
+        
+        .matching-container {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .match-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .match-item {
+            padding: 0.8rem;
+            border: 2px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .match-item:hover {
+            border-color: var(--highlight-color);
+            background-color: #fffcf5;
+        }
+
+        .match-item.selected {
+            border-color: var(--highlight-color);
+            background-color: #fff8e1;
+            transform: scale(1.02);
+        }
+        
+        .match-item.matched {
+            border-color: var(--correct-color);
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            cursor: default;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .match-item.incorrect-flash {
+            border-color: var(--incorrect-color);
+            background-color: #ffcdd2;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        #match-feedback {
+            margin-top: 1rem;
+            font-weight: bold;
+            min-height: 1.6em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .content-block { padding: 1rem; }
+            .matching-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Unit 1: Who's That Handsome Boy?</h1>
+        <p>深度字彙講義</p>
+    </header>
+
+    <main>
+        <section class="content-block" id="vocabulary-section">
+            <h2>I. 單字深度解析 (點擊卡片翻面)</h2>
+            <div id="flashcards-container">
+                <!-- Flashcards will be dynamically generated by JavaScript -->
+            </div>
+        </section>
+
+        <section class="content-block" id="exercises-section">
+            <h2>II. 互動練習題</h2>
+            
+            <div class="exercise" id="drag-drop-exercise">
+                <h3>「字彙混合」拖曳填空</h3>
+                <p>情境：Jamie 正在寫一篇日記，介紹她的新朋友 Zac 和他的家人。請從下面的單字庫中拖曳最適合的字到空格中。</p>
+                <div class="diary-text">
+                    Hi Diary,<br>
+                    Today was a great day! A new boy, Zac, is now my <span class="drop-zone" data-answer="classmate" data-id="3"></span>. He is very tall and <span class="drop-zone" data-answer="handsome" data-id="4"></span>. After school, I met his sister, Sophie. She is a nurse. I also met his <span class="drop-zone" data-answer="cousin" data-id="5"></span>, Max, who is a doctor. Zac has a very nice <span class="drop-zone" data-answer="family" data-id="6"></span>.
+                </div>
+                <div class="word-bank" id="word-bank">
+                    <!-- Draggable words will be generated by JavaScript -->
+                </div>
+                <div class="exercise-controls">
+                    <button id="check-drag-drop">檢查答案</button>
+                    <button id="reset-drag-drop">重置</button>
+                </div>
+                 <p id="drag-drop-feedback" class="feedback"></p>
+            </div>
+
+            <div class="exercise" id="matching-game">
+                <h3>單字配對遊戲</h3>
+                <p>請點擊左邊的英文單字，再點擊右邊對應的中文意思來進行配對。</p>
+                <div class="matching-container">
+                    <div class="match-column" id="match-words">
+                        <!-- English words will be generated here -->
+                    </div>
+                    <div class="match-column" id="match-defs">
+                        <!-- Chinese definitions will be generated here -->
+                    </div>
+                </div>
+                 <p id="match-feedback" class="feedback"></p>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const vocabularyData = [
+            // A. Occupations & Roles
+            { id: 'office-worker', word: 'office worker', type: 'n.', type_full: '名詞片語', phonetic: '[`ɔfɪs `wɝkɚ]', chinese: '上班族；辦公室職員', usage: '這是一個複合名詞，由 `office` (辦公室) 和 `worker` (工作者) 組成。指的是在辦公室裡處理文書、行政等工作的職員。', collocations: ['a busy **office worker** (一位忙碌的上班族)', 'become an **office worker** (成為一名上班族)'], sentences: ['My mom is an **office worker**; she works from 9 to 5 every day.', 'Many **office workers** in this city take the MRT to work.'], confusion: { title: 'officer', text: '[`ɔfəsɚ`] (n.) 官員；警官。雖然都有 office 的影子，但 `officer` 通常指有特定職位或權力的人，如 a police **officer** (警官)。`office worker` 則泛指一般辦公室職員。' }, extra: { title: '延伸補充', text: '在口語中，有時人們會用 "a nine-to-fiver" 來形容上班族，指那些過著朝九晚五規律生活的人。' }},
+            { id: 'cook', word: 'cook', type: 'n.', type_full: '名詞', phonetic: '[kʊk]', chinese: '廚師', usage: '指的是烹飪食物的職業。注意，`cook` 也可以當動詞 (v.)，意思是「烹煮」。', collocations: ['a great **cook** (一位很棒的廚師)', 'work as a **cook** (擔任廚師工作)'], sentences: ['My uncle is a **cook** in a famous restaurant.', 'Who is the **cook** in your family? (你家是誰負責做飯的？)'], confusion: { title: 'cooker', text: '[`kʊkɚ] (n.) 炊具。千萬要小心！`-er` 結尾的字通常指「人」，但這裡 `cooker` 指的是「用來煮東西的器具」，例如 a rice **cooker** (電鍋)。廚師是 `cook`。' }, extra: { title: '延伸補充', text: '專業等級更高、通常在高級餐廳工作的主廚，英文是 `chef` [ʃɛf]。' }},
+            { id: 'doctor', word: 'doctor', type: 'n.', type_full: '名詞', phonetic: '[`dɑktɚ]', chinese: '醫生', usage: '泛指所有類型的醫生。看醫生可以說 `see a doctor`。', collocations: ['see a **doctor** (看醫生)', 'family **doctor** (家庭醫生)'], sentences: ["If you feel sick, you should go see a **doctor**.", "Jamie's cousin, Max, is a **doctor**."], confusion: { title: 'nurse', text: '[nɝs] (n.) 護理師。**Doctor** 負責診斷與治療，而 **nurse** 負責照護病人，他們是在醫療體系中密切合作的夥伴。' }, extra: { title: '延伸補充', text: '`Doctor` 的縮寫是 `Dr.`，用在姓氏前面，例如 `Dr. Lin` (林醫師)。' }},
+            { id: 'student', word: 'student', type: 'n.', type_full: '名詞', phonetic: '[`studnt]', chinese: '學生', usage: '泛指所有在學的學生。', collocations: ['a high school **student** (高中生)', 'a good **student** (一位好學生)'], sentences: ['I am a junior high school **student**.', 'The teacher asked the **students** to open their books.'], confusion: { title: 'study', text: '[`stʌdɪ] (v.) 學習；研讀。**Student** 是「做 study 這個動作的人」。' }, extra: { title: '延伸補充', text: '`Student` 這個字來自拉丁文的 `studere`，意思是「熱衷於、努力」。所以，身為一個 `student`，最重要的特質就是對學習的熱情喔！' }},
+            { id: 'classmate', word: 'classmate', type: 'n.', type_full: '名詞', phonetic: '[`klæs͵met]', chinese: '同學', usage: '由 `class` (班級) 和 `mate` (夥伴) 組成，指在同一個班級上課的同學。', collocations: ['my new **classmate** (我的新同學)', 'help a **classmate** (幫助一位同學)'], sentences: ["Zac is Yuki and Jamie's new **classmate**.", 'I often discuss homework with my **classmates**.'], confusion: { title: 'roommate', text: '[`rum͵met] (n.) 室友。`mate` 這個字根很好用，`class` + `mate` 是同學，`room` + `mate` 就是住在同一個房間的夥伴——室友。' }, extra: { title: '延伸補充', text: '在英式英語中，`mate` 也可以單獨用來稱呼朋友，類似於美式英語中的 `buddy` 或 `pal`。' }},
+            // B. Adjectives
+            { id: 'handsome', word: 'handsome', type: 'adj.', type_full: '形容詞', phonetic: '[`hænsəm]', chinese: '英俊的', usage: '這個字**專門用來形容男生或男性的外貌好看**。形容女生或事物則常用 `beautiful`。', collocations: ['a **handsome** boy/man (一個英俊的男孩/男人)', 'look **handsome** (看起來很帥)'], sentences: ['Look at that **handsome** boy. Who is he?', 'My dad looks very **handsome** in a suit.'], confusion: { title: 'handy', text: '[`hændɪ] (adj.) 手邊的；方便的。`handsome` 裡面雖然有 `hand`，但意思跟手一點關係都沒有！`handy` 才是跟「手邊、方便」有關的字，例如 a **handy** tool (一個方便的工具)。' }, extra: { title: '延伸補充', text: '你知道嗎？`handsome` 這個字除了形容人，有時候也可以形容「數量可觀的、優渥的」，例如 `a handsome profit` (一筆可觀的利潤)。不過在國中階段，你只要先記住「英俊的」這個意思就好囉！' }},
+            { id: 'new', word: 'new', type: 'adj.', type_full: '形容詞', phonetic: '[nju]', chinese: '新的', usage: '用來形容人、事、物是最近才出現或得到的。', collocations: ['a **new** classmate (一位新同學)', 'a **new** car (一輛新車)'], sentences: ["That's Zac, our **new** classmate.", 'I got a **new** bike for my birthday.'], confusion: { title: 'news', text: '[njuz] (n.) 新聞；消息。`new` 是形容詞「新的」，後面加上 `s` 變成 `news`，就成了名詞「新聞」，指的是「新的消息」。要特別注意，`news` 是**不可數名詞**喔！' }, extra: { title: '延伸補充', text: `"What's new?" 是一句很常見的口語問候，意思類似於「最近怎麼樣啊？有什麼新鮮事嗎？」` }},
+            { id: 'young', word: 'young', type: 'adj.', type_full: '形容詞', phonetic: '[jʌŋ]', chinese: '年輕的', usage: '形容年紀小或處於生命早期階段。它的相反詞是 `old` (年老的)。', collocations: ['a **young** woman (一位年輕的女士)', 'look **young** (看起來很年輕)'], sentences: ['Who is the **young** woman in the car?', 'My grandmother is 70, but she looks very **young**.'], confusion: { title: 'youth', text: '[juθ] (n.) 青春；年輕人。`young` 是形容詞，而 `youth` 是名詞，指的是「青春時期」或「年輕人」這個群體。' }, extra: { title: '延伸補充', text: '"The young" 可以用來泛指「年輕人」這個群體，例如：The future belongs to **the young**. (未來屬於年輕人。)' }},
+            { id: 'beautiful', word: 'beautiful', type: 'adj.', type_full: '形容詞', phonetic: '[`bjutəfəl]', chinese: '美麗的', usage: '通常用來**形容女性、物品、風景等**，表示非常漂亮、令人愉悅。形容男性時多用 `handsome`。', collocations: ['a **beautiful** girl (一個漂亮的女孩)', 'a **beautiful** picture (一幅美麗的圖畫)'], sentences: ["Zac's sister is **beautiful**, too.", 'The sunset over the ocean was **beautiful**.'], confusion: { title: 'pretty', text: '[`prɪtɪ] (adj.) 漂亮的。`Beautiful` 的美麗程度通常比 `pretty` 更高、更深刻。`Pretty` 比較偏向「可愛、秀氣」的好看。' }, extra: { title: '延伸補充', text: '`Beautiful` 這個字是由名詞 `beauty` (美麗) 加上字尾 `-ful` (充滿...) 變化而來的，字面意思就是「充滿了美」。' }},
+            { id: 'dear', word: 'dear', type: 'adj.', type_full: '形容詞', phonetic: '[dɪr]', chinese: '親愛的；珍愛的', usage: '用來表示喜愛、珍視。常用在信件的開頭，或是形容親近的人。', collocations: ['my **dear** family (我親愛的家人)', '**Dear** John, (親愛的約翰， - 用於信件開頭)'], sentences: ['This is my **dear** family.', 'My grandparents are very **dear** to me.'], confusion: { title: 'deer', text: '[dɪr] (n.) 鹿。這兩個字發音完全一樣！是典型的同音異義字。`Dear` John, I saw a **deer** in the forest. (親愛的約翰，我在森林裡看到一頭鹿。)' }, extra: { title: '延伸補充', text: '"Oh dear!" 是一個常見的感嘆語，用來表示驚訝、沮喪或擔憂，類似於中文的「天啊！」、「哎呀！」。' }},
+            // C. Family Members
+            { id: 'cousin', word: 'cousin', type: 'n.', type_full: '名詞', phonetic: '[`kʌzn]', chinese: '堂(表)兄弟姊妹', usage: '英文中的 `cousin` 不分男女，也不分是爸爸這邊的親戚 (堂) 還是媽媽這邊的親戚 (表)。叔、伯、姑、舅、姨的孩子，都是你的 `cousin`。', collocations: ['my favorite **cousin** (我最喜愛的表哥)', 'visit my **cousins** (去探望我的表兄弟姊妹)'], sentences: ["He's my **cousin**, Max.", 'I have three **cousins**, and we play together every summer.'], confusion: { title: 'customer', text: '[`kʌstəmɚ] (n.) 顧客。拼字上有些相似，但意思完全不同。`Cousin` 是家人，`customer` 是來買東西的人。' }, extra: { title: '延伸補充', text: '如果想特別強調輩分關係，可以說 "first cousin" (一代堂/表親) 或 "second cousin" (二代堂/表親)，不過日常生活中直接說 `cousin` 就足夠了。' }},
+            { id: 'family', word: 'family', type: 'n.', type_full: '名詞', phonetic: '[`fæməlɪ]', chinese: '家庭；家人', usage: '指由血緣、婚姻等關係組成的親人團體。', collocations: ['a happy **family** (一個快樂的家庭)', '**family** tree (家族樹)'], sentences: ['We are a **family** of five.', 'My **family** is very **dear** to me.'], confusion: { title: 'familiar', text: '[fə`mɪljɚ] (adj.) 熟悉的。`Family` 是你最 `familiar` 的一群人。這兩個字源自同一個拉丁字 `familia`。' }, extra: { title: '延伸補充', text: '`Family` 這個字在不同情境下，單複數動詞的用法會不同。當作「一個整體」時，用單數動詞 (My family **is** large.)；當強調「所有成員」時，在英式英語中可用複數動詞 (My family **are** all tall.)。' }},
+        ];
+
+        const flashcardsContainer = document.getElementById('flashcards-container');
+
+        // Helper to format text with highlights
+        function formatText(text) {
+            return text.replace(/\*\*(.*?)\*\*/g, '<span class="highlight">$1</span>');
+        }
+
+        // Generate Flashcards
+        vocabularyData.forEach(item => {
+            const isAdj = item.type === 'adj.';
+            const cardHTML = `
+                <div class="card-container" role="button" tabindex="0" aria-label="翻轉 ${item.word} 卡片">
+                    <div class="card">
+                        <div class="card-face card-front ${isAdj ? 'adj' : ''}">${item.word}</div>
+                        <div class="card-face card-back">
+                            <div class="card-back-header">
+                                <h4>${item.word}</h4>
+                                <span class="tag ${isAdj ? 'tag-adj' : 'tag-n'}">${item.type} ${item.type_full}</span>
+                            </div>
+                            <div class="card-back-item">
+                                <strong>中文意思</strong>
+                                ${item.chinese}
+                            </div>
+                            <div class="card-back-item">
+                                <strong>音標</strong>
+                                ${item.phonetic}
+                                <button class="speaker-btn" data-word="${item.word}" aria-label="播放 ${item.word} 發音">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                        <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-1.414 1.414A6.472 6.472 0 0 1 12.026 8a6.472 6.472 0 0 1-1.904 4.596l1.414 1.414z"/>
+                                        <path d="M10.121 12.596A6.48 6.48 0 0 0 12.026 8a6.48 6.48 0 0 0-1.905-4.596l-1.414 1.414A4.486 4.486 0 0 1 10.026 8a4.486 4.486 0 0 1-1.319 3.182l1.414 1.414z"/>
+                                        <path d="M8.707 11.182A4.486 4.486 0 0 0 10.026 8a4.486 4.486 0 0 0-1.319-3.182L7.293 6.232A2.488 2.488 0 0 1 8.026 8a2.488 2.488 0 0 1-.732 1.768l1.414 1.414zM6.5 4.5a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5h-1z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="card-back-item"><strong>重要用法</strong> ${formatText(item.usage)}</div>
+                            <div class="card-back-item">
+                                <strong>搭配詞語</strong>
+                                <ul>${item.collocations.map(c => `<li>${formatText(c)}</li>`).join('')}</ul>
+                            </div>
+                            <div class="card-back-item">
+                                <strong>例句</strong>
+                                <ol>${item.sentences.map(s => `<li>${formatText(s)}</li>`).join('')}</ol>
+                            </div>
+                            ${item.confusion ? `
+                                <div class="card-back-item accordion">
+                                    <button class="accordion-toggle" aria-expanded="false">⚠️ 易混淆字彙: ${item.confusion.title}</button>
+                                    <div class="accordion-content">
+                                        <div><div class="accordion-inner-content">${formatText(item.confusion.text)}</div></div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                             ${item.extra ? `
+                                <div class="card-back-item accordion">
+                                    <button class="accordion-toggle" aria-expanded="false">💡 延伸補充</button>
+                                    <div class="accordion-content">
+                                        <div><div class="accordion-inner-content">${formatText(item.extra.text)}</div></div>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>`;
+            flashcardsContainer.innerHTML += cardHTML;
+        });
+
+        // Add event listeners to dynamically created elements
+        flashcardsContainer.addEventListener('click', function(e) {
+            const cardContainer = e.target.closest('.card-container');
+            if (!cardContainer) return;
+
+            // Handle speaker button
+            if (e.target.closest('.speaker-btn')) {
+                e.stopPropagation();
+                const btn = e.target.closest('.speaker-btn');
+                const wordToSpeak = btn.dataset.word;
+                const utterance = new SpeechSynthesisUtterance(wordToSpeak);
+                utterance.lang = 'en-US';
+                window.speechSynthesis.speak(utterance);
+                return;
+            }
+            
+            // Handle accordion toggle
+            if(e.target.closest('.accordion-toggle')) {
+                e.stopPropagation();
+                const toggle = e.target.closest('.accordion-toggle');
+                const content = toggle.nextElementSibling;
+                toggle.classList.toggle('active');
+                content.classList.toggle('active');
+                toggle.setAttribute('aria-expanded', toggle.classList.contains('active'));
+                return;
+            }
+
+            // Handle card flip
+            cardContainer.classList.toggle('is-flipped');
+        });
+        
+        flashcardsContainer.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const cardContainer = e.target.closest('.card-container');
+                if (cardContainer && document.activeElement === cardContainer) {
+                    e.preventDefault();
+                    cardContainer.classList.toggle('is-flipped');
+                }
+            }
+        });
+
+
+        // --- Drag and Drop Exercise ---
+        const wordBank = document.getElementById('word-bank');
+        const dropZones = document.querySelectorAll('.drop-zone');
+        const checkDragDropBtn = document.getElementById('check-drag-drop');
+        const resetDragDropBtn = document.getElementById('reset-drag-drop');
+        const dragDropWords = ['family', 'handsome', 'office worker', 'cousin', 'classmate'];
+
+        function initDragDrop() {
+            wordBank.innerHTML = '';
+            dragDropWords.forEach(word => {
+                const wordEl = document.createElement('div');
+                wordEl.classList.add('draggable-word');
+                wordEl.textContent = word;
+                wordEl.draggable = true;
+                wordEl.id = `drag-${word.replace(' ', '-')}`;
+                wordBank.appendChild(wordEl);
+            });
+            
+            dropZones.forEach(zone => {
+                zone.innerHTML = '';
+                zone.classList.remove('correct', 'incorrect');
+            });
+
+            addDragDropListeners();
+        }
+
+        function addDragDropListeners() {
+            const draggables = document.querySelectorAll('.draggable-word');
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', () => {
+                    draggable.classList.add('dragging');
+                });
+                draggable.addEventListener('dragend', () => {
+                    draggable.classList.remove('dragging');
+                });
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    const draggingEl = document.querySelector('.dragging');
+                    if (draggingEl) {
+                        // If drop zone already has a word, move it back to the bank
+                        if(zone.firstChild){
+                            wordBank.appendChild(zone.firstChild);
+                        }
+                        zone.appendChild(draggingEl);
+                    }
+                });
+            });
+        }
+        
+        checkDragDropBtn.addEventListener('click', () => {
+            dropZones.forEach(zone => {
+                const droppedWord = zone.querySelector('.draggable-word');
+                if (droppedWord) {
+                    if (droppedWord.textContent === zone.dataset.answer) {
+                        zone.classList.add('correct');
+                        zone.classList.remove('incorrect');
+                    } else {
+                        zone.classList.add('incorrect');
+                        zone.classList.remove('correct');
+                    }
+                } else {
+                    zone.classList.remove('correct', 'incorrect');
+                }
+            });
+        });
+
+        resetDragDropBtn.addEventListener('click', initDragDrop);
+        
+        initDragDrop();
+
+
+        // --- Matching Game ---
+        const matchWordsContainer = document.getElementById('match-words');
+        const matchDefsContainer = document.getElementById('match-defs');
+        const matchFeedback = document.getElementById('match-feedback');
+        let selectedWordEl = null;
+        let matchedPairs = 0;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initMatchingGame() {
+            matchWordsContainer.innerHTML = '';
+            matchDefsContainer.innerHTML = '';
+            selectedWordEl = null;
+            matchedPairs = 0;
+            matchFeedback.textContent = '';
+            
+            const words = shuffleArray([...vocabularyData]);
+            const defs = shuffleArray([...vocabularyData]);
+
+            words.forEach(item => {
+                const el = document.createElement('div');
+                el.classList.add('match-item', 'word');
+                el.dataset.id = item.id;
+                el.textContent = item.word;
+                matchWordsContainer.appendChild(el);
+            });
+
+            defs.forEach(item => {
+                const el = document.createElement('div');
+                el.classList.add('match-item', 'definition');
+                el.dataset.id = item.id;
+                el.textContent = item.chinese;
+                matchDefsContainer.appendChild(el);
+            });
+        }
+        
+        document.getElementById('matching-game').addEventListener('click', e => {
+            const target = e.target;
+            if (!target.classList.contains('match-item') || target.classList.contains('matched')) {
+                return;
+            }
+
+            if (target.classList.contains('word')) {
+                if(selectedWordEl) {
+                    selectedWordEl.classList.remove('selected');
+                }
+                selectedWordEl = target;
+                selectedWordEl.classList.add('selected');
+            } else if (target.classList.contains('definition')) {
+                if (!selectedWordEl) {
+                    return; // Must select a word first
+                }
+
+                if (selectedWordEl.dataset.id === target.dataset.id) {
+                    // Correct match
+                    selectedWordEl.classList.add('matched');
+                    target.classList.add('matched');
+                    selectedWordEl.classList.remove('selected');
+                    selectedWordEl = null;
+                    matchedPairs++;
+                    if (matchedPairs === vocabularyData.length) {
+                        matchFeedback.textContent = '恭喜！你已完成所有配對！';
+                        matchFeedback.style.color = 'var(--correct-color)';
+                    }
+                } else {
+                    // Incorrect match
+                    target.classList.add('incorrect-flash');
+                    selectedWordEl.classList.remove('selected');
+                    selectedWordEl = null;
+                    setTimeout(() => target.classList.remove('incorrect-flash'), 500);
+                }
+            }
+        });
+
+        initMatchingGame();
+    });
+    </script>
+</body>
+</html>
