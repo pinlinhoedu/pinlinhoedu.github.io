@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>王牌講義：人性尊嚴與人權保障</title>
+    <style>
+        :root {
+            --bg-color: #f4f1ea;
+            --card-bg: #ffffff;
+            --text-color: #4a4a4a;
+            --heading-color: #6a7a8a;
+            --highlight-color: #bcaaa4;
+            --primary-interactive: #a8c0d8;
+            --secondary-interactive: #e5b7a5;
+            --border-color: #e0e0e0;
+            --correct-color: #8fb996;
+            --incorrect-color: #d98686;
+            --disabled-color: #c0c0c0;
+            --warning-color: #f7b731;
+            --font-family: Arial, Helvetica, sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--heading-color);
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2.2rem; text-align: center; }
+        h2 { font-size: 1.8rem; border-bottom: 2px solid var(--primary-interactive); padding-bottom: 0.5rem; }
+        h3 { font-size: 1.5rem; }
+        h4 { font-size: 1.2rem; color: #7d8b99; margin-top: 1.5rem; }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-position: inside;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        strong, .highlight {
+            color: var(--highlight-color);
+            font-weight: bold;
+        }
+
+        .separator {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--border-color), rgba(0, 0, 0, 0));
+            margin: 2rem 0;
+        }
+
+        /* Intro Section: Dream Bubbles */
+        .intro-container {
+            text-align: center;
+        }
+        .student-area {
+            position: relative;
+            display: inline-block;
+            margin: 1.5rem 0;
+        }
+        .student-avatar svg {
+            width: 80px;
+            height: 80px;
+        }
+        .pressure-lines {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 20px;
+            display: none;
+        }
+        .pressure-lines.active {
+            display: block;
+        }
+        .pressure-line {
+            width: 100%;
+            height: 3px;
+            background-color: var(--incorrect-color);
+            margin-bottom: 5px;
+            border-radius: 2px;
+            animation: press-down 0.8s ease-in-out infinite alternate;
+        }
+        .pressure-line:nth-child(2) { animation-delay: 0.1s; }
+        .pressure-line:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes press-down {
+            from { transform: translateY(-5px); }
+            to { transform: translateY(0); }
+        }
+
+        .feedback-text {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--incorrect-color);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feedback-text.active {
+            opacity: 1;
+        }
+
+        .dream-bubbles {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .bubble {
+            padding: 0.8rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .bubble svg {
+            width: 24px;
+            height: 24px;
+        }
+        .bubble.dream {
+            background-color: #e9f5ff;
+            border-color: var(--primary-interactive);
+        }
+        .bubble.dream:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .bubble.pressure {
+            background-color: #f0f0f0;
+            border-color: var(--disabled-color);
+        }
+        .bubble.pressure:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .intro-conclusion {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+        }
+        .dignity-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+        }
+        .dignity-light .light-indicator {
+            width: 16px;
+            height: 16px;
+            background-color: var(--disabled-color);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+        .dignity-light .light-indicator.active {
+            background-color: var(--warning-color);
+            box-shadow: 0 0 10px var(--warning-color), 0 0 20px var(--warning-color);
+            animation: pulse-yellow 1.5s infinite;
+        }
+
+        @keyframes pulse-yellow {
+            0% { box-shadow: 0 0 5px var(--warning-color); }
+            50% { box-shadow: 0 0 15px var(--warning-color); }
+            100% { box-shadow: 0 0 5px var(--warning-color); }
+        }
+
+        /* Core Concept 1: Pillars */
+        .pillars-container {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .pillar {
+            flex: 1;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+        .pillar.freedom {
+            background-color: var(--primary-interactive);
+        }
+        .pillar.equality {
+            background-color: var(--secondary-interactive);
+        }
+        .pillar-header {
+            padding: 1rem;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .pillar-header svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 0.5rem;
+        }
+        .pillar-header h4 {
+            color: white;
+            margin: 0;
+        }
+        .pillar-content {
+            background-color: var(--card-bg);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 1.5rem;
+        }
+        .pillar.expanded .pillar-content {
+            max-height: 500px; /* Adjust as needed */
+            opacity: 1;
+            padding: 1.5rem;
+        }
+        .example-item {
+            display: flex;
+            align-items: start;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .example-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        /* Wangpai Yidiantong: Drag & Drop Formula */
+        .formula-container {
+            text-align: center;
+        }
+        .formula-zone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem;
+            min-height: 120px;
+            min-width: 250px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        .drop-zone.drag-over {
+            background-color: #e9f5ff;
+        }
+        .draggable-cards {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .d-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            cursor: grab;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .d-card:active {
+            cursor: grabbing;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transform: scale(1.05);
+        }
+        .drop-zone .d-card {
+            cursor: default;
+            background-color: var(--correct-color);
+            color: white;
+            border-color: var(--correct-color);
+        }
+        .formula-success {
+            color: var(--correct-color);
+            font-weight: bold;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Core Concept 2: Flowchart */
+        .flowchart {
+            position: relative;
+            padding-left: 30px; /* Space for the line */
+        }
+        .flow-line {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            bottom: 10px;
+            width: 4px;
+            background-color: var(--border-color);
+            border-radius: 2px;
+        }
+        .flow-step {
+            position: relative;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .flow-step.active {
+            display: block;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 4px solid var(--border-color);
+            background-color: var(--bg-color);
+            z-index: 1;
+        }
+        .flow-step.active::before {
+            border-color: var(--primary-interactive);
+            background-color: white;
+        }
+        .flow-step-content {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+        }
+        .flow-step-content.goal { background-color: #e6eaf0; }
+        .flow-step-content.means { background-color: #fef4e8; }
+        .flow-step-content.result { background-color: #e9f5ee; }
+        .flow-icon { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .flow-icon svg { width: 32px; height: 32px; flex-shrink: 0; }
+        .flow-button-container {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .flow-button {
+            background-color: var(--primary-interactive);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .flow-button:hover {
+            background-color: #8aabbb;
+        }
+        .flow-button:disabled {
+            background-color: var(--disabled-color);
+            cursor: not-allowed;
+        }
+        
+        /* Wangpai Dazongjie: Flip Cards */
+        .flip-card-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            perspective: 1000px;
+        }
+        .flip-card {
+            width: 200px;
+            height: 250px;
+            position: relative;
+        }
+        .flip-card-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+        }
+        .flip-card-front {
+            background-color: #fff;
+        }
+        .flip-card-back {
+            background-color: var(--heading-color);
+            color: white;
+            transform: rotateY(180deg);
+            padding: 1rem;
+            text-align: center;
+        }
+        .flip-card-back strong {
+            color: #fff;
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .flip-card svg {
+            width: 80px;
+            height: 80px;
+        }
+
+        /* Quiz Section */
+        .quiz-question {
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--secondary-interactive);
+            padding-left: 1.5rem;
+        }
+        .quiz-options .option {
+            display: flex;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .quiz-options .option:hover {
+            border-color: var(--primary-interactive);
+            background-color: #f7faff;
+        }
+        .quiz-options.answered .option {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .quiz-options.answered .option:hover {
+            border-color: var(--border-color);
+            background-color: transparent;
+        }
+        .quiz-options .option.correct {
+            border-color: var(--correct-color);
+            background-color: #f0fff3;
+            opacity: 1;
+        }
+        .quiz-options .option.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #fff2f2;
+            opacity: 1;
+        }
+        .option-letter {
+            font-weight: bold;
+            margin-right: 0.8rem;
+            color: var(--heading-color);
+        }
+        .feedback-icon {
+            margin-left: auto;
+            width: 24px;
+            height: 24px;
+        }
+        .explanation {
+            border: 1px solid var(--border-color);
+            background-color: #fafafa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        .explanation h4 {
+            margin-top: 0;
+            color: var(--highlight-color);
+        }
+
+        .textarea-question textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+        }
+        .quiz-button {
+            background-color: var(--secondary-interactive);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+        .quiz-button:hover {
+            background-color: #d1a391;
+        }
+        .user-answer {
+            background-color: #fff9e6;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px dashed var(--highlight-color);
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .reading-comprehension { display: none; }
+        .reading-context {
+            background-color: #f5f5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .social-post {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body { font-size: 15px; }
+            .container { margin: 1rem auto; padding: 0 0.5rem; }
+            .card { padding: 1.5rem 1rem; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.5rem; }
+            h3 { font-size: 1.3rem; }
+            .pillars-container, .flip-card-container {
+                flex-direction: column;
+            }
+            .flip-card {
+                width: 100%;
+                max-width: 250px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <main class="container">
+        <div class="card">
+            <h1>人性尊嚴與人權保障</h1>
+            <p style="text-align: center; font-size: 1.1rem; color: #888;">王牌名師帶你用最輕鬆的方式，搞定公民課最核心的概念！</p>
+        </div>
+
+        <div class="card intro-container">
+            <p>課本的開頭漫畫是不是很有趣？老師問大家未來想做什麼，有人想當老師、有人想開飛機，這都是發自內心的夢想。但有一位同學卻很苦惱，因為爸爸希望他繼承家裡的小吃攤，讓他感覺「壓力好大」。</p>
+            
+            <div class="student-area">
+                <div class="student-avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="10" r="3"></circle><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"></path></svg>
+                </div>
+                <div class="pressure-lines">
+                    <div class="pressure-line"></div>
+                    <div class="pressure-line"></div>
+                    <div class="pressure-line"></div>
+                </div>
+                <div class="feedback-text">壓力好大</div>
+            </div>
+
+            <div class="dream-bubbles">
+                <div class="bubble dream" data-type="dream">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    <span>想當老師</span>
+                </div>
+                <div class="bubble dream" data-type="dream">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2L15 22L11 13L2 9L22 2Z"></path></svg>
+                    <span>想開飛機</span>
+                </div>
+                <div class="bubble pressure" data-type="pressure">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 1.838.494 3.565 1.357 5.064L2 22l4.936-1.357A9.962 9.962 0 0 0 12 22c5.523 0 10-4.477 10-10z"></path><path d="M7 12h0"></path><path d="M12 12h0"></path><path d="M17 12h0"></path></svg>
+                    <span>繼承小吃攤</span>
+                </div>
+            </div>
+
+            <p class="intro-conclusion">欸，你有沒有想過，為什麼這位同學會覺得壓力大？這不就是我們今天要談的重點嗎？當我們<strong class="highlight">不能自由選擇</strong>自己想走的路，感覺不被尊重時，
+            <span class="dignity-light">「人性尊嚴」<span class="light-indicator"></span></span>就悄悄地亮起了黃燈！
+            </p>
+        </div>
+
+        <div class="card">
+            <h2>核心觀念一：破解「人性尊嚴」的神秘面紗</h2>
+            <p>很多人聽到「人性尊嚴」，就覺得好像是什麼哲學大道理。別怕！我們把它拆解成兩根「擎天柱」，你就秒懂了！</p>
+            <div class="pillars-container">
+                <div class="pillar freedom" id="pillar-freedom">
+                    <div class="pillar-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3.5a8.5 8.5 0 0 1-8.5 8.5H3.5m0 0L7 8.5m-3.5 3.5L7 15.5"></path><path d="M6 3.5a8.5 8.5 0 0 0 8.5 8.5h3.5m0 0L14.5 8.5m3.5 3.5l-3.5 3.5"></path></svg>
+                        <h4>擎天柱一：我是我生命的主人<br>「選擇的自由」</h4>
+                    </div>
+                    <div class="pillar-content">
+                        <p><strong class="highlight">什麼意思？</strong> 簡單說，就是<strong class="highlight">「我的事，我做主」</strong>。每個人都是一個獨立的、有思想的個體，不是任何人的附屬品。你有權利選擇你想過的生活方式、想交的朋友、想穿的衣服、想追的夢想，只要不傷害到別人，別人就不能隨便干涉你。</p>
+                        <h4>生活中的例子：</h4>
+                        <ul>
+                            <li class="example-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                                <div><strong>課本範例：</strong> 你可以自由選擇要參加音樂社還是日文社，學校不能強迫你。</div>
+                            </li>
+                            <li class="example-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M17 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path><path d="M3 15v5c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2v-5"></path><path d="M17 15v5c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2v-5"></path></svg>
+                                <div><strong>王牌補充：</strong> 午餐時，你可以選擇要吃麵還是吃飯；班會上，你可以舉手發表對班級事務的看法，就算跟班長意見不一樣，也應該被尊重。</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="pillar equality" id="pillar-equality">
+                    <div class="pillar-header">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16.5l-4-4-4 4"></path><path d="M12 4v8.5"></path><path d="M4 20h16"></path><path d="M12 12.5L20 9"></path><path d="M12 12.5L4 9"></path></svg>
+                        <h4>擎天柱二：沒有人可以欺負我<br>「天生的平等與不受侵犯」</h4>
+                    </div>
+                    <div class="pillar-content">
+                        <p><strong class="highlight">什麼意思？</strong> 這根柱子告訴我們，每個人生下來都是<strong class="highlight">自由而且平等</strong>的，不管你是高是矮、是窮是富、功課好壞，你的「價值」都是一樣的。因此，任何人都不應該隨便迫害你、欺負你或騷擾你。</p>
+                        <h4>生活中的例子：</h4>
+                        <ul>
+                            <li class="example-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 22v-4.87a3.37 3.37 0 0 0-.94-2.61l-1.41-1.41a2 2 0 0 1 0-2.82l.94-.94a2 2 0 0 0 0-2.82L11.12 6.2a2 2 0 0 0-2.82 0L6.94 7.56a2 2 0 0 0 0 2.82l6.36 6.36a2 2 0 0 0 2.82 0L17.5 15.34a2 2 0 0 1 2.82 0l1.41 1.41a2 2 0 0 1 0 2.82l-1.41 1.41a3.37 3.37 0 0 1-2.61.94z"></path></svg>
+                                <div><strong>課本範例：</strong> 每個同年齡的學生都有權利上學接受國民教育，不會因為家裡沒錢就被學校趕出去。這就是<strong class="highlight">平等的受教權</strong>。</div>
+                            </li>
+                            <li class="example-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                <div><strong>王牌補充：</strong> 學校的校規禁止霸凌，這就是在保護每個學生不被侵犯的權利。走在路上，警察不能因為看你不順眼就隨便把你抓起來，這也是在保護你的人身自由。</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card formula-container">
+            <h3>【王牌一點通】</h3>
+            <p>記住這個公式，人性尊嚴就變得很簡單！請拖曳下方的卡片，完成公式：</p>
+            <div class="formula-zone">
+                <strong>人性尊嚴 = </strong>
+                <div id="drop-zone" class="drop-zone"></div>
+            </div>
+            <div class="draggable-cards">
+                <div class="d-card" draggable="true" id="d-card-1">選擇的自由</div>
+                <div class="d-card" draggable="true" id="d-card-2">被公平對待</div>
+                <div class="d-card" draggable="true" id="d-card-3">不被騷擾</div>
+            </div>
+            <p id="formula-success" class="formula-success">恭喜你！這就是人性尊嚴的核心！當這三樣東西都被滿足時，我們就活得像一個「人」，而不是一個工具或物品。</p>
+        </div>
+
+        <div class="card">
+            <h2>核心觀念二：人性尊嚴與人權的「CP」關係</h2>
+            <p>如果說<strong class="highlight">「人性尊嚴」是我們想蓋好的一棟叫做「幸福人生」的房子</strong>，那<strong class="highlight">「人權」就是蓋房子需要的一磚一瓦</strong>，像是「自由權」、「平等權」、「生存權」等等。一起來看看人權如何具體保護人性尊嚴吧！</p>
+            
+            <div class="flowchart" id="flowchart">
+                <div class="flow-line"></div>
+                <div class="flow-step active" id="flow-step-1">
+                    <div class="flow-step-content goal">
+                        <div class="flow-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            <div><h4>1. 目標確立 (Why?)</h4>我們最終的目標是維護每個人的 <strong class="highlight">`人性尊嚴`</strong>。</div>
+                        </div>
+                        <p><i>也就是說，要讓每個人都能自由選擇，並被平等、有尊嚴地對待。</i></p>
+                    </div>
+                </div>
+
+                <div class="flow-step" id="flow-step-2">
+                    <div class="flow-step-content means">
+                        <div class="flow-icon">
+                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="18" height="8" rx="1"></rect><rect x="4" y="4" width="16" height="8" rx="1"></rect></svg>
+                            <div><h4>2. 具體手段 (How?)</h4>透過保障 <strong class="highlight">`人權`</strong> 來實現這個目標。人權就是把抽象的尊嚴，變成一條一條具體、看得到的權利。</div>
+                        </div>
+                        <ul>
+                            <li><strong>手段A：國家立法保障「基本生活」</strong>
+                                <div class="flow-icon" style="margin-top: 0.5rem;">
+                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4z"/></svg>
+                                    <div>→ 效果：保障了人民的 <strong class="highlight">`生存權`</strong>。當你連下一餐在哪都不知道時，哪有心情去談夢想和選擇？所以，保障基本生活，是實現人性尊嚴的「地基」。</div>
+                                </div>
+                            </li>
+                            <li><strong>手段B：國家立法防止「權利侵害」</strong>
+                                <div class="flow-icon" style="margin-top: 0.5rem;">
+                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path><line x1="8" y1="2" x2="2" y2="8"></line><line x1="16" y1="22" x2="22" y2="16"></line></svg>
+                                    <div>→ 效果：保障了人民的 <strong class="highlight">`人身自由權`</strong>。當你隨時可能被抓走、被欺負，你就不可能「自由」，更談不上有尊嚴。</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <div class="flow-step" id="flow-step-3">
+                    <div class="flow-step-content result">
+                        <div class="flow-icon">
+                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            <div><h4>3. 達成結果 (What?)</h4></div>
+                        </div>
+                        <ul>
+                            <li><strong>個人層面：</strong>當你的人權被保護，你就有<strong class="highlight">充分的選擇自由</strong>，可以安心地去追求你想當老師、想開飛機的夢想，成為一個獨立自主的個體。</li>
+                            <li><strong>社會層面：</strong>我們不只要保障自己的人權，也要<strong class="highlight">尊重他人的人權</strong>。這樣，整個社會才能讓「所有的人」都享有同等的尊嚴和權利。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="flow-button-container">
+                <button class="flow-button" id="flow-next-btn">下一步</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>【王牌大總結】</h3>
+            <p><strong>人性尊嚴</strong> 是一個崇高的 <strong class="highlight">`理念`</strong>。<br><strong>人權保障</strong> 是實現這個理念的 <strong class="highlight">`具體行動`</strong>。<br>兩者關係超緊密，就像手機和電一樣，少了人權（電），人性尊嚴（手機）就只是一個空殼子！將滑鼠移到卡片上看看吧！</p>
+            <div class="flip-card-container">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                        </div>
+                        <div class="flip-card-back">
+                            <strong>人性尊嚴</strong>
+                            <span>(理念)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2" ry="2"></rect><line x1="21" y1="12" x2="23" y2="12"></line><rect x="5" y="9" width="4" height="6" rx="1" fill="currentColor"></rect></svg>
+                        </div>
+                        <div class="flip-card-back">
+                            <strong>人權保障</strong>
+                            <span>(具體行動)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>名師出馬，牛刀小試</h2>
+            <p>來吧，驗收一下你是不是真的懂了！試著回答下面這5個問題。</p>
+            <hr class="separator">
+
+            <h4>【基礎題】</h4>
+            <div class="quiz-question" id="q1">
+                <p>1. 根據課文內容，下列何者<strong class="highlight">最能</strong>代表「人性尊嚴」的核心概念？</p>
+                <div class="quiz-options" data-question="1">
+                    <div class="option" data-correct="false"><span class="option-letter">A</span><span>只要努力賺錢，就能獲得他人尊重</span><div class="feedback-icon"></div></div>
+                    <div class="option" data-correct="false"><span class="option-letter">B</span><span>聽從父母師長的安排，才是孝順的表現</span><div class="feedback-icon"></div></div>
+                    <div class="option" data-correct="true"><span class="option-letter">C</span><span>每個人都能自由選擇生活方式，並受到平等的對待</span><div class="feedback-icon"></div></div>
+                    <div class="option" data-correct="false"><span class="option-letter">D</span><span>在團體中，個人的意見應該要服從多數人的決定</span><div class="feedback-icon"></div></div>
+                </div>
+                <div class="explanation" id="exp1">
+                    <h4>【王牌詳解】</h4>
+                    <p><strong>答案：(C)</strong></p>
+                    <p><strong>解題思路：</strong> 這題直接考你「人性尊嚴」的定義。回想我們的兩大擎天柱：「選擇的自由」和「天生的平等」。選項(C)完美地結合了這兩點。</p>
+                    <p><strong>提示：</strong> (A)強調金錢，(B)強調服從，(D)強調犧牲個人，都與「獨立自主的個體」這個核心概念相違背。</p>
+                </div>
+            </div>
+            
+            <hr class="separator">
+            <h4>【進階應用題】</h4>
+            <div class="quiz-question" id="q2">
+                <p>2. 課文中提到，國家會透過法律來「保障人民的基本生活水準」（例如：發放補助給清寒民眾）。請你說明，這個做法為什麼跟「維護人性尊嚴」有關係？</p>
+                <div class="textarea-question">
+                    <textarea placeholder="請在此輸入你的看法..."></textarea>
+                    <div class="user-answer" id="user-answer-2">
+                        <h4>你的回答：</h4>
+                        <p></p>
+                    </div>
+                    <button class="quiz-button" id="submit-q2">提交/查看參考答案</button>
+                </div>
+                <div class="explanation" id="exp2">
+                    <h4>【參考答案】</h4>
+                    <p>保障人民的基本生活水準，其實是保障了人民的「生存權」。當一個人的生存受到威脅時（例如：餓肚子、沒地方住），他就沒有心力與條件去思考自己的未來、追求夢想或做出自由的選擇。因此，國家確保人民能活下去，是為了提供一個最基本的「地基」，讓他們有能力去實踐自己的「選擇自由」，活出有尊嚴的人生。</p>
+                    <p><strong>解題思路：</strong> 這題要你連結「人權」和「人性尊嚴」。你要先點出「保障基本生活」是屬於哪一種人權（生存權），然後再說明這個權利如何幫助一個人去實現更高層次的目標（選擇的自由、尊嚴）。</p>
+                </div>
+            </div>
+
+            <hr class="separator">
+            <h4>【閱讀理解素養題】</h4>
+            <div class="reading-context">
+                <p>請閱讀課本P167中，小傑在社群軟體上的貼文與朋友們的回應，並回答下列3個問題。</p>
+                <div class="social-post">
+                    <strong>(情境)</strong><br>
+                    小傑分享了一則關於板橋高中舉辦「男裙週」活動的新聞，並表示贊成。
+                    <ul>
+                        <li>佩珊的媽媽說，她們小時候連頭髮都要規定剪到耳上一公分。</li>
+                        <li>昱維的爸爸說，他們以前連襪子長度都有規定。</li>
+                        <li>婷語的妹妹學校則有便服日，可以展現不同穿著風貌。</li>
+                    </ul>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button class="quiz-button" id="start-reading-quiz">我讀完了，開始作答</button>
+                </div>
+            </div>
+
+            <div id="reading-comprehension-quiz" class="reading-comprehension">
+                <div class="quiz-question" id="q3">
+                    <p>3. 板橋高中舉辦「男裙週」活動，讓男同學體驗穿裙子。這個活動最主要是想挑戰哪一種傳統觀念，進而促進對「人性尊嚴」的尊重？</p>
+                    <div class="quiz-options" data-question="3">
+                        <div class="option" data-correct="false"><span class="option-letter">A</span><span>挑戰學生應該要專心念書的觀念</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="true"><span class="option-letter">B</span><span>挑戰性別的刻板印象（例如：男生就該陽剛，女生就該溫柔）</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="false"><span class="option-letter">C</span><span>挑戰校園中師長的權威</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="false"><span class="option-letter">D</span><span>挑戰服裝的統一性與美感</span><div class="feedback-icon"></div></div>
+                    </div>
+                    <div class="explanation" id="exp3">
+                        <h4>【王牌詳解】</h4>
+                        <p><strong>答案：(B)</strong></p>
+                        <p><strong>解題思路：</strong> 「男裙週」的核心在於打破「裙子=女性」的固定連結。這種固定連結就是一種「性別刻板印象」。當我們讓男生也能自由選擇穿裙子，就是在尊重每個人的獨特性，不被傳統的性別框架所束縛。这正是一种对个人选择與尊嚴的尊重。</p>
+                        <button class="quiz-button next-question-btn" data-next="q4">下一題</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" id="q4" style="display: none;">
+                    <p>4. 比較佩珊媽媽、昱維爸爸的過去經驗，和婷語妹妹現在的校園生活。這個對比最能說明下列哪一項變遷？</p>
+                    <div class="quiz-options" data-question="4">
+                        <div class="option" data-correct="false"><span class="option-letter">A</span><span>以前的制服比較不好看</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="false"><span class="option-letter">B</span><span>現在的學校越來越不重視紀律</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="true"><span class="option-letter">C</span><span>社會對於保障學生的「選擇自由」與「個性展現」越來越重視</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="false"><span class="option-letter">D</span><span>家長越來越不關心學校的規定</span><div class="feedback-icon"></div></div>
+                    </div>
+                    <div class="explanation" id="exp4">
+                        <h4>【王牌詳解】</h4>
+                        <p><strong>答案：(C)</strong></p>
+                        <p><strong>解題思路：</strong> 爸爸媽媽那個年代，學校對學生的服裝儀容有非常嚴格、統一的規定（頭髮長度、襪子高度），個人的選擇空間很小。而現在的校園（如婷語妹妹的學校）有便服日，更重視學生的自我表達。這一連串的改變，顯示出整個社會的價值觀，從過去的「團體紀律優先」轉變為更重視「個人自主與尊嚴」。</p>
+                        <button class="quiz-button next-question-btn" data-next="q5">下一題</button>
+                    </div>
+                </div>
+
+                <div class="quiz-question" id="q5" style="display: none;">
+                    <p>5. 小傑的貼文最後寫著：「我贊成學校的作法，這是……」，後面被省略了。如果請你幫他把話說完，結合我們這堂課學到的概念，下列哪一個選項最適合接在後面？</p>
+                    <div class="quiz-options" data-question="5">
+                        <div class="option" data-correct="false"><span class="option-letter">A</span><span>這是為了上新聞，提高學校的知名度</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="true"><span class="option-letter">B</span><span>這是提供學生選擇自由，打破刻板印象，進而維護其人性尊嚴的表現</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="false"><span class="option-letter">C</span><span>這是模仿國外的流行，讓學生跟上時代潮流</span><div class="feedback-icon"></div></div>
+                        <div class="option" data-correct="false"><span class="option-letter">D</span><span>這是為了討好學生，讓學生更喜歡來上學</span><div class="feedback-icon"></div></div>
+                    </div>
+                    <div class="explanation" id="exp5">
+                        <h4>【王牌詳解】</h4>
+                        <p><strong>答案：(B)</strong></p>
+                        <p><strong>解題思路：</strong> 這題是整個單元的總結應用。小傑贊成「男裙週」，一定是看到了活動背後更深層的意義。這個活動給了學生「選擇」穿什麼的自由，挑戰了社會的「刻板印象」，最終的目的就是要讓每個人都能不被標籤束縛，活出自己想要的樣子。這完美地對應了「人性尊嚴」的兩大核心：選擇自由與平等尊重。</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- 1. Intro Dream Bubbles Interaction ---
+        const bubbles = document.querySelectorAll('.bubble');
+        const pressureLines = document.querySelector('.pressure-lines');
+        const feedbackText = document.querySelector('.feedback-text');
+        const dignityLight = document.querySelector('.dignity-light .light-indicator');
+
+        bubbles.forEach(bubble => {
+            bubble.addEventListener('click', () => {
+                const type = bubble.dataset.type;
+                if (type === 'pressure') {
+                    pressureLines.classList.add('active');
+                    feedbackText.classList.add('active');
+                    dignityLight.classList.add('active');
+                } else {
+                    pressureLines.classList.remove('active');
+                    feedbackText.classList.remove('active');
+                    dignityLight.classList.remove('active');
+                }
+            });
+        });
+
+        // --- 2. Accordion Pillars Interaction ---
+        const pillars = document.querySelectorAll('.pillar');
+        pillars.forEach(pillar => {
+            pillar.addEventListener('click', () => {
+                const isExpanded = pillar.classList.contains('expanded');
+                pillars.forEach(p => p.classList.remove('expanded'));
+                if (!isExpanded) {
+                    pillar.classList.add('expanded');
+                }
+            });
+        });
+        
+        // --- 3. Drag and Drop Formula Interaction ---
+        const draggableCards = document.querySelectorAll('.d-card');
+        const dropZone = document.getElementById('drop-zone');
+        const successMessage = document.getElementById('formula-success');
+        let droppedCount = 0;
+
+        draggableCards.forEach(card => {
+            card.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                setTimeout(() => {
+                    e.target.style.display = 'none';
+                }, 0);
+            });
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            const id = e.dataTransfer.getData('text/plain');
+            const draggableElement = document.getElementById(id);
+            if (draggableElement) {
+                draggableElement.style.display = 'inline-flex';
+                dropZone.appendChild(draggableElement);
+                draggableElement.setAttribute('draggable', 'false');
+                droppedCount++;
+                if (droppedCount === 3) {
+                    successMessage.style.display = 'block';
+                }
+            }
+        });
+
+        // --- 4. Step-by-step Flowchart Interaction ---
+        const nextBtn = document.getElementById('flow-next-btn');
+        let currentStep = 1;
+        nextBtn.addEventListener('click', () => {
+            currentStep++;
+            const nextStepElement = document.getElementById(`flow-step-${currentStep}`);
+            if (nextStepElement) {
+                nextStepElement.classList.add('active');
+                nextStepElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            if (currentStep >= 3) {
+                nextBtn.disabled = true;
+                nextBtn.textContent = '流程結束';
+            }
+        });
+
+        // --- 5. Quiz Interactions ---
+        const svgCheck = `<svg class="feedback-icon" viewBox="0 0 24 24" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--correct-color').trim()}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+        const svgCross = `<svg class="feedback-icon" viewBox="0 0 24 24" fill="none" stroke="${getComputedStyle(document.documentElement).getPropertyValue('--incorrect-color').trim()}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+
+        const quizOptionsAll = document.querySelectorAll('.quiz-options');
+        quizOptionsAll.forEach(optionsContainer => {
+            optionsContainer.addEventListener('click', (e) => {
+                const selectedOption = e.target.closest('.option');
+                if (!selectedOption || optionsContainer.classList.contains('answered')) {
+                    return;
+                }
+                
+                optionsContainer.classList.add('answered');
+                const questionNum = optionsContainer.dataset.question;
+                const isCorrect = selectedOption.dataset.correct === 'true';
+
+                if (isCorrect) {
+                    selectedOption.classList.add('correct');
+                    selectedOption.querySelector('.feedback-icon').innerHTML = svgCheck;
+                } else {
+                    selectedOption.classList.add('incorrect');
+                    selectedOption.querySelector('.feedback-icon').innerHTML = svgCross;
+                    // Highlight the correct one
+                    const correctOption = optionsContainer.querySelector('.option[data-correct="true"]');
+                    correctOption.classList.add('correct');
+                    correctOption.querySelector('.feedback-icon').innerHTML = svgCheck;
+                }
+
+                const explanation = document.getElementById(`exp${questionNum}`);
+                if (explanation) {
+                    explanation.style.display = 'block';
+                }
+            });
+        });
+
+        // Q2 Textarea question
+        const submitQ2Btn = document.getElementById('submit-q2');
+        submitQ2Btn.addEventListener('click', () => {
+            const textarea = document.querySelector('#q2 textarea');
+            const userAnswerContainer = document.getElementById('user-answer-2');
+            if(textarea.value.trim() !== "") {
+                userAnswerContainer.querySelector('p').textContent = textarea.value;
+                userAnswerContainer.style.display = 'block';
+            }
+            document.getElementById('exp2').style.display = 'block';
+            submitQ2Btn.textContent = '查看參考答案';
+        });
+
+        // Reading comprehension sequence
+        const startReadingBtn = document.getElementById('start-reading-quiz');
+        const readingQuizContainer = document.getElementById('reading-comprehension-quiz');
+        
+        startReadingBtn.addEventListener('click', () => {
+            readingQuizContainer.style.display = 'block';
+            startReadingBtn.parentElement.parentElement.style.display = 'none'; // Hide context card
+            document.getElementById('q3').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        const nextQuestionBtns = document.querySelectorAll('.next-question-btn');
+        nextQuestionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const nextQuestionId = btn.dataset.next;
+                const nextQuestionElem = document.getElementById(nextQuestionId);
+                if (nextQuestionElem) {
+                    nextQuestionElem.style.display = 'block';
+                    nextQuestionElem.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    });
+    </script>
+ <section id="completion-section" style="text-align: center; padding: 2rem 0; margin-top: 2rem; background-color: #f7f3ef; border-radius: 12px;"> <button id="completion-btn" style="background-color: #5c5470; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 1.2em; font-weight: bold; cursor: pointer; transition: background-color 0.3s;">我已經完成學習</button> </section>  <script> document.addEventListener('DOMContentLoaded', () => { const interactionLog = []; const logEvent = (eventType, details) => { interactionLog.push({ timestamp: new Date().toISOString(), eventType: eventType, details: details }); }; document.querySelectorAll('.flip-card').forEach(card => { card.addEventListener('click', () => { const term = card.querySelector('.term, .word')?.textContent.trim() || 'Unknown Card'; logEvent('flipCard', { term: term, action: 'flipped' }); }); }); document.querySelectorAll('.drop-zone, .drop-zone-inline').forEach(zone => { zone.addEventListener('drop', (e) => { const droppedItem = document.querySelector('.dragging') || window.draggedItem; if (droppedItem) { logEvent('dragDrop', { droppedItemText: droppedItem.textContent.trim(), targetIdentifier: zone.dataset.match || zone.dataset.targetId || 'Unknown Zone' }); } }); }); document.querySelectorAll('.practice-question .btn').forEach(btn => { btn.addEventListener('click', () => { const questionTitle = btn.closest('.practice-question').querySelector('h4')?.textContent.trim() || 'Unknown Question'; logEvent('exerciseAction', { question: questionTitle, action: 'buttonClicked', buttonText: btn.textContent.trim() }); }); }); const completionBtn = document.getElementById('completion-btn'); if (completionBtn) { completionBtn.addEventListener('click', function() { this.disabled = true; this.textContent = '已完成，感謝您的學習！'; this.style.backgroundColor = '#8a9a9a'; const payload = { completed_at: new Date().toISOString(), label: '我已經完成學習', log: interactionLog }; console.log('Posting message to parent:', payload); parent.postMessage({ type: 'TASK_COMPLETED', payload: payload }, '*'); }); } }); </script> </body>
+</html>
