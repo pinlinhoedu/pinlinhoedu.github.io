@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>伴伴辦學 SchoolTech - 簡報</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 引入 Chart.js 圖表庫 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-main: #f4f3ee; /* 柔和米色 */
+            --bg-page: #e9e6e0; /* 柔和石色 */
+            --text-dark: #6c6861; /* 柔和棕灰色 */
+            --text-light: #8a857e;
+            --accent-blue: #a3b8c2; /* 灰藍色 */
+            --accent-green: #b2c2a3; /* 鼠尾草綠 */
+            --accent-terracotta: #d4a373; /* 柔和赤陶色 */
+            --accent-orange: #e59866; /* 較深的橘色調 */
+            --border-color: #d1ccc0;
+            /* Page 11 Colors from original PDF */
+            --p11-teacher-blue: #abc7e4;
+            --p11-parent-yellow: #fde5a8;
+            --p11-student-pink: #f0b8d1;
+            --p11-db-orange: #fabf8f;
+            --p11-solution-orange: #fabf8f;
+            --p11-video-green: #c4d79b;
+            --p11-agent-box: #fff2cc;
+            --p11-arrow-red: #c0504d;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .presentation-container {
+            width: 100%;
+            max-width: 1100px; /* 標準簡報長寬比 */
+            aspect-ratio: 16 / 9;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-page);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            animation-duration: 0.6s;
+            animation-fill-mode: forwards;
+        }
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 1rem;
+        }
+        .nav-button {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #8faab6;
+        }
+        .page-counter {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        h1, h2, h3 {
+            color: var(--text-dark);
+        }
+        .table-custom {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .table-custom th, .table-custom td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .table-custom thead {
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* --- 動畫 Keyframes --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-in-fade { animation-name: fadeIn; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .animate-out-fade { animation-name: fadeOut; }
+
+        @keyframes slideInRightZoom { from { opacity: 0; transform: translateX(50%) scale(0.8); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .animate-in-slide-right-zoom { animation-name: slideInRightZoom; }
+        @keyframes slideOutLeftZoom { from { opacity: 1; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(-50%) scale(0.8); } }
+        .animate-out-slide-left-zoom { animation-name: slideOutLeftZoom; }
+
+        @keyframes slideInLeftZoom { from { opacity: 0; transform: translateX(-50%) scale(0.8); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .animate-in-slide-left-zoom { animation-name: slideInLeftZoom; }
+        @keyframes slideOutRightZoom { from { opacity: 1; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(50%) scale(0.8); } }
+        .animate-out-slide-right-zoom { animation-name: slideOutRightZoom; }
+
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(50%); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in-slide-up { animation-name: slideInUp; }
+        @keyframes slideOutDown { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(50%); } }
+        .animate-out-slide-down { animation-name: slideOutDown; }
+
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container" id="presentationContainer">
+        <!-- Page 1 -->
+        <div class="page active" data-page="1">
+            <div class="text-center absolute top-16">
+                 <h1 class="text-6xl font-bold" style="color: var(--accent-terracotta);">伴伴辦學科技</h1>
+                 <p class="text-3xl" style="color: var(--accent-terracotta);">EduBaania SchoolTech</p>
+            </div>
+            <p class="text-2xl mt-4" style="color: var(--text-light);">亞洲第一個 AI Agent 驅動的個人化陪伴學習平台</p>
+            <div class="border-t-2 w-1/4 my-10" style="border-color: var(--border-color);"></div>
+            <p class="text-xl italic max-w-3xl text-center">結合「Baan」(波斯語：守護者)與「Companio」(拉丁語：陪伴者)的精神，我們相信，學習的本質從不是追求速度，而是被理解與被陪伴。</p>
+            <div class="absolute bottom-10 text-center text-sm">
+                <p>陳銘仁 (Tomato Chen)</p>
+                <p>tomato0331@gmail.com | 0937-458-745</p>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="page" data-page="2">
+            <h2 class="text-2xl uppercase tracking-widest" style="color: var(--text-light);">願景與使命</h2>
+            <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">VISION & MISSION</p>
+            <p class="text-4xl font-semibold mt-8 text-center max-w-4xl leading-snug">「以雙引擎模式 (B2C 高留存 + B2B 高 ARPU) 透過 AI 辦學科技快速複製與擴張，改變教育產業結構。」</p>
+        </div>
+        
+        <!-- Page 3 -->
+        <div class="page" data-page="3">
+            <h2 class="text-5xl font-bold mb-16">我們的旅程</h2>
+            <div class="flex items-center justify-center w-full relative">
+                 <div class="absolute w-full h-1" style="background-color: var(--border-color);"></div>
+                 <div class="flex justify-between w-4/5 relative">
+                     <div class="text-center">
+                         <div class="w-6 h-6 rounded-full bg-white border-4" style="border-color: var(--accent-green);"></div>
+                         <p class="mt-4 font-semibold">萬誠教育科技</p>
+                         <p class="text-sm" style="color: var(--text-light);">2020/11</p>
+                     </div>
+                     <div class="text-center">
+                         <div class="w-6 h-6 rounded-full bg-white border-4" style="border-color: var(--accent-green);"></div>
+                         <p class="mt-4 font-semibold">萬通教育</p>
+                         <p class="text-sm" style="color: var(--text-light);">2021/03</p>
+                     </div>
+                     <div class="text-center">
+                         <div class="w-6 h-6 rounded-full bg-white border-4" style="border-color: var(--accent-terracotta);"></div>
+                         <p class="mt-4 font-semibold">伴伴辦學</p>
+                         <p class="text-sm" style="color: var(--text-light);">2025/10</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Page 4 - Interactive Team Page -->
+        <div class="page" data-page="4" style="cursor: pointer;">
+            <!-- This container holds both views and manages transitions -->
+            <div class="relative w-full h-full flex flex-col items-center justify-center">
+
+                <!-- View 1: Initial (Avatars, Names, Titles) -->
+                <div id="team-view-initial" class="w-full h-full flex flex-col items-center justify-center absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-100">
+                    <h2 class="text-5xl font-bold mb-12">核心團隊</h2>
+                    <div class="grid grid-cols-5 gap-x-8 w-full max-w-6xl">
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/d4a373/f4f3ee?text=TC" alt="Tomato Chen" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Tomato Chen</h3>
+                            <p class="text-sm" style="color: var(--text-light);">CEO & 創辦人</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/b2c2a3/f4f3ee?text=GG" alt="Gina Gu" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Gina Gu</h3>
+                            <p class="text-sm" style="color: var(--text-light);">營運長</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/a3b8c2/f4f3ee?text=PH" alt="Pinlin Ho" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Pinlin Ho</h3>
+                            <p class="text-sm" style="color: var(--text-light);">產品長</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/b2c2a3/f4f3ee?text=JJ" alt="Justin Jin" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Justin Jin</h3>
+                            <p class="text-sm" style="color: var(--text-light);">財務長</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/a3b8c2/f4f3ee?text=LS" alt="Leo Su" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Leo Su</h3>
+                            <p class="text-sm" style="color: var(--text-light);">技術長</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 2: Details (Names, Descriptions) - Updated Layout -->
+                <div id="team-view-details" class="w-full h-full flex flex-col items-center justify-start absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 pointer-events-none p-16">
+                    <h2 class="text-5xl font-bold mb-12">核心團隊</h2>
+                    <div class="grid grid-cols-5 gap-x-6 w-full max-w-6xl text-xs text-left">
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Tomato Chen<br>
+                                <span class="font-normal text-sm" style="color: var(--text-light);">(陳銘仁)</span>
+                            </h3>
+                            <p>• OneClass 萬通教育創辦人</p>
+                            <p>• 翰林雲端學院創辦人</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                             <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Gina Gu<br>
+                                <span class="font-normal text-sm" style="color: var(--text-light);">(葛起鳳)</span>
+                            </h3>
+                            <p>• 16年數位學習經驗</p>
+                            <p>• 曾任階梯數位與翰林出版數位產品主管</p>
+                            <p>• 精通數位出版與教育策略</p>
+                            <p>• 累積21項數位學習相關專利</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Pinlin Ho<br>
+                                <span class="font-normal text-sm" style="color: var(--text-light);">(何秉霖)</span>
+                            </h3>
+                            <p>• 22年數位產品開發經驗，橫跨遊戲與教育科技</p>
+                             <p>• 程式及網頁設計教學10年</p>
+                            <p>• 帶領產品獲得3度金質獎 (學習內容與數位出版類)</p>
+                            <p>• 曾任遊戲橘子、大宇資訊、IGG、南一書局要職</p>
+                             <p>• 擅長產品營運、教學設計與技術整合</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Justin Jin<br>
+                                <span class="font-normal text-sm" style="color: var(--text-light);">(金佑儒)</span>
+                            </h3>
+                            <p>• 16年財務經驗，曾任 Deloitte、台灣之星、創業家兄弟</p>
+                            <p>• 擅長企業 IPO 規劃與審計實務</p>
+                            <p>• 精通電商、電信等多元產業財務系統整合</p>
+                            <p>• 曾主導併購、釋股、RSU/ESOP 計畫</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Leo Su<br>
+                                <span class="font-normal text-sm" style="color: var(--text-light);">(蘇冠融)</span>
+                            </h3>
+                            <p>• 10年新創產品技術開發經驗 (SurveyCake 開發, 服務遍及30國)</p>
+                            <p>• 曾為 Allianz、Zyxel、Carrefour 等企業提供解決方案</p>
+                             <p>• 擅長技術架構、雲端開發與團隊領導 AI工程、教育內容、學習科學背景</p>
+                            <p>• 已完成12項核心 AI Agent 模組研發</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 5 -->
+        <div class="page" data-page="5">
+             <h2 class="text-2xl uppercase tracking-widest" style="color: var(--text-light);">願景與使命</h2>
+             <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">VISION & MISSION</p>
+            <p class="text-4xl font-semibold mt-8 text-center max-w-4xl leading-snug">「以雙引擎模式 (B2C 高留存 + B2B 高 ARPU) 透過 AI 辦學科技快速複製與擴張，改變教育產業結構。」</p>
+        </div>
+
+        <!-- Page 6 -->
+        <div class="page justify-start" data-page="6">
+            <h2 class="text-4xl font-bold mb-8">教育的四方困局</h2>
+            <p class="mb-12" style="color: var(--text-light);">從孩子、家長到老師，每個角色都陷入痛點。</p>
+            <table class="table-custom">
+                <thead><tr><th class="text-xl">利害關係人</th><th class="text-xl">問題</th><th class="text-xl">我們的解決方案</th></tr></thead>
+                <tbody>
+                    <tr><td>家長</td><td>找師資煩、團班沒效果、接送苦。</td><td style="color: var(--accent-green);">AI 診斷 + 智能媒合導師</td></tr>
+                    <tr><td>學生</td><td>重覆學、無自律、不敢問、沒成就。</td><td style="color: var(--accent-green);">AI 任務追蹤 + 導師陪伴</td></tr>
+                    <tr><td>老師</td><td>教材無版權、難變現、家長問題多。</td><td style="color: var(--accent-green);">AI 備課 + 平台變現機會</td></tr>
+                    <tr><td>現有其它系統</td><td>只有工具、無可持續性更新的機制。</td><td style="color: var(--accent-green);">強大 AI Agent 全自動協助內容及班級管理</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Page 7 -->
+        <div class="page justify-start" data-page="7">
+            <h2 class="text-5xl font-bold mb-8">解決方案</h2>
+            <div class="grid grid-cols-2 gap-6 w-full">
+                <div class="p-6 rounded-lg border" style="background-color: #f4f3ee; border-color: var(--border-color);"><h3 class="text-2xl font-bold">學生端 (B2C) - 留存引擎</h3><ul class="list-disc list-inside mt-4 space-y-2"><li>每日2小時模式，養成固定學習習慣。</li><li>AI-in-the-loop 教練，降低退訂率。</li><li>遊戲化學習循環，強化成就感。</li></ul><p class="font-bold mt-4" style="color: var(--accent-terracotta);">投資亮點：高留存、高 LTV</p></div>
+                <div class="p-6 rounded-lg border" style="background-color: #f4f3ee; border-color: var(--border-color);"><h3 class="text-2xl font-bold">教師/機構端 (B2B) - 變現引擎</h3><ul class="list-disc list-inside mt-4 space-y-2"><li>AI 辦學 SaaS，提供完整辦學方法論。</li><li>高 ARPU 模型，每校 ACV US$10K-50K。</li><li>解放教師，專注育人與陪伴。</li></ul><p class="font-bold mt-4" style="color: var(--accent-terracotta);">投資亮點：教育數位化基礎設施</p></div>
+                 <div class="p-6 rounded-lg border" style="background-color: #f4f3ee; border-color: var(--border-color);"><h3 class="text-2xl font-bold">技術亮點 - 認知自動化</h3><ul class="list-disc list-inside mt-4 space-y-2"><li>LAM + Multi-Agent System，形成學習閉環。</li><li>Data Flywheel，數據沉澱建立壁壘。</li></ul><p class="font-bold mt-4" style="color: var(--accent-terracotta);">投資亮點：從工具層升級至平台層</p></div>
+                 <div class="p-6 rounded-lg border" style="background-color: #f4f3ee; border-color: var(--border-color);"><h3 class="text-2xl font-bold">雙引擎模式 - B2C + B2B</h3><ul class="list-disc list-inside mt-4 space-y-2"><li>B2C：高留存訂閱模式，沉澱數據。</li><li>B2B：高ARPU SaaS 模式，帶來營收與背書。</li></ul><p class="font-bold mt-4" style="color: var(--accent-terracotta);">投資亮點：兼具規模化+高利潤</p></div>
+            </div>
+        </div>
+
+        <!-- Page 8 -->
+        <div class="page" data-page="8">
+            <h2 class="text-5xl font-bold mb-12">產品</h2>
+            <div class="grid grid-cols-4 gap-8 w-full text-center">
+                <div class="p-6 rounded-lg border" style="border-color: var(--border-color);"><h3 class="text-xl font-semibold">線上直播</h3><p class="text-3xl font-bold my-4" style="color: var(--accent-terracotta);">$4,500</p><p>AI + 學習教練</p></div>
+                <div class="p-6 rounded-lg border" style="border-color: var(--border-color);"><h3 class="text-xl font-semibold">預錄課程</h3><p class="text-3xl font-bold my-4" style="color: var(--accent-terracotta);">$3,000</p><p>1對1 + 全科學習</p></div>
+                <div class="p-6 rounded-lg border" style="border-color: var(--border-color);"><h3 class="text-xl font-semibold">共學</h3><p class="text-3xl font-bold my-4" style="color: var(--accent-terracotta);">$4-8,000</p><p>伴學伴</p></div>
+                <div class="p-6 rounded-lg border" style="border-color: var(--border-color);"><h3 class="text-xl font-semibold">實體座位</h3><p class="text-3xl font-bold my-4" style="color: var(--accent-terracotta);">$4,500</p><p>自主空間</p></div>
+            </div>
+        </div>
+        <div class="page" data-page="9"><h1 class="text-8xl font-bold" style="color: var(--accent-blue);">2 HOURS / DAY</h1></div>
+        <div class="page" data-page="10"><h2 class="text-6xl font-bold tracking-wider">學習體驗設計</h2><div class="border-t-2 w-1/3 my-12" style="border-color: var(--border-color);"></div><ul class="text-2xl space-y-6 text-center"><li>個人化路徑推薦系統</li><li>可視化數據診斷圖表</li><li>沉浸式 OMO 學習空間</li></ul></div>
+        
+        <!-- Page 11 - Final Version -->
+        <div class="page" data-page="11" style="padding: 1rem;">
+            <div class="w-full h-full relative font-sans">
+                <svg width="100%" height="100%" viewBox="0 0 1000 562.5">
+                    <defs>
+                        <linearGradient id="teacherGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#b8cce4;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#95b3d7;stop-opacity:1" />
+                        </linearGradient>
+                         <marker id="arrow-red-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--p11-arrow-red)" />
+                        </marker>
+                         <marker id="arrow-black-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                        </marker>
+                         <marker id="arrow-orange-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#f79646" />
+                        </marker>
+                    </defs>
+
+                    <!-- Nodes -->
+                    <circle cx="150" cy="80" r="70" fill="url(#teacherGradient)"/>
+                     <foreignObject x="80" y="30" width="140" height="100">
+                        <div class="w-full h-full flex flex-col items-center justify-center text-center text-white p-2">
+                             <p class="font-bold text-lg">老師</p>
+                        </div>
+                    </foreignObject>
+
+                    <circle cx="850" cy="80" r="70" fill="var(--p11-parent-yellow)"/>
+                     <foreignObject x="780" y="30" width="140" height="100">
+                        <div class="w-full h-full flex flex-col items-center justify-center text-center text-black p-2">
+                             <p class="font-bold text-lg">家長</p>
+                        </div>
+                    </foreignObject>
+
+                    <circle cx="500" cy="281" r="70" fill="var(--p11-student-pink)"/>
+                    <foreignObject x="430" y="231" width="140" height="100">
+                        <div class="w-full h-full flex flex-col items-center justify-center text-center text-black p-2">
+                             <p class="font-bold text-lg">學生</p>
+                        </div>
+                    </foreignObject>
+                    
+                    <rect x="400" y="70" width="200" height="40" rx="10" ry="10" fill="var(--p11-agent-box)"/>
+                    <text x="500" y="95" text-anchor="middle" font-weight="bold">個人化 AI Agent</text>
+
+                    <rect x="80" y="240" width="180" height="80" rx="10" ry="10" fill="var(--p11-db-orange)"/>
+                    <foreignObject x="80" y="240" width="180" height="80" class="text-xs">
+                         <div class="w-full h-full flex flex-col justify-center text-center p-2">
+                            <p class="font-bold text-base">題庫網站</p><p>課本、習作、1/8題庫</p><p>歷屆試題、無限出題</p>
+                         </div>
+                    </foreignObject>
+
+                    <rect x="740" y="240" width="180" height="80" rx="10" ry="10" fill="var(--p11-solution-orange)"/>
+                     <foreignObject x="740" y="240" width="180" height="80" class="text-xs">
+                         <div class="w-full h-full flex flex-col justify-center text-center p-2">
+                            <p class="font-bold text-base">解題服務</p><p>48小時免費</p><p>50題990</p><p>問到飽1990</p>
+                         </div>
+                    </foreignObject>
+
+                    <rect x="410" y="470" width="180" height="80" rx="10" ry="10" fill="var(--p11-video-green)"/>
+                    <foreignObject x="410" y="470" width="180" height="80" class="text-xs">
+                         <div class="w-full h-full flex flex-col justify-center text-center p-2">
+                            <p class="font-bold text-base">錄影帶</p><p>進度影片</p><p>總複習</p>
+                         </div>
+                    </foreignObject>
+                    
+                    <rect x="140" y="160" width="80" height="30" fill="#c00000" rx="5"/>
+                    <text x="180" y="180" fill="white" text-anchor="middle" class="text-xs">AI Agent</text>
+                    <rect x="780" y="160" width="80" height="30" fill="#c00000" rx="5"/>
+                    <text x="820" y="180" fill="white" text-anchor="middle" class="text-xs">AI Agent</text>
+
+                    <!-- Arrows -->
+                    <path d="M225 90 H 390" stroke="#f79646" stroke-width="2" marker-end="url(#arrow-orange-end)"/>
+                    <path d="M610 90 H 775" stroke="#f79646" stroke-width="2" marker-start="url(#arrow-orange-end)"/>
+
+                    <path d="M500 115 V 205" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M500 355 V 460" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M180 195 V 230" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M820 195 V 230" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+
+                    <path d="M425 281 H 265" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M575 281 H 735" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    
+                    <path d="M265 281 C 300 350, 400 350, 425 281" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)" fill="none"/>
+                    <path d="M735 281 C 700 350, 600 350, 575 281" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)" fill="none"/>
+                    <path d="M500 460 q 0 -80, 0 -109" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)" fill="none"/>
+
+                    <path d="M260 320 q -80 120, 150 170" stroke="black" stroke-width="2" marker-end="url(#arrow-black-end)" fill="none"/>
+                    <path d="M740 320 q 80 120, -150 170" stroke="black" stroke-width="2" marker-end="url(#arrow-black-end)" fill="none"/>
+
+                    <!-- Text on paths -->
+                    <foreignObject x="230" y="40" width="100" height="100" class="text-xs text-right" style="color: #4f81bd">
+                        <p>解題老師</p><p>1對1授課</p><p>1對4授課</p><p>直播大班級授課</p><p>輔導老師課後輔導</p>
+                    </foreignObject>
+                    <foreignObject x="670" y="55" width="100" height="100" class="text-xs text-left" style="color: #f79646">
+                        <p>選課、購課</p><p>學習歷程</p><p>老師交流</p><p>親子學習</p>
+                    </foreignObject>
+
+                    <text x="510" y="160" class="text-xs" fill="var(--p11-arrow-red)">提供教材、試題</text>
+                    <text x="510" y="200" class="text-xs" fill="var(--p11-arrow-red)">上課數據回收</text>
+                    <text x="345" y="270" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">練與測</text>
+                    <text x="345" y="290" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">大數據推送</text>
+                    <text x="655" y="270" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">單題求解</text>
+                    <text x="655" y="290" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">紙本搭配</text>
+                    <text x="510" y="400" class="text-xs" fill="var(--p11-arrow-red)">提供教材、試題</text>
+                    <text x="510" y="440" class="text-xs" fill="var(--p11-arrow-red)">上課數據回收</text>
+                    
+                    <text x="200" y="440" text-anchor="middle" class="text-xs">低價服務</text>
+                    <text x="200" y="455" text-anchor="middle" class="text-xs">帶名單及推向高價產品</text>
+                     <text x="800" y="440" text-anchor="middle" class="text-xs">低價服務</text>
+                    <text x="800" y="455" text-anchor="middle" class="text-xs">帶名單及推向高價產品</text>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="page justify-start items-start" data-page="12">
+             <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">商業模式</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">BUSINESS MODEL</p>
+            </div>
+            <table class="table-custom w-full"><thead><tr><th class="text-xl">模組</th><th class="text-xl">獲利方式</th><th class="text-xl">客群</th></tr></thead><tbody><tr><td>B2C AI 自學平台</td><td>訂閱制 (月費、年費)</td><td>國中小/高中生家長</td></tr><tr><td>B2B 教育機構 SaaS</td><td>授權費 + API 串接費</td><td>補習班、學校、出版社</td></tr><tr><td>智慧學習空間</td><td>空間月租 + 共學課程</td><td>自學家庭 / 教學創業者</td></tr><tr><td>系統串接</td><td>API 授權</td><td>其它英文、大型補教</td></tr></tbody></table></div>
+        <div class="page justify-start" data-page="13"><h2 class="text-4xl font-bold mb-8">商業模式摘要</h2><table class="table-custom text-sm"><tbody><tr><td class="font-bold w-1/4">價值主張</td><td>AI 驅動的個人化學習 + 教學媒合 + 資料診斷 + 三師陪伴 + 實體學習空間</td></tr><tr><td class="font-bold">目標客群</td><td>教育機構、補教業、出版社、學生、家長、教師</td></tr><tr><td class="font-bold">收益模式</td><td>SaaS 訂閱、API 授權、月費會員、空間使用費、內容開發收入</td></tr><tr><td class="font-bold">通路通訊</td><td>官方網站、App、API整合、線下學習站點</td></tr><tr><td class="font-bold">關鍵資源</td><td>AI技術與平台、教育內容、教學教練、實體站點、技術與客服團隊</td></tr><tr><td class="font-bold">關鍵活動</td><td>AI 模組開發與維運、內容設計、教練媒合、實體空間營運</td></tr><tr><td class="font-bold">關鍵夥伴</td><td>教育出版機構、LMS平台、補教連鎖體系、學校、在地合作夥伴</td></tr><tr><td class="font-bold">成本結構</td><td>技術開發、教學內容、人才、教練與客服、行銷推廣、實體場域經營</td></tr></tbody></table></div>
+        <div class="page justify-start items-start" data-page="14">
+            <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">競爭優勢</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">COMPETITIVE ADVANTAGE</p>
+            </div>
+            <table class="table-custom w-full"><thead><tr><th class="text-xl">項目</th><th class="text-xl">傳統 EdTech 工具</th><th class="text-xl" style="color: var(--accent-blue);">伴伴辦學</th></tr></thead><tbody><tr><td>AI導入層級</td><td>單點應用</td><td style="background-color: #f4f3ee;">系統架構，模組可重組、擴展</td></tr><tr><td>陪伴機制</td><td>缺乏</td><td style="background-color: #f4f3ee;">三師陪伴架構、情感與教學結合</td></tr><tr><td>在地化能力</td><td>弱</td><td style="background-color: #f4f3ee;">台灣、越南模組化內容生成功能強大, 已證明在地化能力</td></tr><tr><td>擴展潛力</td><td>需大量人力</td><td style="background-color: #f4f3ee;">AI Agent 模組可跨語言、跨國複製</td></tr></tbody></table></div>
+        <div class="page" data-page="15"><h2 class="text-5xl font-bold">技術核心</h2><div class="border-t-2 w-1/3 my-8" style="border-color: var(--border-color);"></div><h3 class="text-3xl" style="color: var(--accent-terracotta);">AI 教育代理人系統 (AI AGENT)</h3><ul class="text-xl space-y-4 mt-8 text-center"><li>自動生成/審核教學內容</li><li>對齊課綱與學習進度</li><li>協助老師備課、教學與評量</li></ul></div>
+        <div class="page" data-page="16"><h2 class="text-5xl font-bold">教學模型:</h2><div class="border-t-2 w-1/3 my-8" style="border-color: var(--border-color);"></div><h3 class="text-3xl" style="color: var(--accent-green);">四師陪伴系統</h3><ul class="text-xl space-y-4 mt-8"><li><strong>AI Agent</strong> (即時引導)</li><li><strong>真人導師</strong> (學習導師)</li><li><strong>學習教練</strong> (任務追蹤與互動)</li><li><strong>陪學師</strong> (日常及親子互動)<br><span class="text-sm" style="color: var(--text-light);">專屬學習關係顧問,協助處理成績、請假、補課與親子溝通等非教學事宜,讓學習無後顧之憂</span></li></ul></div>
+        
+        <!-- Page 17 - Relaid out -->
+        <div class="page justify-start items-start" data-page="17">
+            <div class="w-full">
+                <h2 class="text-5xl font-bold">技術亮點</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">GAME CHANGING INNOVATIONS</p>
+            </div>
+            <div class="border-t-2 w-1/4 my-8 self-start" style="border-color: var(--border-color);"></div>
+            <div class="text-xl space-y-6 text-left w-full">
+                <div>
+                    <h3 class="font-bold">AI 課綱對齊引擎</h3>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- 絕不超綱, 精準理解學生學習進度</p>
+                </div>
+                <div>
+                     <h3 class="font-bold">Active RAG + 自建教育知識圖譜</h3>
+                </div>
+                <div>
+                    <h3 class="font-bold">教學影片自動生成</h3>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- 全流程自動產線 (腳本+校對+語音+校正+產製)</p>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- 減少影片製作人力 90%</p>
+                </div>
+                <div>
+                    <h3 class="font-bold">四師陪伴 AI 教學模型</h3>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- 自動任務+教學診斷+導師回饋循環</p>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- 解決補教老師負擔過重</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page justify-start items-start" data-page="18">
+             <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">產品與技術</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">PRODUCT & TECHNOLOGY</p>
+            </div>
+            <table class="table-custom text-xs w-full"><thead><tr><th class="w-1/4">模組類別</th><th class="w-1/6">Batter together?</th><th>核心 Agent 功能</th></tr></thead><tbody><tr><td>內容生成 (Content AI)</td><td>✅</td><td>題目生成、講義生成、影片生成、課後任務生成</td></tr><tr><td>結構分析 (Structuring)</td><td>✅</td><td>課程計畫拆檔、章節擷取、考題匯入、知識點審核</td></tr><tr><td>個性化評估診斷 (Assessment)</td><td>✅</td><td>全球語言能力測驗分析、題目難度與適配性診斷、CEFR與多國教育標準對應分析、跨學科出題策略建議</td></tr><tr><td>全球在地化模組</td><td>✅</td><td>台灣K12、日本K12 (對應《學習指導要領》)、越南本地化教學資源產製 Agent</td></tr></tbody></table><div class="mt-6 text-sm w-full"><p><strong>Google Cloud 客戶經驗談與個案研究</strong></p><p class="mt-2 p-2 border-l-4" style="border-color:var(--accent-blue)">GOOGLE AI技術推薦</p></div></div>
+        <div class="page justify-start items-start" data-page="19">
+            <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">初步成果與展望</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">TRACTION & ROADMAP</p>
+            </div>
+            <ul class="list-disc list-inside space-y-3 w-full"><li>★ 完成12款 AI Agent 初版部署</li><li>★ 與越南當地機構進行測試合作，內容已正式上線，回收超過10萬筆學習資料</li><li>★ 台灣一線補教業者及教育機構洽談 API / SaaS 整合中</li><li class="mt-4"><strong>2025 Q3:</strong> 開發韓國課綱 AI 適配模組</li><li><strong>2025 Q4:</strong> 完成MVP、500名2C用戶、10所合作機構 + 啟動EZ Hub體驗空間試點</li><li><strong>韓國:</strong> 開發日本課綱 AI 適配模組, 並佈局日本 O2O 自學空間合作網絡</li><li><strong>2026-27:</strong> 台灣：5000名2C用戶、300所合作機構 + 擴大O2O模式 (預計全年30家)</li><li><strong>2028~:</strong> 華語市場(全球中文市場)、企業內部培訓系統</li></ul></div>
+        <div class="page justify-start items-start" data-page="20">
+            <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">市場規模</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">MARKETING SIZE</p>
+            </div>
+            <table class="table-custom text-center w-full"><thead><tr><th>地區</th><th>K12學生人數</th><th>線上學習滲透率</th><th>平均年付費</th><th>SAM (可服務市場)</th></tr></thead><tbody><tr><td>台灣</td><td>約 2,400,000</td><td>30%</td><td>US$200</td><td style="color: var(--accent-terracotta);">$1.44億美元</td></tr><tr><td>日本</td><td>約 13,000,000</td><td>25%</td><td>US$300</td><td style="color: var(--accent-terracotta);">$9.75億美元</td></tr><tr><td>越南</td><td>約 17,600,000</td><td>20%</td><td>US$100</td><td style="color: var(--accent-terracotta);">$3.52億美元</td></tr></tbody></table><div class="text-xs mt-4 space-y-2 w-full"><p><strong>全球EdTech市場:</strong> 2024年達3,400億美元，2030年預估破萬億</p><p><strong>亞洲教育市場規模:</strong> >1兆美金 (含補教、私校、線上教育)</p><p><strong>TAM: K12補習市場(亞洲)超過700億美元/年</strong></p><p>台灣教育科技市場潛在客戶超過20,000家機構</p><p>亞洲K12 AI教育潛力: 特別集中在台灣、日本、韓國、東南亞 (數位轉型+家長教育焦慮)</p><p>沉浸式學習與XR教育市場 CAGR > 35%</p><p>AI個性化學習系統將是未來教育預設基礎建設</p><p><strong>TAM: AI課後學習工具與服務市場>30億美金</strong></p></div></div>
+        <div class="page justify-start" data-page="21"><h2 class="text-4xl font-bold mb-8">計算方式</h2><div class="w-full p-4 border rounded-lg" style="border-color: var(--border-color); background-color: #f4f3ee;"><p class="text-center text-lg">SAM (可服務市場) = K12 學生人數 × 線上學習滲透率 × 平均年付費金額</p></div><div class="mt-8 w-full"><h3 class="font-bold text-lg">說明與假設</h3><ul class="list-disc list-inside mt-2 text-sm space-y-2"><li>K12 學生人數根據各國官方統計或可靠來源估算。</li><li>線上學習滲透率考慮各國教育政策與實際普及程度：台灣約為30%，日本約為25%，越南約為20%。</li><li>平均年付費金額根據當地市場家長支出預估：台灣 US$200、日本 US$300、越南 US$100。</li></ul><h3 class="font-bold text-lg mt-4">資料來源</h3><p class="text-xs mt-2">台灣: Taipei Times, 日本: Wikipedia, 越南: TISEA Education Overview</p></div></div>
+        <div class="page justify-start" data-page="22"><h2 class="text-4xl font-bold mb-8">成長與財務預測</h2><ul class="list-disc list-inside space-y-4"><li>2025年預估總營收達556萬台幣，作為初期驗證階段，已顯示多元事業模型的可行性 (B2C、B2B、SaaS 並行)。</li><li>2026年預估總營收突破1億台幣 (年成長率超過1000%)，來自B2C 國際拓展與平台授權模式帶動規模放大。</li><li>平均毛利率預估可維持 60~70%，以 AI 自動化內容與平台化教學支撐低人力成本規模擴張。</li><li>單月營業額突破門檻分析已完成(如月營收達250萬台幣, 即可打平30 萬美元固定成本)，展現財務穩定潛力。</li><li>搭配低變動成本的AI技術核心產品結構，有助建立長期正向現金流與營利模型。</li></ul></div>
+        
+        <!-- Page 23 - Relaid out -->
+        <div class="page grid grid-cols-2 gap-x-12 items-start pt-16" data-page="23">
+            <!-- Left Column -->
+            <div class="text-sm w-full">
+                <div>
+                    <h2 class="text-3xl font-bold">募資計劃</h2>
+                    <p class="text-lg uppercase tracking-widest mb-6" style="color: var(--text-light);">FUNDRAISING</p>
+                </div>
+                <p class="mb-2">資本額 : USD 0.15M</p>
+                <p class="mb-2">尋求 Pre-A 輪募資(15%) : USD 1.5M (創投/策略合作)</p>
+                <p class="mb-2">投前估值 : USD 4.35M</p>
+                <p class="mb-4">投後估值 : USD 5.85M</p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="w-full text-sm">
+                <div class="mb-4">
+                    <h3 class="font-bold mb-2">資金用途 :</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>50% 用於產品技術強化 (AI Agent 架構整合、API 接口建置)</li>
+                        <li>30% 用於市場拓展 (台灣、越南、韓國)</li>
+                        <li>20% 用於人才招募 (AI 工程與教育產品 PM)</li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="text-center mb-2">營收預測 (台幣)</h3>
+                    <div class="w-full h-64 p-4 rounded-lg shadow-inner" style="background-color: #fdfdfc;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="24"><h2 class="text-8xl font-bold" style="color: var(--accent-blue);">THANKS.</h2><div class="border-t-2 w-1/4 my-10" style="border-color: var(--border-color);"></div><div class="text-center text-lg"><p>陳銘仁 (Tomato Chen)</p><p class="mt-2" style="color: var(--text-light);">tomato0331@gmail.com</p><p style="color: var(--text-light);">0937-458-745</p></div></div>
+    </div>
+
+    <div class="nav-controls">
+        <button id="prevBtn" class="nav-button">上一頁</button>
+        <div id="pageCounter" class="page-counter">1 / 24</div>
+        <button id="nextBtn" class="nav-button">下一頁</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pages = document.querySelectorAll('.page');
+            const totalPages = 24;
+            const pageCounter = document.getElementById('pageCounter');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            let currentPage = 1;
+            let revenueChart = null;
+            let isAnimating = false;
+
+            const animations = [
+                { in: 'animate-in-fade', out: 'animate-out-fade' },
+                { in: 'animate-in-slide-right-zoom', out: 'animate-out-slide-left-zoom' },
+                { in: 'animate-in-slide-up', out: 'animate-out-slide-down' }
+            ];
+
+            function playAnimation(oldPage, newPage, isNext) {
+                isAnimating = true;
+
+                let anim;
+                if (isNext) {
+                    anim = animations[Math.floor(Math.random() * animations.length)];
+                } else {
+                    // For previous, we can use a different set or reverse logic
+                     anim = { in: 'animate-in-slide-left-zoom', out: 'animate-out-slide-right-zoom' };
+                }
+
+                
+                // Clear old animation classes
+                oldPage.className = 'page';
+                newPage.className = 'page';
+                
+                // Add active to new page so it's visible for animation
+                newPage.classList.add('active');
+                
+                oldPage.classList.add(anim.out);
+                newPage.classList.add(anim.in);
+
+                setTimeout(() => {
+                    oldPage.classList.remove('active');
+                    // Clean up animation classes after they finish
+                    oldPage.classList.remove(anim.out);
+                    newPage.classList.remove(anim.in);
+                    isAnimating = false;
+                }, 600); // Duration should match animation-duration
+            }
+
+
+            function showPage(newPageNumber, oldPageNumber) {
+                if(isAnimating) return;
+                
+                const oldPage = document.querySelector(`.page[data-page="${oldPageNumber}"]`);
+                const newPage = document.querySelector(`.page[data-page="${newPageNumber}"]`);
+                
+                playAnimation(oldPage, newPage, newPageNumber > oldPageNumber);
+
+                pageCounter.textContent = `${currentPage} / ${totalPages}`;
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+                prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+                nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
+                
+                // 當切換到第23頁時，才繪製圖表
+                if (newPageNumber === 23 && !revenueChart) {
+                    createRevenueChart();
+                }
+            }
+            
+            function createRevenueChart() {
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                const accentTerracotta = getComputedStyle(document.documentElement).getPropertyValue('--accent-terracotta').trim();
+                const accentOrange = getComputedStyle(document.documentElement).getPropertyValue('--accent-orange').trim();
+                const textDark = getComputedStyle(document.documentElement).getPropertyValue('--text-dark').trim();
+
+                revenueChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+                        datasets: [
+                            {
+                                label: '部分1',
+                                data: [5560000, 20000000, 625000000, 1000000000, 1500000000, 2000000000],
+                                backgroundColor: accentTerracotta,
+                                borderWidth: 0,
+                                stack: 'Stack 0',
+                            },
+                            {
+                                label: '部分2',
+                                data: [0, 80000000, 0, 0, 0, 0],
+                                backgroundColor: accentOrange,
+                                borderWidth: 0,
+                                stack: 'Stack 0',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                     color: textDark
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                max: 2500000000,
+                                grid: {
+                                    color: '#eee'
+                                },
+                                ticks: {
+                                    color: textDark,
+                                    stepSize: 500000000,
+                                    callback: function(value, index, values) {
+                                        if (value === 0) return 'NT$0';
+                                        return 'NT$' + new Intl.NumberFormat().format(value);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    const oldPage = currentPage;
+                    currentPage++;
+                    showPage(currentPage, oldPage);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    const oldPage = currentPage;
+                    currentPage--;
+                    showPage(currentPage, oldPage);
+                }
+            });
+
+
+            // Page 4 interactive toggle logic
+            const page4 = document.querySelector('.page[data-page="4"]');
+            if (page4) {
+                const initialView = document.getElementById('team-view-initial');
+                const detailsView = document.getElementById('team-view-details');
+                let isInitialView = true;
+
+                page4.addEventListener('click', () => {
+                    if (isInitialView) {
+                        initialView.classList.remove('opacity-100');
+                        initialView.classList.add('opacity-0', 'pointer-events-none');
+                        detailsView.classList.remove('opacity-0', 'pointer-events-none');
+                        detailsView.classList.add('opacity-100');
+                    } else {
+                        initialView.classList.remove('opacity-0', 'pointer-events-none');
+                        initialView.classList.add('opacity-100');
+                        detailsView.classList.remove('opacity-100');
+                        detailsView.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                    isInitialView = !isInitialView;
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
