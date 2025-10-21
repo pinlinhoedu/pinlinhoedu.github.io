@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduBaania SchoolTech - Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-main: #f4f3ee; /* Soft Beige */
+            --bg-page: #e9e6e0; /* Soft Stone */
+            --text-dark: #6c6861; /* Muted Brown-Gray */
+            --text-light: #8a857e;
+            --accent-blue: #a3b8c2; /* Dusty Blue */
+            --accent-green: #b2c2a3; /* Sage Green */
+            --accent-terracotta: #d4a373; /* Soft Terracotta */
+            --accent-orange: #e59866; /* Deeper Orange */
+            --border-color: #d1ccc0;
+            /* Page 11 Colors from original PDF */
+            --p11-teacher-blue: #abc7e4;
+            --p11-parent-yellow: #fde5a8;
+            --p11-student-pink: #f0b8d1;
+            --p11-db-orange: #fabf8f;
+            --p11-solution-orange: #fabf8f;
+            --p11-video-green: #c4d79b;
+            --p11-agent-box: #fff2cc;
+            --p11-arrow-red: #c0504d;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .presentation-container {
+            width: 100%;
+            max-width: 1100px; /* Standard Presentation Aspect Ratio */
+            aspect-ratio: 16 / 9;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-page);
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            animation-duration: 0.6s;
+            animation-fill-mode: forwards;
+        }
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 1rem;
+        }
+        .nav-button {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #8faab6;
+        }
+        .page-counter {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        h1, h2, h3 {
+            color: var(--text-dark);
+        }
+        .table-custom {
+            width: 100%;
+            text-align: left;
+            border-collapse: collapse;
+        }
+        .table-custom th, .table-custom td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .table-custom thead {
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        /* --- Animation Keyframes --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .animate-in-fade { animation-name: fadeIn; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        .animate-out-fade { animation-name: fadeOut; }
+
+        @keyframes slideInRightZoom { from { opacity: 0; transform: translateX(50%) scale(0.8); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .animate-in-slide-right-zoom { animation-name: slideInRightZoom; }
+        @keyframes slideOutLeftZoom { from { opacity: 1; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(-50%) scale(0.8); } }
+        .animate-out-slide-left-zoom { animation-name: slideOutLeftZoom; }
+
+        @keyframes slideInLeftZoom { from { opacity: 0; transform: translateX(-50%) scale(0.8); } to { opacity: 1; transform: translateX(0) scale(1); } }
+        .animate-in-slide-left-zoom { animation-name: slideInLeftZoom; }
+        @keyframes slideOutRightZoom { from { opacity: 1; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(50%) scale(0.8); } }
+        .animate-out-slide-right-zoom { animation-name: slideOutRightZoom; }
+
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(50%); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in-slide-up { animation-name: slideInUp; }
+        @keyframes slideOutDown { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(50%); } }
+        .animate-out-slide-down { animation-name: slideOutDown; }
+
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container" id="presentationContainer">
+        <!-- Page 1 -->
+        <div class="page active" data-page="1">
+            <div class="text-center absolute top-16">
+                 <h1 class="text-6xl font-bold" style="color: var(--accent-terracotta);">EduBaania SchoolTech</h1>
+            </div>
+            <p class="text-2xl mt-4" style="color: var(--text-light);">Asia's First AI Agent-Driven Personalized Learning Companion Platform</p>
+            <div class="border-t-2 w-1/4 my-10" style="border-color: var(--border-color);"></div>
+            <p class="text-xl italic max-w-3xl text-center">Combining the spirit of "Baan" (Persian: Guardian) and "Companio" (Latin: Companion), we believe the essence of learning isn't about speed, but about being understood and accompanied.</p>
+            <div class="absolute bottom-10 text-center text-sm">
+                <p>Tomato Chen</p>
+                <p>tomato0331@gmail.com | 0937-458-745</p>
+            </div>
+        </div>
+
+        <!-- Page 2 -->
+        <div class="page" data-page="2">
+            <h2 class="text-2xl uppercase tracking-widest" style="color: var(--text-light);">Vision & Mission</h2>
+            <p class="text-4xl font-semibold mt-8 text-center max-w-4xl leading-snug">"To reshape the education industry structure through rapid replication and expansion of our AI SchoolTech, driven by a dual-engine model (B2C High Retention + B2B High ARPU)."</p>
+        </div>
+        
+        <!-- Page 3 -->
+        <div class="page" data-page="3">
+            <h2 class="text-5xl font-bold mb-16">Our Journey</h2>
+            <div class="flex items-center justify-center w-full relative">
+                 <div class="absolute w-full h-1" style="background-color: var(--border-color);"></div>
+                 <div class="flex justify-between w-4/5 relative">
+                     <div class="text-center">
+                         <div class="w-6 h-6 rounded-full bg-white border-4" style="border-color: var(--accent-green);"></div>
+                         <p class="mt-4 font-semibold">Wancheng EdTech</p>
+                         <p class="text-sm" style="color: var(--text-light);">Nov 2020</p>
+                     </div>
+                     <div class="text-center">
+                         <div class="w-6 h-6 rounded-full bg-white border-4" style="border-color: var(--accent-green);"></div>
+                         <p class="mt-4 font-semibold">OneClass Education</p>
+                         <p class="text-sm" style="color: var(--text-light);">Mar 2021</p>
+                     </div>
+                     <div class="text-center">
+                         <div class="w-6 h-6 rounded-full bg-white border-4" style="border-color: var(--accent-terracotta);"></div>
+                         <p class="mt-4 font-semibold">EduBaania</p>
+                         <p class="text-sm" style="color: var(--text-light);">Oct 2025</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Page 4 - Interactive Team Page -->
+        <div class="page" data-page="4" style="cursor: pointer;">
+            <!-- This container holds both views and manages transitions -->
+            <div class="relative w-full h-full flex flex-col items-center justify-center">
+
+                <!-- View 1: Initial (Avatars, Names, Titles) -->
+                <div id="team-view-initial" class="w-full h-full flex flex-col items-center justify-center absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-100">
+                    <h2 class="text-5xl font-bold mb-12">Core Team</h2>
+                    <div class="grid grid-cols-5 gap-x-8 w-full max-w-6xl">
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/d4a373/f4f3ee?text=TC" alt="Tomato Chen" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Tomato Chen</h3>
+                            <p class="text-sm" style="color: var(--text-light);">CEO & Founder</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/b2c2a3/f4f3ee?text=GG" alt="Gina Gu" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Gina Gu</h3>
+                            <p class="text-sm" style="color: var(--text-light);">COO</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/a3b8c2/f4f3ee?text=PH" alt="Pinlin Ho" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Pinlin Ho</h3>
+                            <p class="text-sm" style="color: var(--text-light);">CPO</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/b2c2a3/f4f3ee?text=JJ" alt="Justin Jin" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Justin Jin</h3>
+                            <p class="text-sm" style="color: var(--text-light);">CFO</p>
+                        </div>
+                        <div class="text-center">
+                            <img src="https://placehold.co/128x128/a3b8c2/f4f3ee?text=LS" alt="Leo Su" class="w-32 h-32 rounded-full mx-auto shadow-md">
+                            <h3 class="font-bold mt-4">Leo Su</h3>
+                            <p class="text-sm" style="color: var(--text-light);">CTO</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View 2: Details (Names, Descriptions) - Updated Layout -->
+                <div id="team-view-details" class="w-full h-full flex flex-col items-center justify-start absolute top-0 left-0 transition-opacity duration-500 ease-in-out opacity-0 pointer-events-none p-16">
+                    <h2 class="text-5xl font-bold mb-12">Core Team</h2>
+                    <div class="grid grid-cols-5 gap-x-6 w-full max-w-6xl text-xs text-left">
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Tomato Chen
+                            </h3>
+                            <p>• Founder of OneClass Education</p>
+                            <p>• Founder of Hanlin Cloud Academy</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                             <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Gina Gu
+                            </h3>
+                            <p>• 16 years of experience in digital learning</p>
+                            <p>• Former Head of Digital Products at Kiddie's & Hanlin Publishing</p>
+                            <p>• Expert in digital publishing and education strategy</p>
+                            <p>• Holds 21 patents related to digital learning</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Pinlin Ho
+                            </h3>
+                            <p>• 22 years in digital product development across gaming and EdTech</p>
+                             <p>• 10 years of experience teaching programming and web design</p>
+                            <p>• Led products to win 3 Gold Awards (Learning Content & Digital Publishing)</p>
+                            <p>• Held key positions at Gamania, Softstar, IGG, and Nan-I</p>
+                             <p>• Expert in product operations, instructional design, and tech integration</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Justin Jin
+                            </h3>
+                            <p>• 16 years of financial experience at Deloitte, T STAR, and KUOBROTHERS</p>
+                            <p>• Specializes in corporate IPO planning and audit practices</p>
+                            <p>• Proficient in financial system integration for e-commerce and telecom</p>
+                            <p>• Led M&A, equity releases, and RSU/ESOP plans</p>
+                        </div>
+                        <div class="p-2 space-y-2">
+                            <h3 class="font-bold text-base text-center mb-2 leading-tight">
+                                Leo Su
+                            </h3>
+                            <p>• 10 years in startup product development (developer at SurveyCake, serving 30 countries)</p>
+                            <p>• Provided solutions for enterprises like Allianz, Zyxel, and Carrefour</p>
+                             <p>• Expert in technical architecture, cloud development, team leadership, AI engineering, and learning science</p>
+                            <p>• Completed development of 12 core AI Agent modules</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Page 5 -->
+        <div class="page" data-page="5">
+             <h2 class="text-2xl uppercase tracking-widest" style="color: var(--text-light);">Vision & Mission</h2>
+            <p class="text-4xl font-semibold mt-8 text-center max-w-4xl leading-snug">"To reshape the education industry structure through rapid replication and expansion of our AI SchoolTech, driven by a dual-engine model (B2C High Retention + B2B High ARPU)."</p>
+        </div>
+
+        <!-- Page 6 -->
+        <div class="page justify-start" data-page="6">
+            <h2 class="text-4xl font-bold mb-8">The Four-Sided Dilemma in Education</h2>
+            <p class="mb-12" style="color: var(--text-light);">Every stakeholder, from children and parents to teachers, faces pain points.</p>
+            <table class="table-custom">
+                <thead><tr><th class="text-xl">Stakeholder</th><th class="text-xl">Problem</th><th class="text-xl">Our Solution</th></tr></thead>
+                <tbody>
+                    <tr><td>Parents</td><td>Struggle to find tutors, group classes are ineffective, commuting is a hassle.</td><td style="color: var(--accent-green);">AI Diagnostics + Intelligent Tutor Matching</td></tr>
+                    <tr><td>Students</td><td>Repetitive learning, lack of self-discipline, afraid to ask questions, no sense of achievement.</td><td style="color: var(--accent-green);">AI Task Tracking + Tutor Companionship</td></tr>
+                    <tr><td>Teachers</td><td>No copyright for materials, difficult to monetize, frequent parent inquiries.</td><td style="color: var(--accent-green);">AI Lesson Prep + Platform Monetization Opportunities</td></tr>
+                    <tr><td>Existing Systems</td><td>Mere tools with no mechanism for sustainable updates.</td><td style="color: var(--accent-green);">Powerful AI Agent for fully automated content and class management.</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Page 7 - Final Adjusted Layout -->
+        <div class="page justify-start" data-page="7" style="padding: 2.5rem 4rem;">
+            <h2 class="text-4xl font-bold mb-4">Our Solution</h2>
+            <div class="grid grid-cols-2 gap-4 w-full">
+                <div class="p-4 rounded-lg border flex flex-col justify-center" style="background-color: #f4f3ee; border-color: var(--border-color);">
+                    <h3 class="text-lg font-bold">Student-Side (B2C) - Retention Engine</h3>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+                        <li>2-hour daily model to build consistent study habits.</li>
+                        <li>AI-in-the-loop coaching to reduce churn.</li>
+                        <li>Gamified learning loop to enhance achievement.</li>
+                    </ul>
+                    <p class="font-bold mt-2 text-sm" style="color: var(--accent-terracotta);">Investment Highlight: High Retention, High LTV</p>
+                </div>
+                <div class="p-4 rounded-lg border flex flex-col justify-center" style="background-color: #f4f3ee; border-color: var(--border-color);">
+                    <h3 class="text-lg font-bold">Teacher/Institution-Side (B2B) - Monetization Engine</h3>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+                        <li>AI SchoolTech SaaS with a complete operational methodology.</li>
+                        <li>High ARPU model with an ACV of US$10K-50K per school.</li>
+                        <li>Frees up teachers to focus on mentorship and companionship.</li>
+                    </ul>
+                    <p class="font-bold mt-2 text-sm" style="color: var(--accent-terracotta);">Investment Highlight: The Infrastructure for Digital Education</p>
+                </div>
+                 <div class="p-4 rounded-lg border flex flex-col justify-center" style="background-color: #f4f3ee; border-color: var(--border-color);">
+                    <h3 class="text-lg font-bold">Tech Highlights - Cognitive Automation</h3>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+                        <li>LAM + Multi-Agent System creating a closed learning loop.</li>
+                        <li>Data Flywheel to build a competitive moat.</li>
+                    </ul>
+                    <p class="font-bold mt-2 text-sm" style="color: var(--accent-terracotta);">Investment Highlight: Upgrading from a tool to a platform.</p>
+                 </div>
+                 <div class="p-4 rounded-lg border flex flex-col justify-center" style="background-color: #f4f3ee; border-color: var(--border-color);">
+                    <h3 class="text-lg font-bold">Dual-Engine Model - B2C + B2B</h3>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-sm">
+                        <li>B2C: High-retention subscription model for data accumulation.</li>
+                        <li>B2B: High-ARPU SaaS model for revenue and endorsements.</li>
+                    </ul>
+                    <p class="font-bold mt-2 text-sm" style="color: var(--accent-terracotta);">Investment Highlight: Scalability + High Profitability</p>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Page 8 - Relaid out -->
+        <div class="page" data-page="8">
+            <h2 class="text-5xl font-bold mb-12">Products</h2>
+            <div class="grid grid-cols-4 gap-8 w-full">
+                <div class="p-6 rounded-lg border flex flex-col justify-center items-center text-center h-full" style="border-color: var(--border-color);">
+                    <h3 class="text-xl font-semibold">Live Online Classes</h3>
+                    <p class="text-3xl font-bold my-2" style="color: var(--accent-terracotta);">~$140</p>
+                    <p class="text-sm">AI + Learning Coach</p>
+                </div>
+                <div class="p-6 rounded-lg border flex flex-col justify-center items-center text-center h-full" style="border-color: var(--border-color);">
+                    <h3 class="text-xl font-semibold">Pre-recorded Courses</h3>
+                    <p class="text-3xl font-bold my-2" style="color: var(--accent-terracotta);">~$95</p>
+                    <p class="text-sm">1-on-1 + All Subjects</p>
+                </div>
+                <div class="p-6 rounded-lg border flex flex-col justify-center items-center text-center h-full" style="border-color: var(--border-color);">
+                    <h3 class="text-xl font-semibold">Co-learning</h3>
+                    <p class="text-3xl font-bold my-2" style="color: var(--accent-terracotta);">~$125-250</p>
+                    <p class="text-sm">Peer Companion</p>
+                </div>
+                <div class="p-6 rounded-lg border flex flex-col justify-center items-center text-center h-full" style="border-color: var(--border-color);">
+                    <h3 class="text-xl font-semibold">Physical Space</h3>
+                    <p class="text-3xl font-bold my-2" style="color: var(--accent-terracotta);">~$140</p>
+                    <p class="text-sm">Self-study Zone</p>
+                </div>
+            </div>
+        </div>
+        <div class="page" data-page="9"><h1 class="text-8xl font-bold" style="color: var(--accent-blue);">2 HOURS / DAY</h1></div>
+        <div class="page" data-page="10"><h2 class="text-6xl font-bold tracking-wider">Learning Experience Design</h2><div class="border-t-2 w-1/3 my-12" style="border-color: var(--border-color);"></div><ul class="text-2xl space-y-6 text-center"><li>Personalized Learning Path Recommendation</li><li>Visualized Data Diagnostics</li><li>Immersive OMO Learning Space</li></ul></div>
+        
+        <!-- Page 11 - Final Version -->
+        <div class="page" data-page="11" style="padding: 1rem;">
+            <div class="w-full h-full relative font-sans">
+                <svg width="100%" height="100%" viewBox="0 0 1000 562.5">
+                    <defs>
+                        <linearGradient id="teacherGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#b8cce4;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#95b3d7;stop-opacity:1" />
+                        </linearGradient>
+                         <marker id="arrow-red-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--p11-arrow-red)" />
+                        </marker>
+                         <marker id="arrow-black-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="black" />
+                        </marker>
+                         <marker id="arrow-orange-end" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#f79646" />
+                        </marker>
+                    </defs>
+
+                    <!-- Nodes -->
+                    <circle cx="150" cy="80" r="70" fill="url(#teacherGradient)"/>
+                     <foreignObject x="80" y="30" width="140" height="100">
+                        <div class="w-full h-full flex flex-col items-center justify-center text-center text-white p-2">
+                             <p class="font-bold text-lg">Teacher</p>
+                        </div>
+                    </foreignObject>
+
+                    <circle cx="850" cy="80" r="70" fill="var(--p11-parent-yellow)"/>
+                     <foreignObject x="780" y="30" width="140" height="100">
+                        <div class="w-full h-full flex flex-col items-center justify-center text-center text-black p-2">
+                             <p class="font-bold text-lg">Parent</p>
+                        </div>
+                    </foreignObject>
+
+                    <circle cx="500" cy="281" r="70" fill="var(--p11-student-pink)"/>
+                    <foreignObject x="430" y="231" width="140" height="100">
+                        <div class="w-full h-full flex flex-col items-center justify-center text-center text-black p-2">
+                             <p class="font-bold text-lg">Student</p>
+                        </div>
+                    </foreignObject>
+                    
+                    <rect x="400" y="70" width="200" height="40" rx="10" ry="10" fill="var(--p11-agent-box)"/>
+                    <text x="500" y="95" text-anchor="middle" font-weight="bold">Personalized AI Agent</text>
+
+                    <rect x="80" y="240" width="180" height="80" rx="10" ry="10" fill="var(--p11-db-orange)"/>
+                    <foreignObject x="80" y="240" width="180" height="80" class="text-xs">
+                         <div class="w-full h-full flex flex-col justify-center text-center p-2">
+                            <p class="font-bold text-base">Question Bank</p><p>Textbooks, exercises, past exams, unlimited questions</p>
+                         </div>
+                    </foreignObject>
+
+                    <rect x="740" y="240" width="180" height="80" rx="10" ry="10" fill="var(--p11-solution-orange)"/>
+                     <foreignObject x="740" y="240" width="180" height="80" class="text-xs">
+                         <div class="w-full h-full flex flex-col justify-center text-center p-2">
+                            <p class="font-bold text-base">Problem-Solving</p><p>48-hour free service</p><p>50 questions for $30</p><p>Unlimited for $60</p>
+                         </div>
+                    </foreignObject>
+
+                    <rect x="410" y="470" width="180" height="80" rx="10" ry="10" fill="var(--p11-video-green)"/>
+                    <foreignObject x="410" y="470" width="180" height="80" class="text-xs">
+                         <div class="w-full h-full flex flex-col justify-center text-center p-2">
+                            <p class="font-bold text-base">Video Library</p><p>Progress videos</p><p>Review sessions</p>
+                         </div>
+                    </foreignObject>
+                    
+                    <rect x="140" y="160" width="80" height="30" fill="#c00000" rx="5"/>
+                    <text x="180" y="180" fill="white" text-anchor="middle" class="text-xs">AI Agent</text>
+                    <rect x="780" y="160" width="80" height="30" fill="#c00000" rx="5"/>
+                    <text x="820" y="180" fill="white" text-anchor="middle" class="text-xs">AI Agent</text>
+
+                    <!-- Arrows -->
+                    <path d="M225 90 H 390" stroke="#f79646" stroke-width="2" marker-end="url(#arrow-orange-end)"/>
+                    <path d="M610 90 H 775" stroke="#f79646" stroke-width="2" marker-start="url(#arrow-orange-end)"/>
+
+                    <path d="M500 115 V 205" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M500 355 V 460" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M180 195 V 230" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M820 195 V 230" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+
+                    <path d="M425 281 H 265" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    <path d="M575 281 H 735" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)"/>
+                    
+                    <path d="M265 281 C 300 350, 400 350, 425 281" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)" fill="none"/>
+                    <path d="M735 281 C 700 350, 600 350, 575 281" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)" fill="none"/>
+                    <path d="M500 460 q 0 -80, 0 -109" stroke="var(--p11-arrow-red)" stroke-width="2" marker-end="url(#arrow-red-end)" fill="none"/>
+
+                    <path d="M260 320 q -80 120, 150 170" stroke="black" stroke-width="2" marker-end="url(#arrow-black-end)" fill="none"/>
+                    <path d="M740 320 q 80 120, -150 170" stroke="black" stroke-width="2" marker-end="url(#arrow-black-end)" fill="none"/>
+
+                    <!-- Text on paths -->
+                    <foreignObject x="230" y="40" width="100" height="100" class="text-xs text-right" style="color: #4f81bd">
+                        <p>Tutoring</p><p>1-on-1 Sessions</p><p>1-on-4 Sessions</p><p>Live Group Classes</p><p>After-class Support</p>
+                    </foreignObject>
+                    <foreignObject x="670" y="55" width="100" height="100" class="text-xs text-left" style="color: #f79646">
+                        <p>Course Selection</p><p>Learning Progress</p><p>Teacher Communication</p><p>Family Learning</p>
+                    </foreignObject>
+
+                    <text x="510" y="160" class="text-xs" fill="var(--p11-arrow-red)">Provides materials & tests</text>
+                    <text x="510" y="200" class="text-xs" fill="var(--p11-arrow-red)">Collects class data</text>
+                    <text x="345" y="270" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">Practice & Test</text>
+                    <text x="345" y="290" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">Big Data Push</text>
+                    <text x="655" y="270" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">Single Question</text>
+                    <text x="655" y="290" text-anchor="middle" class="text-xs" fill="var(--p11-arrow-red)">Paper Matching</text>
+                    <text x="510" y="400" class="text-xs" fill="var(--p11-arrow-red)">Provides materials & tests</text>
+                    <text x="510" y="440" class="text-xs" fill="var(--p11-arrow-red)">Collects class data</text>
+                    
+                    <text x="200" y="440" text-anchor="middle" class="text-xs">Low-cost service</text>
+                    <text x="200" y="455" text-anchor="middle" class="text-xs">Lead gen for high-value products</text>
+                     <text x="800" y="440" text-anchor="middle" class="text-xs">Low-cost service</text>
+                    <text x="800" y="455" text-anchor="middle" class="text-xs">Lead gen for high-value products</text>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="page justify-start items-start" data-page="12">
+             <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">Business Model</h2>
+            </div>
+            <table class="table-custom w-full"><thead><tr><th class="text-xl">Module</th><th class="text-xl">Monetization</th><th class="text-xl">Target Audience</th></tr></thead><tbody><tr><td>B2C AI Self-Learning Platform</td><td>Subscription (Monthly, Annually)</td><td>Parents of K-12 Students</td></tr><tr><td>B2B SaaS for Institutions</td><td>Licensing Fee + API Integration Fee</td><td>Cram Schools, Schools, Publishers</td></tr><tr><td>Smart Learning Space</td><td>Monthly Space Rental + Co-learning Courses</td><td>Homeschooling Families / Edu-preneurs</td></tr><tr><td>System Integration</td><td>API Licensing</td><td>Other English & large cram schools</td></tr></tbody></table></div>
+        <div class="page justify-start" data-page="13"><h2 class="text-4xl font-bold mb-8">Business Model Canvas</h2><table class="table-custom text-sm"><tbody><tr><td class="font-bold w-1/4">Value Proposition</td><td>AI-driven personalized learning + Tutor matching + Data diagnostics + 3-Tutor companionship + Physical learning spaces</td></tr><tr><td class="font-bold">Customer Segments</td><td>Educational institutions, Cram schools, Publishers, Students, Parents, Teachers</td></tr><tr><td class="font-bold">Revenue Streams</td><td>SaaS Subscriptions, API Licensing, Monthly Memberships, Space Usage Fees, Content Development Income</td></tr><tr><td class="font-bold">Channels</td><td>Official Website, App, API Integration, Offline Learning Hubs</td></tr><tr><td class="font-bold">Key Resources</td><td>AI Technology & Platform, Educational Content, Tutors & Coaches, Physical Hubs, Tech & Customer Support Teams</td></tr><tr><td class="font-bold">Key Activities</td><td>AI Module Development & Maintenance, Content Design, Coach Matching, Physical Space Operations</td></tr><tr><td class="font-bold">Key Partners</td><td>Educational Publishers, LMS Platforms, Cram School Chains, Schools, Local Partners</td></tr><tr><td class="font-bold">Cost Structure</td><td>Technology Development, Educational Content, Talent, Coaches & Customer Support, Marketing & Promotion, Physical Venue Operations</td></tr></tbody></table></div>
+        <div class="page justify-start items-start" data-page="14">
+            <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">Competitive Advantage</h2>
+            </div>
+            <table class="table-custom w-full"><thead><tr><th class="text-xl">Aspect</th><th class="text-xl">Traditional EdTech Tools</th><th class="text-xl" style="color: var(--accent-blue);">EduBaania</th></tr></thead><tbody><tr><td>AI Integration Level</td><td>Single-point applications</td><td style="background-color: #f4f3ee;">System-level architecture; modular, recombinable, and extensible</td></tr><tr><td>Companionship Mechanism</td><td>Lacking</td><td style="background-color: #f4f3ee;">3-Tutor system integrating emotional and academic support</td></tr><tr><td>Localization Capability</td><td>Weak</td><td style="background-color: #f4f3ee;">Proven localization in Taiwan & Vietnam with powerful modular content generation</td></tr><tr><td>Scalability Potential</td><td>Requires significant manpower</td><td style="background-color: #f4f3ee;">AI Agent modules can be replicated across languages and countries</td></tr></tbody></table></div>
+        <div class="page" data-page="15"><h2 class="text-5xl font-bold">Core Technology</h2><div class="border-t-2 w-1/3 my-8" style="border-color: var(--border-color);"></div><h3 class="text-3xl" style="color: var(--accent-terracotta);">AI Education Agent System</h3><ul class="text-xl space-y-4 mt-8 text-center"><li>Auto-generates/reviews teaching content</li><li>Aligns with curriculum and learning progress</li><li>Assists teachers with lesson prep, teaching, and assessment</li></ul></div>
+        <div class="page" data-page="16"><h2 class="text-5xl font-bold">Teaching Model:</h2><div class="border-t-2 w-1/3 my-8" style="border-color: var(--border-color);"></div><h3 class="text-3xl" style="color: var(--accent-green);">Four-Tutor Companion System</h3><ul class="text-xl space-y-4 mt-8"><li><strong>AI Agent</strong> (Real-time guidance)</li><li><strong>Human Tutor</strong> (Academic mentor)</li><li><strong>Learning Coach</strong> (Task tracking & interaction)</li><li><strong>Companion Tutor</strong> (Daily life & parent interaction)<br><span class="text-sm" style="color: var(--text-light);">A dedicated learning relationship consultant handles non-academic issues like grades, absences, and parent communication, ensuring a worry-free learning journey.</span></li></ul></div>
+        
+        <!-- Page 17 - Relaid out -->
+        <div class="page justify-start items-start" data-page="17">
+            <div class="w-full">
+                <h2 class="text-5xl font-bold">Tech Highlights</h2>
+                <p class="text-lg uppercase tracking-widest" style="color: var(--text-light);">GAME CHANGING INNOVATIONS</p>
+            </div>
+            <div class="border-t-2 w-1/4 my-8 self-start" style="border-color: var(--border-color);"></div>
+            <div class="text-xl space-y-6 text-left w-full">
+                <div>
+                    <h3 class="font-bold">AI Curriculum Alignment Engine</h3>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- Precisely understands student progress without exceeding curriculum standards</p>
+                </div>
+                <div>
+                     <h3 class="font-bold">Active RAG + Proprietary Education Knowledge Graph</h3>
+                </div>
+                <div>
+                    <h3 class="font-bold">Automated Instructional Video Generation</h3>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- Fully automated pipeline (script, proofreading, voiceover, editing, production)</p>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- Reduces video production manpower by 90%</p>
+                </div>
+                <div>
+                    <h3 class="font-bold">Four-Tutor Companion AI Teaching Model</h3>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- Automated tasks + diagnostic reports + tutor feedback loop</p>
+                    <p class="text-base pl-4" style="color: var(--text-light);">- Solves the problem of overburdened cram school teachers</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page justify-start items-start" data-page="18">
+             <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">Product & Technology</h2>
+            </div>
+            <table class="table-custom text-xs w-full"><thead><tr><th class="w-1/4">Module Category</th><th class="w-1/6">Better Together?</th><th>Core Agent Functions</th></tr></thead><tbody><tr><td>Content AI</td><td>✅</td><td>Question generation, Handout generation, Video generation, Post-class task generation</td></tr><tr><td>Structuring</td><td>✅</td><td>Course plan parsing, Chapter extraction, Exam import, Knowledge point review</td></tr><tr><td>Personalized Assessment</td><td>✅</td><td>Global language proficiency analysis, Question difficulty & suitability diagnosis, CEFR & multi-national standard mapping, Cross-disciplinary question strategy</td></tr><tr><td>Global Localization Module</td><td>✅</td><td>Taiwan K-12, Japan K-12 (aligned with MEXT guidelines), Vietnam localized resource generation Agent</td></tr></tbody></table>
+            <div class="mt-6 text-sm w-full">
+                <p><strong>Google Cloud Customer Case Study</strong></p>
+                <div class="mt-2 p-2 border-l-4" style="border-color:var(--accent-blue)">
+                    <a href="https://cloud.google.com/customers/one-class?hl=en" target="_blank" class="underline hover:text-blue-500" style="color: var(--text-dark);">Recommended by Google AI Technology</a>
+                </div>
+            </div>
+        </div>
+        <div class="page justify-start items-start" data-page="19">
+            <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">Traction & Roadmap</h2>
+            </div>
+            <ul class="list-disc list-inside space-y-3 w-full"><li>★ Initial deployment of 12 AI Agent models completed.</li><li>★ Pilot collaboration with a local institution in Vietnam is live, with over 100,000 learning data points collected.</li><li>★ API / SaaS integration discussions are underway with leading cram schools in Taiwan.</li><li class="mt-4"><strong>2025 Q3:</strong> Develop AI adaptation module for the South Korean curriculum.</li><li><strong>2025 Q4:</strong> MVP completed, 500 B2C users, 10 partner institutions + Launch EZ Hub pilot.</li><li><strong>Japan:</strong> Develop AI adaptation module for the Japanese curriculum and build an O2O self-study space network.</li><li><strong>2026-27:</strong> Taiwan: 5,000 B2C users, 300 partner institutions + Expand O2O model (30 locations planned).</li><li><strong>2028~:</strong> Global Mandarin-speaking market, Corporate internal training systems.</li></ul></div>
+        <div class="page justify-start items-start" data-page="20">
+            <div class="w-full mb-8">
+                <h2 class="text-4xl font-bold">Market Size</h2>
+            </div>
+            <table class="table-custom text-center w-full"><thead><tr><th>Region</th><th>K-12 Population (Est.)</th><th>Online Learning Penetration</th><th>Avg. Annual Spend</th><th>SAM (Serviceable Addressable Market)</th></tr></thead><tbody><tr><td>Taiwan</td><td>~2,400,000</td><td>30%</td><td>US$200</td><td style="color: var(--accent-terracotta);">~$144M</td></tr><tr><td>Japan</td><td>~13,000,000</td><td>25%</td><td>US$300</td><td style="color: var(--accent-terracotta);">~$975M</td></tr><tr><td>Vietnam</td><td>~17,600,000</td><td>20%</td><td>US$100</td><td style="color: var(--accent-terracotta);">~$352M</td></tr></tbody></table><div class="text-xs mt-4 space-y-2 w-full"><p><strong>Global EdTech Market:</strong> $340B in 2024, projected to exceed $1T by 2030.</p><p><strong>Asia Education Market:</strong> >$1 Trillion (including tutoring, private schools, online education).</p><p><strong>TAM: K-12 Tutoring Market (Asia) > $70B/year</strong></p><p>Potential clients in Taiwan's EdTech market exceed 20,000 institutions.</p><p>K-12 AI Education Potential: Concentrated in Taiwan, Japan, South Korea, Southeast Asia (driven by digital transformation + parental anxiety).</p><p>Immersive Learning & XR Education Market CAGR > 35%.</p><p>AI Personalized Learning Systems will be the default infrastructure for future education.</p><p><strong>TAM: AI After-School Learning Tools & Services Market > $3B</strong></p></div></div>
+        <div class="page justify-start" data-page="21"><h2 class="text-4xl font-bold mb-8">Calculation Method</h2><div class="w-full p-4 border rounded-lg" style="border-color: var(--border-color); background-color: #f4f3ee;"><p class="text-center text-lg">SAM = K-12 Student Population × Online Learning Penetration × Avg. Annual Spend</p></div><div class="mt-8 w-full"><h3 class="font-bold text-lg">Notes & Assumptions</h3><ul class="list-disc list-inside mt-2 text-sm space-y-2"><li>K-12 student population is estimated based on official national statistics or reliable sources.</li><li>Online learning penetration rates consider national education policies and adoption levels: Taiwan (~30%), Japan (~25%), Vietnam (~20%).</li><li>Average annual spend is estimated based on parental expenditure in local markets: Taiwan (US$200), Japan (US$300), Vietnam (US$100).</li></ul><h3 class="font-bold text-lg mt-4">Data Sources</h3><p class="text-xs mt-2">Taiwan: Taipei Times, Japan: Wikipedia, Vietnam: TISEA Education Overview</p></div></div>
+        <div class="page justify-start" data-page="22"><h2 class="text-4xl font-bold mb-8">Growth & Financial Forecast</h2><ul class="list-disc list-inside space-y-4"><li>Projected 2025 total revenue of NT$5.56M, serving as an initial validation phase for the diverse business model (B2C, B2B, SaaS).</li><li>Projected 2026 total revenue to exceed NT$100M (YoY growth > 1000%), driven by B2C international expansion and platform licensing.</li><li>Average gross margin is expected to be maintained at 60-70%, supported by AI-automated content and a platform-based teaching model.</li><li>Break-even analysis is complete (e.g., monthly revenue of NT$2.5M covers fixed costs of US$300K), demonstrating financial stability potential.</li><li>The low-variable-cost structure of our core AI technology helps establish a long-term positive cash flow and profitable model.</li></ul></div>
+        
+        <!-- Page 23 - Relaid out -->
+        <div class="page grid grid-cols-2 gap-x-12 items-start pt-16" data-page="23">
+            <!-- Left Column -->
+            <div class="text-sm w-full">
+                <div>
+                    <h2 class="text-3xl font-bold">Fundraising</h2>
+                </div>
+                <p class="mb-2 mt-6">Capital: USD 0.15M</p>
+                <p class="mb-2">Seeking Pre-A Round (15%): USD 1.5M (VC/Strategic Partners)</p>
+                <p class="mb-2">Pre-Money Valuation: USD 4.35M</p>
+                <p class="mb-4">Post-Money Valuation: USD 5.85M</p>
+            </div>
+
+            <!-- Right Column -->
+            <div class="w-full text-sm">
+                <div class="mb-4">
+                    <h3 class="font-bold mb-2">Use of Funds:</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>50% for Product & Technology Enhancement (AI Agent architecture, API development)</li>
+                        <li>30% for Market Expansion (Taiwan, Vietnam, South Korea)</li>
+                        <li>20% for Talent Acquisition (AI Engineering & Education Product PMs)</li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="text-center mb-2">Revenue Forecast (NTD)</h3>
+                    <div class="w-full h-64 p-4 rounded-lg shadow-inner" style="background-color: #fdfdfc;">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" data-page="24"><h2 class="text-8xl font-bold" style="color: var(--accent-blue);">THANKS.</h2><div class="border-t-2 w-1/4 my-10" style="border-color: var(--border-color);"></div><div class="text-center text-lg"><p>Tomato Chen</p><p class="mt-2" style="color: var(--text-light);">tomato0331@gmail.com</p><p style="color: var(--text-light);">0937-458-745</p></div></div>
+    </div>
+
+    <div class="nav-controls">
+        <button id="prevBtn" class="nav-button">Previous</button>
+        <div id="pageCounter" class="page-counter">1 / 24</div>
+        <button id="nextBtn" class="nav-button">Next</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pages = document.querySelectorAll('.page');
+            const totalPages = 24;
+            const pageCounter = document.getElementById('pageCounter');
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            let currentPage = 1;
+            let revenueChart = null;
+            let isAnimating = false;
+
+            const animations = [
+                { in: 'animate-in-fade', out: 'animate-out-fade' },
+                { in: 'animate-in-slide-right-zoom', out: 'animate-out-slide-left-zoom' },
+                { in: 'animate-in-slide-up', out: 'animate-out-slide-down' }
+            ];
+
+            function playAnimation(oldPage, newPage, isNext) {
+                isAnimating = true;
+
+                let anim;
+                if (isNext) {
+                    anim = animations[Math.floor(Math.random() * animations.length)];
+                } else {
+                     anim = { in: 'animate-in-slide-left-zoom', out: 'animate-out-slide-right-zoom' };
+                }
+
+                
+                oldPage.className = 'page';
+                newPage.className = 'page';
+                
+                newPage.classList.add('active');
+                
+                oldPage.classList.add(anim.out);
+                newPage.classList.add(anim.in);
+
+                setTimeout(() => {
+                    oldPage.classList.remove('active');
+                    oldPage.classList.remove(anim.out);
+                    newPage.classList.remove(anim.in);
+                    isAnimating = false;
+                }, 600); 
+            }
+
+
+            function showPage(newPageNumber, oldPageNumber) {
+                if(isAnimating) return;
+                
+                const oldPage = document.querySelector(`.page[data-page="${oldPageNumber}"]`);
+                const newPage = document.querySelector(`.page[data-page="${newPageNumber}"]`);
+                
+                playAnimation(oldPage, newPage, newPageNumber > oldPageNumber);
+
+                pageCounter.textContent = `${currentPage} / ${totalPages}`;
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+                prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+                nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
+                
+                if (newPageNumber === 23 && !revenueChart) {
+                    createRevenueChart();
+                }
+            }
+            
+            function createRevenueChart() {
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                const accentTerracotta = getComputedStyle(document.documentElement).getPropertyValue('--accent-terracotta').trim();
+                const accentOrange = getComputedStyle(document.documentElement).getPropertyValue('--accent-orange').trim();
+                const textDark = getComputedStyle(document.documentElement).getPropertyValue('--text-dark').trim();
+
+                revenueChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2025', '2026', '2027', '2028', '2029', '2030'],
+                        datasets: [
+                            {
+                                label: 'Base Revenue',
+                                data: [50000000, 100000000, 600000000, 900000000, 1200000000, 2000000000],
+                                backgroundColor: accentTerracotta,
+                                borderWidth: 0,
+                                stack: 'Stack 0',
+                            },
+                            {
+                                label: 'Additional Revenue',
+                                data: [0, 250000000, 0, 0, 0, 0],
+                                backgroundColor: accentOrange,
+                                borderWidth: 0,
+                                stack: 'Stack 0',
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: true,
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                     color: textDark
+                                }
+                            },
+                            y: {
+                                stacked: true,
+                                beginAtZero: true,
+                                max: 2500000000,
+                                grid: {
+                                    color: '#eee'
+                                },
+                                ticks: {
+                                    color: textDark,
+                                    stepSize: 500000000,
+                                    callback: function(value, index, values) {
+                                        if (value === 0) return 'NT$0';
+                                        if (value >= 1000000000) return 'NT$' + (value / 1000000000) + 'B';
+                                        if (value >= 1000000) return 'NT$' + (value / 1000000) + 'M';
+                                        return 'NT$' + value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    const oldPage = currentPage;
+                    currentPage++;
+                    showPage(currentPage, oldPage);
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    const oldPage = currentPage;
+                    currentPage--;
+                    showPage(currentPage, oldPage);
+                }
+            });
+
+
+            // Page 4 interactive toggle logic
+            const page4 = document.querySelector('.page[data-page="4"]');
+            if (page4) {
+                const initialView = document.getElementById('team-view-initial');
+                const detailsView = document.getElementById('team-view-details');
+                let isInitialView = true;
+
+                page4.addEventListener('click', () => {
+                    if (isInitialView) {
+                        initialView.classList.remove('opacity-100');
+                        initialView.classList.add('opacity-0', 'pointer-events-none');
+                        detailsView.classList.remove('opacity-0', 'pointer-events-none');
+                        detailsView.classList.add('opacity-100');
+                    } else {
+                        initialView.classList.remove('opacity-0', 'pointer-events-none');
+                        initialView.classList.add('opacity-100');
+                        detailsView.classList.remove('opacity-100');
+                        detailsView.classList.add('opacity-0', 'pointer-events-none');
+                    }
+                    isInitialView = !isInitialView;
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
+
